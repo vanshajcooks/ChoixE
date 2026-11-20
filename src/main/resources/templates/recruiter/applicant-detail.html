@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Applicant — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/recruiter/dashboard}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/recruiter/jobs}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-briefcase me-1"></i> My Jobs
+                </a>
+                <a th:href="@{/recruiter/applications}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-people me-1"></i> Applicants
+                </a>
+                <a th:href="@{/recruiter/profile}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-building me-1"></i> Organization Profile
+                </a>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1" style="max-width: 960px;">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/recruiter/dashboard}" class="text-decoration-none">Dashboard</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/recruiter/applications}" class="text-decoration-none">Applicants</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${app.student.user.fullName}">Candidate Name</li>
+            </ol>
+        </nav>
+
+        <!-- Flash Messages -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span th:text="${successMessage}">Success message</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${warningMessage}" class="alert alert-warning alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span th:text="${warningMessage}">Warning message</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-x-circle-fill me-2"></i>
+            <span th:text="${errorMessage}">Error message</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Main Candidate Audit Card -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white mb-4">
+            
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 border-bottom pb-4 mb-4">
+                <div>
+                    <div class="d-flex align-items-center gap-2 mb-2">
+                        <span class="py-1 px-3 rounded-pill fw-semibold"
+                              th:classappend="${app.status.badgeClass}"
+                              th:text="${app.status.displayName}">
+                            Status
+                        </span>
+                        <span class="badge bg-light text-secondary border">
+                            Roll: <strong th:text="${app.student.rollNumber}">2022CS101</strong>
+                        </span>
+                    </div>
+                    <h3 class="fw-bold mb-1" th:text="${app.student.user.fullName}">Candidate Full Name</h3>
+                    <div class="text-muted small mt-1">
+                        <i class="bi bi-envelope me-1"></i><span th:text="${app.student.user.email}">student@college.edu</span> &bull;
+                        <span th:text="${app.student.department}">Computer Science</span>
+                    </div>
+                </div>
+                <div class="text-sm-end">
+                    <span class="badge bg-light text-primary border fs-6 d-block mb-1" th:text="${app.job.title}">Position</span>
+                    <small class="text-muted d-block">
+                        Applied: <strong th:text="${#temporals.format(app.appliedAt, 'dd MMM yyyy, HH:mm')}">Date</strong>
+                    </small>
+                </div>
+            </div>
+
+            <!-- Candidate Academic Profile & Resume Section -->
+            <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-mortarboard text-primary"></i> Academic Credentials &amp; Verification
+            </h5>
+            <div class="row g-3 mb-4">
+                <div class="col-sm-3">
+                    <div class="border rounded-3 p-3 bg-light text-center">
+                        <small class="text-muted d-block">Verified CGPA</small>
+                        <span class="fw-bold text-primary fs-5" th:text="${app.student.cgpa}">8.50</span>
+                        <small class="text-secondary d-block">/ 10.0</small>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="border rounded-3 p-3 bg-light text-center">
+                        <small class="text-muted d-block">Active Backlogs</small>
+                        <span class="fw-bold text-dark fs-5" th:text="${app.student.activeBacklogs}">0</span>
+                        <small class="text-secondary d-block">Current Standing</small>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="border rounded-3 p-3 bg-light text-center">
+                        <small class="text-muted d-block">Graduation Batch</small>
+                        <span class="fw-bold text-dark fs-5" th:text="${app.student.graduationYear}">2026</span>
+                        <small class="text-secondary d-block">Passing Year</small>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="border rounded-3 p-3 bg-light text-center">
+                        <small class="text-muted d-block">Verification Status</small>
+                        <span class="badge bg-success mt-1">Verified</span>
+                        <small class="text-secondary d-block">By Placement Office</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resume Download Card -->
+            <div class="d-flex align-items-center justify-content-between p-3 border rounded-3 bg-white mb-4">
+                <div class="d-flex align-items-center gap-3">
+                    <i class="bi bi-file-earmark-pdf-fill text-danger fs-3"></i>
+                    <div>
+                        <div class="fw-semibold text-dark">Verified Candidate Resume</div>
+                        <small class="text-muted" th:text="${app.student.resumeOriginalName}">resume.pdf</small>
+                    </div>
+                </div>
+                <div>
+                    <a th:href="@{/recruiter/applications/{id}/resume(id=${app.id})}" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-download me-1"></i> Download Resume
+                    </a>
+                </div>
+            </div>
+
+            <!-- Recruitment Stage Progression & Status History Timeline -->
+            <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-clock-history text-secondary"></i> Review &amp; Status Timeline
+            </h5>
+            <div class="card bg-light border-0 rounded-4 p-4 mb-4">
+                <div class="timeline">
+                    <div th:each="hist, iterStat : ${app.statusHistory}" class="d-flex gap-3 pb-3"
+                         th:classappend="${!iterStat.last} ? 'border-bottom mb-3' : ''">
+                        <div class="text-center" style="width: 32px;">
+                            <i class="bi bi-check-circle-fill text-primary fs-5"></i>
+                        </div>
+                        <div class="flex-grow-1">
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center">
+                                <div>
+                                    <span class="badge py-1 px-2 rounded-pill me-1"
+                                          th:classappend="${hist.toStatus.badgeClass}"
+                                          th:text="${hist.toStatus.displayName}">
+                                        New Status
+                                    </span>
+                                    <span class="small text-muted" th:if="${hist.fromStatus != null}">
+                                        from <strong th:text="${hist.fromStatus.displayName}">Previous</strong>
+                                    </span>
+                                    <span class="small text-muted ms-1" th:text="'by ' + ${hist.changedBy}">by recruiter</span>
+                                </div>
+                                <small class="text-muted" th:text="${#temporals.format(hist.changedAt, 'dd MMM yyyy, HH:mm')}">Date &amp; Time</small>
+                            </div>
+                            <p class="small text-dark mb-0 mt-2 bg-white p-2 rounded-2 border" th:if="${hist.comments != null && !hist.comments.isBlank()}" th:text="${hist.comments}">
+                                Remarks from recruiter...
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Status Transition Controls -->
+            <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-arrow-right-circle text-success"></i> Update Recruitment Stage
+            </h5>
+
+            <!-- Case 1: Terminal Status -->
+            <div th:if="${app.status.isTerminal()}" class="alert alert-secondary border-0 rounded-3 p-3 mb-4">
+                <i class="bi bi-info-circle me-1"></i>
+                This application has reached a terminal outcome (<strong><span th:text="${app.status.displayName}">Status</span></strong>). No further stage transitions are permitted.
+            </div>
+
+            <!-- Case 2: Permitted Transitions Form -->
+            <div th:unless="${app.status.isTerminal()}" class="card border rounded-3 p-4 bg-white mb-4 shadow-sm">
+                <form th:action="@{/recruiter/applications/{id}/status(id=${app.id})}" method="post">
+                    <div class="row g-3">
+                        <div class="col-md-5">
+                            <label for="statusSelect" class="form-label fw-semibold small">Advance / Update Status <span class="text-danger">*</span></label>
+                            <select id="statusSelect" name="status" class="form-select" required>
+                                <option value="" disabled selected>Select next recruitment stage...</option>
+                                <option th:each="st : ${app.status.allowedNextStatuses}"
+                                        th:value="${st.name()}"
+                                        th:text="${st.displayName}">Status Name</option>
+                            </select>
+                        </div>
+                        <div class="col-md-7">
+                            <label for="commentsInput" class="form-label fw-semibold small">Comments / Candidate Remarks (Optional)</label>
+                            <input type="text" id="commentsInput" name="comments" class="form-control"
+                                   placeholder="e.g. Cleared technical screening; advancing to final interview."
+                                   maxlength="500">
+                        </div>
+                        <div class="col-12 text-end">
+                            <button type="submit" class="btn btn-success px-4"
+                                    onclick="return confirm('Confirm updating application status?');">
+                                <i class="bi bi-check-lg me-1"></i> Update Status
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Back Controls -->
+            <div class="d-flex flex-wrap gap-2 pt-3 border-top">
+                <a th:href="@{/recruiter/applications}" class="btn btn-outline-secondary">
+                    &larr; Back to Applicants
+                </a>
+                <a th:href="@{/recruiter/jobs/{id}(id=${app.job.id})}" class="btn btn-outline-primary ms-auto">
+                    View Job Posting
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

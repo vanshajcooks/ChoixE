@@ -37,6 +37,9 @@ class StudentJobControllerTest {
     @MockBean
     private JobService jobService;
 
+    @MockBean
+    private com.campusconnect.application.service.ApplicationService applicationService;
+
     private Job mockJob;
     private StudentJobItem mockStudentJobItem;
 

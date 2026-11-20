@@ -22,6 +22,9 @@
                 <a th:href="@{/recruiter/jobs}" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-briefcase me-1"></i> My Jobs
                 </a>
+                <a th:href="@{/recruiter/applications}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-people me-1"></i> Applicants
+                </a>
                 <a th:href="@{/recruiter/profile}" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-building me-1"></i> Organization Profile
                 </a>
@@ -153,9 +156,9 @@
                         <h5 class="fw-bold mb-0">Applicant Tracking</h5>
                     </div>
                     <p class="text-muted small">Review verified applicants, download resumes, and update recruitment review stages.</p>
-                    <button class="btn btn-outline-primary btn-sm mt-auto" disabled>
-                        Available in Module 6 (Review & Results)
-                    </button>
+                    <a th:href="@{/recruiter/applications}" class="btn btn-outline-primary btn-sm mt-auto">
+                        <i class="bi bi-people-fill me-1"></i> Track Applicants &rarr;
+                    </a>
                 </div>
             </div>
             <div class="col-md-4">

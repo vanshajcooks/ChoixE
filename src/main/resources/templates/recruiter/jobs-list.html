@@ -22,6 +22,9 @@
                 <a th:href="@{/recruiter/jobs}" class="btn btn-success btn-sm">
                     <i class="bi bi-briefcase me-1"></i> Jobs
                 </a>
+                <a th:href="@{/recruiter/applications}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-people me-1"></i> Applicants
+                </a>
                 <a th:href="@{/recruiter/profile}" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-building me-1"></i> Organization Profile
                 </a>
@@ -130,6 +133,9 @@
                                 <div class="btn-group btn-group-sm">
                                     <a th:href="@{/recruiter/jobs/{id}(id=${job.id})}" class="btn btn-outline-primary" title="View Job & Criteria">
                                         <i class="bi bi-eye"></i> View
+                                    </a>
+                                    <a th:href="@{/recruiter/jobs/{id}/applicants(id=${job.id})}" class="btn btn-outline-success" title="View Applicants">
+                                        <i class="bi bi-people"></i>
                                     </a>
                                     <a th:if="${job.isEditable()}" th:href="@{/recruiter/jobs/{id}/edit(id=${job.id})}" class="btn btn-outline-secondary" title="Edit Job">
                                         <i class="bi bi-pencil"></i>

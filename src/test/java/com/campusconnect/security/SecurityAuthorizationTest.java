@@ -201,4 +201,53 @@ class SecurityAuthorizationTest {
         mockMvc.perform(get("/recruiter/jobs"))
                 .andExpect(status().isForbidden());
     }
+
+    @Test
+    void unauthenticatedStudentApplications_RedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/student/applications"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "recruiter@corp.com", roles = {"RECRUITER"})
+    void recruiterCannotAccessStudentApplications() throws Exception {
+        mockMvc.perform(get("/student/applications"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void unauthenticatedRecruiterApplications_RedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/recruiter/applications"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "student@college.edu", roles = {"STUDENT"})
+    void studentCannotAccessRecruiterApplications() throws Exception {
+        mockMvc.perform(get("/recruiter/applications"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    void unauthenticatedOfficerApplications_RedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/officer/applications"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "student@college.edu", roles = {"STUDENT"})
+    void studentCannotAccessOfficerApplications() throws Exception {
+        mockMvc.perform(get("/officer/applications"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "officer@campusconnect.edu", roles = {"PLACEMENT_OFFICER"})
+    void officerCanAccessOfficerApplications() throws Exception {
+        mockMvc.perform(get("/officer/applications"))
+                .andExpect(status().isOk());
+    }
 }

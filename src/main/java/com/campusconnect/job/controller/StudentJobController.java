@@ -1,5 +1,6 @@
 package com.campusconnect.job.controller;
 
+import com.campusconnect.application.service.ApplicationService;
 import com.campusconnect.job.service.JobService;
 import com.campusconnect.job.service.JobService.StudentJobItem;
 import org.springframework.data.domain.Page;
@@ -19,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class StudentJobController {
 
     private final JobService jobService;
+    private final ApplicationService applicationService;
 
-    public StudentJobController(JobService jobService) {
+    public StudentJobController(JobService jobService, ApplicationService applicationService) {
         this.jobService = jobService;
+        this.applicationService = applicationService;
     }
 
     @GetMapping
@@ -51,6 +54,8 @@ public class StudentJobController {
             StudentJobItem item = jobService.getStudentJobDetail(userDetails.getUsername(), id);
             model.addAttribute("job", item.job());
             model.addAttribute("eligibility", item.eligibility());
+            model.addAttribute("hasApplied", applicationService.hasStudentApplied(userDetails.getUsername(), id));
+            model.addAttribute("existingApplication", applicationService.getStudentApplicationForJob(userDetails.getUsername(), id).orElse(null));
             model.addAttribute("username", userDetails.getUsername());
             return "student/job-detail";
         } catch (IllegalArgumentException e) {
