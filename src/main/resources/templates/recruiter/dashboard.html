@@ -19,8 +19,11 @@
                 <span>CampusConnect</span>
             </a>
             <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/recruiter/profile}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-building me-1"></i> Organization Profile
+                </a>
                 <span class="badge bg-success d-flex align-items-center gap-1 py-2 px-3">
-                    <i class="bi bi-building"></i>
+                    <i class="bi bi-person-fill"></i>
                     <span sec:authentication="name">recruiter@company.com</span>
                 </span>
                 <form th:action="@{/logout}" method="post" class="m-0">
@@ -42,7 +45,7 @@
                     <h3 class="fw-bold mb-1" th:text="${company != null} ? ${company.companyName} : 'Employer Portal'">Company Name</h3>
                     <p class="text-muted mb-0" th:text="${company != null} ? ('Industry: ' + ${company.industry} + ' &bull; Recruiter: ' + ${company.recruiter.fullName}) : 'Recruiter Account'">Industry &bull; Representative</p>
                 </div>
-                <div>
+                <div class="d-flex flex-column align-items-md-end gap-2">
                     <!-- Approval Badge -->
                     <div th:if="${company != null}">
                         <span th:if="${company.approvalStatus.name() == 'PENDING'}" class="badge bg-warning text-dark fs-6 py-2 px-3 rounded-pill">
@@ -55,6 +58,11 @@
                             <i class="bi bi-x-circle-fill me-1"></i> Registration Rejected
                         </span>
                     </div>
+                    <div>
+                        <a th:href="@{/recruiter/profile}" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-pencil-square me-1"></i> Manage Profile
+                        </a>
+                    </div>
                 </div>
             </div>
 
@@ -65,24 +73,49 @@
                     <strong>Approval in Progress:</strong> Your company profile is currently being reviewed by the Placement Office. Once approved, you can create and submit job postings for publication.
                 </div>
             </div>
+
+            <!-- Rejection Alert -->
+            <div th:if="${company != null and company.approvalStatus.name() == 'REJECTED'}" class="alert alert-danger mt-4 mb-0 shadow-sm" role="alert">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <i class="bi bi-exclamation-octagon-fill fs-5"></i>
+                    <h6 class="fw-bold mb-0">Registration Rejected by Placement Office</h6>
+                </div>
+                <p class="mb-2 mt-2" th:text="${company.rejectionReason}">Reason for rejection will appear here.</p>
+                <small class="text-muted d-block mb-2" th:if="${company.decisionAt != null}">
+                    Reviewed on <span th:text="${#temporals.format(company.decisionAt, 'dd MMM yyyy, hh:mm a')}">Date</span>
+                    <span th:if="${company.decisionBy != null}"> by <strong th:text="${company.decisionBy}">Officer</strong></span>
+                </small>
+                <a th:href="@{/recruiter/profile/edit}" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-pencil me-1"></i> Correct Company Details
+                </a>
+            </div>
         </div>
 
         <!-- Organization Overview -->
         <div th:if="${company != null}" class="card border-0 shadow-sm rounded-3 p-4 mb-4 bg-white">
-            <h5 class="fw-bold text-dark mb-3">Organization Profile</h5>
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-dark mb-0">Organization Profile</h5>
+                <a th:href="@{/recruiter/profile/edit}" class="btn btn-outline-secondary btn-sm">
+                    <i class="bi bi-pencil me-1"></i> Edit Details
+                </a>
+            </div>
             <div class="row g-3">
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <small class="text-muted d-block">Website</small>
                     <a th:if="${company.website}" th:href="${company.website}" target="_blank" class="fw-semibold text-primary" th:text="${company.website}">https://company.com</a>
                     <span th:unless="${company.website}" class="text-muted fst-italic">Not specified</span>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-3">
                     <small class="text-muted d-block">Industry</small>
                     <span class="fw-semibold text-dark" th:text="${company.industry}">Technology</span>
                 </div>
-                <div class="col-md-4">
-                    <small class="text-muted d-block">Registered Contact</small>
-                    <span class="fw-semibold text-dark" th:text="${company.recruiter.email}">contact@company.com</span>
+                <div class="col-md-3">
+                    <small class="text-muted d-block">Location / HQ</small>
+                    <span class="fw-semibold text-dark" th:text="${company.location != null && !company.location.isBlank()} ? ${company.location} : 'Not specified'">Location</span>
+                </div>
+                <div class="col-md-3">
+                    <small class="text-muted d-block">Official Phone</small>
+                    <span class="fw-semibold text-dark" th:text="${company.contactNumber != null && !company.contactNumber.isBlank()} ? ${company.contactNumber} : 'Not specified'">Phone</span>
                 </div>
                 <div class="col-md-12" th:if="${company.description}">
                     <small class="text-muted d-block">About Company</small>

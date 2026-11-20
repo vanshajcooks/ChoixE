@@ -33,6 +33,9 @@ public class StudentProfile {
     @Column(nullable = false, unique = true, length = 50)
     private String rollNumber;
 
+    @Column(length = 20)
+    private String phoneNumber;
+
     @Column(nullable = false, length = 80)
     private String department;
 
@@ -51,6 +54,19 @@ public class StudentProfile {
 
     @Column(length = 255)
     private String rejectionReason;
+
+    @Column(length = 255)
+    private String resumeFileName;
+
+    @Column(length = 255)
+    private String resumeOriginalName;
+
+    private LocalDateTime resumeUploadedAt;
+
+    private LocalDateTime verifiedAt;
+
+    @Column(length = 150)
+    private String verifiedBy;
 
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -88,6 +104,10 @@ public class StudentProfile {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public boolean hasResume() {
+        return resumeFileName != null && !resumeFileName.isBlank();
+    }
+
     public Long getId() {
         return id;
     }
@@ -110,6 +130,14 @@ public class StudentProfile {
 
     public void setRollNumber(String rollNumber) {
         this.rollNumber = rollNumber;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public String getDepartment() {
@@ -158,6 +186,46 @@ public class StudentProfile {
 
     public void setRejectionReason(String rejectionReason) {
         this.rejectionReason = rejectionReason;
+    }
+
+    public String getResumeFileName() {
+        return resumeFileName;
+    }
+
+    public void setResumeFileName(String resumeFileName) {
+        this.resumeFileName = resumeFileName;
+    }
+
+    public String getResumeOriginalName() {
+        return resumeOriginalName;
+    }
+
+    public void setResumeOriginalName(String resumeOriginalName) {
+        this.resumeOriginalName = resumeOriginalName;
+    }
+
+    public LocalDateTime getResumeUploadedAt() {
+        return resumeUploadedAt;
+    }
+
+    public void setResumeUploadedAt(LocalDateTime resumeUploadedAt) {
+        this.resumeUploadedAt = resumeUploadedAt;
+    }
+
+    public LocalDateTime getVerifiedAt() {
+        return verifiedAt;
+    }
+
+    public void setVerifiedAt(LocalDateTime verifiedAt) {
+        this.verifiedAt = verifiedAt;
+    }
+
+    public String getVerifiedBy() {
+        return verifiedBy;
+    }
+
+    public void setVerifiedBy(String verifiedBy) {
+        this.verifiedBy = verifiedBy;
     }
 
     public LocalDateTime getCreatedAt() {

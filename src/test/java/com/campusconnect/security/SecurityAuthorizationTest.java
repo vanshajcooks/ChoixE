@@ -82,4 +82,81 @@ class SecurityAuthorizationTest {
         mockMvc.perform(get("/officer/dashboard"))
                 .andExpect(status().isOk());
     }
+
+    @Test
+    void unauthenticatedStudentProfile_RedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/student/profile"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    void unauthenticatedOfficerStudents_RedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/officer/students"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "student@college.edu", roles = {"STUDENT"})
+    void studentCannotAccessOfficerStudents() throws Exception {
+        mockMvc.perform(get("/officer/students"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "recruiter@corp.com", roles = {"RECRUITER"})
+    void recruiterCannotAccessOfficerStudents() throws Exception {
+        mockMvc.perform(get("/officer/students"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "officer@campusconnect.edu", roles = {"PLACEMENT_OFFICER"})
+    void officerCanAccessOfficerStudents() throws Exception {
+        mockMvc.perform(get("/officer/students"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void unauthenticatedOfficerCompanies_RedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/officer/companies"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "student@college.edu", roles = {"STUDENT"})
+    void studentCannotAccessOfficerCompanies() throws Exception {
+        mockMvc.perform(get("/officer/companies"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "recruiter@corp.com", roles = {"RECRUITER"})
+    void recruiterCannotAccessOfficerCompanies() throws Exception {
+        mockMvc.perform(get("/officer/companies"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "officer@campusconnect.edu", roles = {"PLACEMENT_OFFICER"})
+    void officerCanAccessOfficerCompanies() throws Exception {
+        mockMvc.perform(get("/officer/companies"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void unauthenticatedRecruiterProfile_RedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/recruiter/profile"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "student@college.edu", roles = {"STUDENT"})
+    void studentCannotAccessRecruiterProfile() throws Exception {
+        mockMvc.perform(get("/recruiter/profile"))
+                .andExpect(status().isForbidden());
+    }
 }

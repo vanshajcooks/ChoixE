@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Academic Profile — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/student/dashboard}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/student/dashboard}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container my-4 flex-grow-1">
+
+        <!-- Breadcrumb & Title -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/student/dashboard}" class="text-decoration-none">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">My Profile</li>
+            </ol>
+        </nav>
+
+        <!-- Flash Messages -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span th:text="${successMessage}">Operation completed successfully.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${warningMessage}" class="alert alert-warning alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span th:text="${warningMessage}">Warning message.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-x-circle-fill me-2"></i>
+            <span th:text="${errorMessage}">Error occurred.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row g-4">
+            <!-- Left Column: Profile Card & Academic Info -->
+            <div class="col-lg-7">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 border-bottom pb-3 mb-4">
+                        <div>
+                            <h4 class="fw-bold mb-1" th:text="${profile.user.fullName}">Student Name</h4>
+                            <p class="text-muted mb-0 small" th:text="${profile.user.email}">student@college.edu</p>
+                        </div>
+                        <div>
+                            <!-- Status Badges -->
+                            <span th:if="${profile.verificationStatus.name() == 'PENDING'}" class="badge bg-warning text-dark py-2 px-3 rounded-pill">
+                                <i class="bi bi-clock-history me-1"></i> Verification Pending
+                            </span>
+                            <span th:if="${profile.verificationStatus.name() == 'VERIFIED'}" class="badge bg-success py-2 px-3 rounded-pill">
+                                <i class="bi bi-patch-check-fill me-1"></i> Verified Profile
+                            </span>
+                            <span th:if="${profile.verificationStatus.name() == 'REJECTED'}" class="badge bg-danger py-2 px-3 rounded-pill">
+                                <i class="bi bi-x-circle-fill me-1"></i> Verification Rejected
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Rejection Alert -->
+                    <div th:if="${profile.verificationStatus.name() == 'REJECTED'}" class="alert alert-danger mb-4 shadow-sm" role="alert">
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <i class="bi bi-exclamation-octagon-fill fs-5"></i>
+                            <h6 class="fw-bold mb-0">Profile Rejected by Placement Officer</h6>
+                        </div>
+                        <p class="mb-2 mt-2" th:text="${profile.rejectionReason}">Reason for rejection will appear here.</p>
+                        <small class="text-muted d-block mb-3" th:if="${profile.verifiedAt != null}">
+                            Reviewed on <span th:text="${#temporals.format(profile.verifiedAt, 'dd MMM yyyy, hh:mm a')}">Date</span>
+                            <span th:if="${profile.verifiedBy != null}"> by <strong th:text="${profile.verifiedBy}">Officer</strong></span>
+                        </small>
+                        <p class="small mb-0">Please click <strong>Edit Profile Details</strong> below to correct your academic credentials. Updating academic details will automatically resubmit your profile for verification.</p>
+                    </div>
+
+                    <!-- Verification Notice -->
+                    <div th:if="${profile.verificationStatus.name() == 'PENDING'}" class="alert alert-warning mb-4 small" role="alert">
+                        <i class="bi bi-info-circle-fill me-1"></i>
+                        Your profile is currently waiting to be reviewed by the Placement Officer. If you modify any academic fields, your status will remain pending review.
+                    </div>
+
+                    <div th:if="${profile.verificationStatus.name() == 'VERIFIED'}" class="alert alert-success mb-4 small" role="alert">
+                        <i class="bi bi-check-circle-fill me-1"></i>
+                        Your profile has been verified!
+                        <span th:if="${profile.verifiedAt != null}"> Verified on <span th:text="${#temporals.format(profile.verifiedAt, 'dd MMM yyyy')}">Date</span>.</span>
+                        <span class="d-block mt-1 text-muted">Note: Modifying academic data (CGPA, Branch, Year, Backlogs) will trigger re-verification.</span>
+                    </div>
+
+                    <h5 class="fw-bold mb-3 text-secondary">Academic Credentials</h5>
+                    <div class="table-responsive">
+                        <table class="table table-borderless align-middle mb-0">
+                            <tbody>
+                                <tr class="border-bottom">
+                                    <th class="text-muted fw-semibold py-3" style="width: 40%;">College Roll Number</th>
+                                    <td class="py-3 fw-bold text-dark" th:text="${profile.rollNumber}">2022CS101</td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <th class="text-muted fw-semibold py-3">Department / Branch</th>
+                                    <td class="py-3 fw-bold text-dark" th:text="${profile.department}">Computer Science &amp; Engineering</td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <th class="text-muted fw-semibold py-3">Graduation Year</th>
+                                    <td class="py-3 fw-bold text-dark" th:text="${profile.graduationYear}">2026</td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <th class="text-muted fw-semibold py-3">Cumulative GPA (CGPA)</th>
+                                    <td class="py-3">
+                                        <span class="fs-5 fw-bold text-primary" th:text="${profile.cgpa}">8.50</span>
+                                        <span class="text-muted small"> / 10.0</span>
+                                    </td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <th class="text-muted fw-semibold py-3">Active Backlogs</th>
+                                    <td class="py-3">
+                                        <span class="badge py-2 px-3" th:classappend="${profile.activeBacklogs > 0} ? 'bg-danger' : 'bg-success'" th:text="${profile.activeBacklogs}">0</span>
+                                    </td>
+                                </tr>
+                                <tr class="border-bottom">
+                                    <th class="text-muted fw-semibold py-3">Contact Phone</th>
+                                    <td class="py-3" th:text="${profile.phoneNumber != null && !profile.phoneNumber.isBlank()} ? ${profile.phoneNumber} : 'Not provided'">+91 9876543210</td>
+                                </tr>
+                                <tr>
+                                    <th class="text-muted fw-semibold py-3">Account Registered</th>
+                                    <td class="py-3 text-muted small" th:text="${#temporals.format(profile.createdAt, 'dd MMM yyyy, hh:mm a')}">Jan 1, 2026</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top d-flex gap-2">
+                        <a th:href="@{/student/profile/edit}" class="btn btn-primary">
+                            <i class="bi bi-pencil-square me-1"></i> Edit Profile Details
+                        </a>
+                        <a th:href="@{/student/dashboard}" class="btn btn-outline-secondary">
+                            Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Resume Management -->
+            <div class="col-lg-5">
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                    <div class="d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-file-earmark-person-fill text-primary fs-3"></i>
+                        <h5 class="fw-bold mb-0">Placement Resume</h5>
+                    </div>
+                    <p class="text-muted small">
+                        Keep your resume updated for recruiters. Uploaded resumes will be accessible to Placement Officers and recruiters of jobs you apply for.
+                    </p>
+
+                    <!-- Existing Resume Box -->
+                    <div th:if="${profile.hasResume()}" class="p-3 rounded-3 bg-light border mb-4">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="bg-primary bg-opacity-10 text-primary p-3 rounded-3">
+                                <i class="bi bi-file-earmark-pdf fs-2"></i>
+                            </div>
+                            <div class="overflow-hidden">
+                                <h6 class="fw-bold mb-1 text-truncate" th:text="${profile.resumeOriginalName}">resume.pdf</h6>
+                                <small class="text-muted d-block" th:if="${profile.resumeUploadedAt != null}">
+                                    Uploaded: <span th:text="${#temporals.format(profile.resumeUploadedAt, 'dd MMM yyyy, hh:mm a')}">Date</span>
+                                </small>
+                            </div>
+                        </div>
+                        <div class="mt-3 d-grid">
+                            <a th:href="@{/student/resume/download}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-download me-1"></i> Download Current Resume
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- No Resume Box -->
+                    <div th:unless="${profile.hasResume()}" class="p-4 rounded-3 bg-light border text-center mb-4">
+                        <i class="bi bi-file-earmark-x text-muted fs-1 mb-2 d-block"></i>
+                        <h6 class="fw-semibold text-dark mb-1">No Resume Uploaded</h6>
+                        <p class="text-muted small mb-0">Please upload your latest resume in PDF or DOCX format.</p>
+                    </div>
+
+                    <!-- Upload / Replace Form -->
+                    <form th:action="@{/student/resume/upload}" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="resumeFile" class="form-label fw-semibold small" th:text="${profile.hasResume()} ? 'Upload New Version (Replaces existing):' : 'Select Resume File:'">
+                                Select Resume File:
+                            </label>
+                            <input class="form-control" type="file" id="resumeFile" name="resume" accept=".pdf,.doc,.docx" required>
+                            <div class="form-text small">
+                                Accepted formats: <strong>.pdf, .doc, .docx</strong>. Max size: <strong>5 MB</strong>.
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success w-100">
+                            <i class="bi bi-cloud-arrow-up-fill me-1"></i>
+                            <span th:text="${profile.hasResume()} ? 'Replace Resume' : 'Upload Resume'">Upload Resume</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

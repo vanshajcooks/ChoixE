@@ -19,6 +19,12 @@
                 <span>CampusConnect</span>
             </a>
             <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/officer/students}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-people me-1"></i> Students
+                </a>
+                <a th:href="@{/officer/companies}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-building me-1"></i> Companies
+                </a>
                 <span class="badge bg-warning text-dark d-flex align-items-center gap-1 py-2 px-3">
                     <i class="bi bi-shield-shaded"></i>
                     <span sec:authentication="name">officer@campusconnect.edu</span>
@@ -57,24 +63,28 @@
         <!-- Metric Overview Cards -->
         <div class="row g-4 mb-4">
             <div class="col-md-3">
-                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <small class="text-muted text-uppercase fw-semibold">Pending Students</small>
-                        <i class="bi bi-person-exclamation text-warning fs-4"></i>
+                <a th:href="@{/officer/students(status='PENDING')}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100 hover-shadow transition">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <small class="text-muted text-uppercase fw-semibold">Pending Students</small>
+                            <i class="bi bi-person-exclamation text-warning fs-4"></i>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-0" th:text="${pendingStudentCount}">0</h3>
+                        <small class="text-warning fw-semibold">Review awaiting verification &rarr;</small>
                     </div>
-                    <h3 class="fw-bold text-dark mb-0">--</h3>
-                    <small class="text-secondary">Profiles awaiting verification</small>
-                </div>
+                </a>
             </div>
             <div class="col-md-3">
-                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <small class="text-muted text-uppercase fw-semibold">Pending Companies</small>
-                        <i class="bi bi-building-exclamation text-warning fs-4"></i>
+                <a th:href="@{/officer/companies(status='PENDING')}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100 hover-shadow transition">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <small class="text-muted text-uppercase fw-semibold">Pending Companies</small>
+                            <i class="bi bi-building-exclamation text-warning fs-4"></i>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-0" th:text="${pendingCompanyCount}">0</h3>
+                        <small class="text-warning fw-semibold">Review awaiting approval &rarr;</small>
                     </div>
-                    <h3 class="fw-bold text-dark mb-0">--</h3>
-                    <small class="text-secondary">Organizations awaiting approval</small>
-                </div>
+                </a>
             </div>
             <div class="col-md-3">
                 <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
@@ -107,9 +117,9 @@
                         <h6 class="fw-bold mb-0">Student Verification</h6>
                     </div>
                     <p class="text-muted small">Review submitted academic details, CGPA, backlogs, and verify student profiles.</p>
-                    <button class="btn btn-outline-primary btn-sm mt-auto" disabled>
-                        Available in Module 2
-                    </button>
+                    <a th:href="@{/officer/students}" class="btn btn-primary btn-sm mt-auto">
+                        <i class="bi bi-people-fill me-1"></i> Review &amp; Verify Students
+                    </a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
@@ -119,9 +129,9 @@
                         <h6 class="fw-bold mb-0">Company Approvals</h6>
                     </div>
                     <p class="text-muted small">Verify newly registered employer organizations before allowing job creation.</p>
-                    <button class="btn btn-outline-success btn-sm mt-auto" disabled>
-                        Available in Module 4
-                    </button>
+                    <a th:href="@{/officer/companies}" class="btn btn-success btn-sm mt-auto">
+                        <i class="bi bi-building-check me-1"></i> Review &amp; Approve Companies
+                    </a>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">

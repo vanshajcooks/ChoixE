@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Academic Profile — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/student/dashboard}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/student/profile}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-person me-1"></i> My Profile
+                </a>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container my-4 flex-grow-1" style="max-width: 760px;">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/student/dashboard}" class="text-decoration-none">Dashboard</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/student/profile}" class="text-decoration-none">My Profile</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+            </ol>
+        </nav>
+
+        <!-- Flash / Form Level Error Messages -->
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-x-circle-fill me-2"></i>
+            <span th:text="${errorMessage}">Error occurred.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Academic Re-Verification Notice -->
+        <div class="alert alert-warning border-0 shadow-sm rounded-3 d-flex align-items-start gap-3 p-3 mb-4">
+            <i class="bi bi-shield-exclamation text-warning fs-3 flex-shrink-0"></i>
+            <div>
+                <h6 class="fw-bold mb-1">Notice on Academic Verification</h6>
+                <p class="mb-0 small text-muted">
+                    If you change any academic records (<strong>Department, Graduation Year, CGPA, or Backlogs</strong>), your profile will automatically return to <strong>PENDING</strong> verification status and will require review by the Placement Officer.
+                </p>
+            </div>
+        </div>
+
+        <!-- Form Card -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+            <div class="border-bottom pb-3 mb-4">
+                <h4 class="fw-bold mb-1">Edit Academic Details</h4>
+                <p class="text-muted small mb-0">Update your contact information and official college academic metrics.</p>
+            </div>
+
+            <form th:action="@{/student/profile/edit}" th:object="${request}" method="post">
+
+                <!-- Read-Only Section -->
+                <div class="row g-3 mb-4 p-3 bg-light rounded-3 border">
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small fw-semibold">College Roll Number (Non-editable)</label>
+                        <input type="text" class="form-control bg-white" th:value="${profile.rollNumber}" disabled readonly>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label text-muted small fw-semibold">Email Address (Non-editable)</label>
+                        <input type="text" class="form-control bg-white" th:value="${profile.user.email}" disabled readonly>
+                    </div>
+                </div>
+
+                <!-- Personal Information -->
+                <h6 class="fw-bold text-secondary mb-3">Personal &amp; Contact Details</h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-7">
+                        <label for="fullName" class="form-label fw-semibold">Full Legal Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="fullName" th:field="*{fullName}"
+                               th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid' : ''" required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}"></div>
+                    </div>
+                    <div class="col-md-5">
+                        <label for="phoneNumber" class="form-label fw-semibold">Phone Number</label>
+                        <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}"
+                               placeholder="+91 9876543210"
+                               th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid' : ''">
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
+                        <div class="form-text small">Include country code if applicable.</div>
+                    </div>
+                </div>
+
+                <!-- Academic Information -->
+                <h6 class="fw-bold text-secondary mb-3">Academic Performance &amp; Standing</h6>
+                <div class="row g-3 mb-4">
+                    <div class="col-md-8">
+                        <label for="department" class="form-label fw-semibold">Department / Branch <span class="text-danger">*</span></label>
+                        <select class="form-select" id="department" th:field="*{department}"
+                                th:classappend="${#fields.hasErrors('department')} ? 'is-invalid' : ''" required>
+                            <option value="">Select Branch / Department</option>
+                            <option value="Computer Science & Engineering">Computer Science &amp; Engineering</option>
+                            <option value="Information Technology">Information Technology</option>
+                            <option value="Electronics & Communication">Electronics &amp; Communication</option>
+                            <option value="Electrical & Electronics">Electrical &amp; Electronics</option>
+                            <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            <option value="Civil Engineering">Civil Engineering</option>
+                            <option value="Chemical Engineering">Chemical Engineering</option>
+                            <option value="Biotechnology">Biotechnology</option>
+                            <option value="Aerospace Engineering">Aerospace Engineering</option>
+                        </select>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('department')}" th:errors="*{department}"></div>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="graduationYear" class="form-label fw-semibold">Graduation Year <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="graduationYear" th:field="*{graduationYear}"
+                               min="2020" max="2035"
+                               th:classappend="${#fields.hasErrors('graduationYear')} ? 'is-invalid' : ''" required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('graduationYear')}" th:errors="*{graduationYear}"></div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="cgpa" class="form-label fw-semibold">Cumulative GPA (CGPA) <span class="text-danger">*</span></label>
+                        <input type="number" step="0.01" min="0.00" max="10.00" class="form-control" id="cgpa" th:field="*{cgpa}"
+                               placeholder="e.g. 8.45"
+                               th:classappend="${#fields.hasErrors('cgpa')} ? 'is-invalid' : ''" required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('cgpa')}" th:errors="*{cgpa}"></div>
+                        <div class="form-text small">On a 10.0 scale.</div>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="activeBacklogs" class="form-label fw-semibold">Active Backlogs <span class="text-danger">*</span></label>
+                        <input type="number" min="0" max="50" class="form-control" id="activeBacklogs" th:field="*{activeBacklogs}"
+                               placeholder="0"
+                               th:classappend="${#fields.hasErrors('activeBacklogs')} ? 'is-invalid' : ''" required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('activeBacklogs')}" th:errors="*{activeBacklogs}"></div>
+                        <div class="form-text small">Enter 0 if all subjects cleared.</div>
+                    </div>
+                </div>
+
+                <!-- Submit / Cancel Buttons -->
+                <div class="d-flex gap-2 pt-3 border-top">
+                    <button type="submit" class="btn btn-primary px-4">
+                        <i class="bi bi-check2-circle me-1"></i> Save Changes
+                    </button>
+                    <a th:href="@{/student/profile}" class="btn btn-outline-secondary px-4">
+                        Cancel
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

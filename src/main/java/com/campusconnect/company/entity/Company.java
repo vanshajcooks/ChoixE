@@ -45,6 +45,20 @@ public class Company {
     @Column(nullable = false, length = 30)
     private CompanyApprovalStatus approvalStatus;
 
+    @Column(length = 150)
+    private String location;
+
+    @Column(length = 20)
+    private String contactNumber;
+
+    @Column(length = 500)
+    private String rejectionReason;
+
+    private LocalDateTime decisionAt;
+
+    @Column(length = 100)
+    private String decisionBy;
+
     @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
@@ -131,6 +145,58 @@ public class Company {
 
     public void setApprovalStatus(CompanyApprovalStatus approvalStatus) {
         this.approvalStatus = approvalStatus;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getContactNumber() {
+        return contactNumber;
+    }
+
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
+    }
+
+    public LocalDateTime getDecisionAt() {
+        return decisionAt;
+    }
+
+    public void setDecisionAt(LocalDateTime decisionAt) {
+        this.decisionAt = decisionAt;
+    }
+
+    public String getDecisionBy() {
+        return decisionBy;
+    }
+
+    public void setDecisionBy(String decisionBy) {
+        this.decisionBy = decisionBy;
+    }
+
+    public boolean isApproved() {
+        return this.approvalStatus == CompanyApprovalStatus.APPROVED;
+    }
+
+    public boolean isPending() {
+        return this.approvalStatus == CompanyApprovalStatus.PENDING;
+    }
+
+    public boolean isRejected() {
+        return this.approvalStatus == CompanyApprovalStatus.REJECTED;
     }
 
     public LocalDateTime getCreatedAt() {

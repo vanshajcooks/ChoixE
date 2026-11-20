@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organization Profile — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/recruiter/dashboard}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/recruiter/dashboard}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <span class="badge bg-success d-none d-md-inline-block py-2 px-3">
+                    <i class="bi bi-building me-1"></i>
+                    <span sec:authentication="name">recruiter@company.com</span>
+                </span>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <main class="container my-4 flex-grow-1" style="max-width: 900px;">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/recruiter/dashboard}" class="text-decoration-none">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Organization Profile</li>
+            </ol>
+        </nav>
+
+        <!-- Flash Messages -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span th:text="${successMessage}">Operation completed successfully.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${warningMessage}" class="alert alert-warning alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span th:text="${warningMessage}">Warning message.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-x-circle-fill me-2"></i>
+            <span th:text="${errorMessage}">Error occurred.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Company Profile Card -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white mb-4">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 border-bottom pb-3 mb-4">
+                <div>
+                    <h3 class="fw-bold mb-1" th:text="${company.companyName}">Company Name</h3>
+                    <p class="text-muted mb-0 small" th:text="${company.industry}">Technology &bull; Software</p>
+                </div>
+                <div>
+                    <!-- Status Badges -->
+                    <span th:if="${company.approvalStatus.name() == 'PENDING'}" class="badge bg-warning text-dark py-2 px-3 rounded-pill fs-6">
+                        <i class="bi bi-clock-history me-1"></i> Approval Pending
+                    </span>
+                    <span th:if="${company.approvalStatus.name() == 'APPROVED'}" class="badge bg-success py-2 px-3 rounded-pill fs-6">
+                        <i class="bi bi-patch-check-fill me-1"></i> Approved Employer
+                    </span>
+                    <span th:if="${company.approvalStatus.name() == 'REJECTED'}" class="badge bg-danger py-2 px-3 rounded-pill fs-6">
+                        <i class="bi bi-x-circle-fill me-1"></i> Registration Rejected
+                    </span>
+                </div>
+            </div>
+
+            <!-- Rejection Alert -->
+            <div th:if="${company.approvalStatus.name() == 'REJECTED'}" class="alert alert-danger mb-4 shadow-sm" role="alert">
+                <div class="d-flex align-items-center gap-2 mb-1">
+                    <i class="bi bi-exclamation-octagon-fill fs-5"></i>
+                    <h6 class="fw-bold mb-0">Registration Rejected by Placement Office</h6>
+                </div>
+                <p class="mb-2 mt-2" th:text="${company.rejectionReason}">Reason for rejection will appear here.</p>
+                <small class="text-muted d-block mb-3" th:if="${company.decisionAt != null}">
+                    Reviewed on <span th:text="${#temporals.format(company.decisionAt, 'dd MMM yyyy, hh:mm a')}">Date</span>
+                    <span th:if="${company.decisionBy != null}"> by <strong th:text="${company.decisionBy}">Officer</strong></span>
+                </small>
+                <p class="small mb-0">Please click <strong>Edit Profile</strong> below to revise your company information. Once saved, your profile will be reviewed by the Placement Officer.</p>
+            </div>
+
+            <!-- Approval In Progress Notice -->
+            <div th:if="${company.approvalStatus.name() == 'PENDING'}" class="alert alert-warning mb-4 small" role="alert">
+                <i class="bi bi-info-circle-fill me-1"></i>
+                Your organization profile is currently being reviewed by the Placement Office. You will be able to create and publish campus job drives once approved.
+            </div>
+
+            <!-- Approved Notice -->
+            <div th:if="${company.approvalStatus.name() == 'APPROVED'}" class="alert alert-success mb-4 small" role="alert">
+                <i class="bi bi-patch-check-fill me-1"></i>
+                Your company registration is verified and approved! You are authorized to create job opportunities for campus students.
+                <span th:if="${company.decisionAt != null}">
+                    (Approved on <span th:text="${#temporals.format(company.decisionAt, 'dd MMM yyyy')}">Date</span>)
+                </span>
+            </div>
+
+            <!-- Organization Details Table -->
+            <h5 class="fw-bold text-secondary mb-3">Organization Details</h5>
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle mb-0">
+                    <tbody>
+                        <tr class="border-bottom">
+                            <th class="text-muted fw-semibold py-3" style="width: 35%;">Organization Legal Name</th>
+                            <td class="py-3 fw-bold text-dark" th:text="${company.companyName}">GlobalTech Inc.</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="text-muted fw-semibold py-3">Industry Domain</th>
+                            <td class="py-3 fw-bold text-dark" th:text="${company.industry}">Information Technology</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="text-muted fw-semibold py-3">Official Website</th>
+                            <td class="py-3">
+                                <a th:if="${company.website != null && !company.website.isBlank()}"
+                                   th:href="${company.website}" target="_blank" class="fw-semibold text-primary" th:text="${company.website}">https://company.com</a>
+                                <span th:unless="${company.website != null && !company.website.isBlank()}" class="text-muted">Not specified</span>
+                            </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="text-muted fw-semibold py-3">Office / HQ Location</th>
+                            <td class="py-3" th:text="${company.location != null && !company.location.isBlank()} ? ${company.location} : 'Not specified'">Bangalore, India</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="text-muted fw-semibold py-3">Official Contact Phone</th>
+                            <td class="py-3" th:text="${company.contactNumber != null && !company.contactNumber.isBlank()} ? ${company.contactNumber} : 'Not specified'">+91 9876543210</td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="text-muted fw-semibold py-3">Authorized Representative</th>
+                            <td class="py-3">
+                                <div class="fw-bold text-dark" th:text="${company.recruiter.fullName}">Representative Name</div>
+                                <div class="text-muted small" th:text="${company.recruiter.email}">recruiter@company.com</div>
+                            </td>
+                        </tr>
+                        <tr class="border-bottom">
+                            <th class="text-muted fw-semibold py-3">Registration Date</th>
+                            <td class="py-3 text-muted small" th:text="${#temporals.format(company.createdAt, 'dd MMM yyyy, hh:mm a')}">Jan 1, 2026</td>
+                        </tr>
+                        <tr th:if="${company.description != null && !company.description.isBlank()}">
+                            <th class="text-muted fw-semibold py-3 align-top">About Organization</th>
+                            <td class="py-3 text-secondary" style="white-space: pre-wrap;" th:text="${company.description}">Company description...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="mt-4 pt-3 border-top d-flex gap-2">
+                <a th:href="@{/recruiter/profile/edit}" class="btn btn-primary">
+                    <i class="bi bi-pencil-square me-1"></i> Edit Organization Profile
+                </a>
+                <a th:href="@{/recruiter/dashboard}" class="btn btn-outline-secondary">
+                    Back to Dashboard
+                </a>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

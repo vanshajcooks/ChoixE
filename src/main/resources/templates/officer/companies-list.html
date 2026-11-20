@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Approvals Management — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/officer/dashboard}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/officer/students}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-people me-1"></i> Students
+                </a>
+                <a th:href="@{/officer/dashboard}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <span class="badge bg-warning text-dark d-none d-md-inline-block py-2 px-3">
+                    <i class="bi bi-shield-shaded me-1"></i>
+                    <span sec:authentication="name">officer@campusconnect.edu</span>
+                </span>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1">
+
+        <!-- Breadcrumb & Header -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/officer/dashboard}" class="text-decoration-none">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Company Approvals</li>
+            </ol>
+        </nav>
+
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+            <div>
+                <h3 class="fw-bold mb-1">Company Registrations &amp; Approvals</h3>
+                <p class="text-muted mb-0">Review newly registered employer organizations, audit representative credentials, and approve or reject recruitment access.</p>
+            </div>
+            <div>
+                <span class="badge bg-warning text-dark fs-6 py-2 px-3 rounded-pill shadow-sm">
+                    <i class="bi bi-clock-history me-1"></i>
+                    <span th:text="${pendingCount}">0</span> Awaiting Review
+                </span>
+            </div>
+        </div>
+
+        <!-- Filter Tabs & Search Bar -->
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-4">
+            <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3">
+                
+                <!-- Status Filter Pills -->
+                <ul class="nav nav-pills">
+                    <li class="nav-item">
+                        <a class="nav-link py-2 px-3"
+                           th:classappend="${currentStatus == 'ALL'} ? 'active' : ''"
+                           th:href="@{/officer/companies(status='ALL', search=${search})}">
+                            All Companies
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link py-2 px-3 position-relative"
+                           th:classappend="${currentStatus == 'PENDING'} ? 'active' : ''"
+                           th:href="@{/officer/companies(status='PENDING', search=${search})}">
+                            Pending Review
+                            <span class="badge rounded-pill bg-danger ms-1" th:if="${pendingCount > 0}" th:text="${pendingCount}">1</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link py-2 px-3"
+                           th:classappend="${currentStatus == 'APPROVED'} ? 'active' : ''"
+                           th:href="@{/officer/companies(status='APPROVED', search=${search})}">
+                            Approved
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link py-2 px-3"
+                           th:classappend="${currentStatus == 'REJECTED'} ? 'active' : ''"
+                           th:href="@{/officer/companies(status='REJECTED', search=${search})}">
+                            Rejected
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Search Form -->
+                <form th:action="@{/officer/companies}" method="get" class="d-flex gap-2">
+                    <input type="hidden" name="status" th:value="${currentStatus}">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light border-end-0">
+                            <i class="bi bi-search text-muted"></i>
+                        </span>
+                        <input type="text" name="search" class="form-control border-start-0 bg-light"
+                               placeholder="Search company or industry..."
+                               th:value="${search}">
+                    </div>
+                    <button type="submit" class="btn btn-primary px-3">Search</button>
+                    <a th:if="${search != null && !search.isBlank()}"
+                       th:href="@{/officer/companies(status=${currentStatus})}"
+                       class="btn btn-outline-secondary" title="Clear Search">
+                        <i class="bi bi-x-lg"></i>
+                    </a>
+                </form>
+
+            </div>
+        </div>
+
+        <!-- Companies Table Card -->
+        <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden mb-4">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4 py-3">Company Name</th>
+                            <th class="py-3">Industry</th>
+                            <th class="py-3">Website</th>
+                            <th class="py-3">Location</th>
+                            <th class="py-3">Recruiter Contact</th>
+                            <th class="py-3 text-center">Status</th>
+                            <th class="pe-4 py-3 text-end">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows -->
+                        <tr th:each="comp : ${companies.content}">
+                            <td class="ps-4 py-3">
+                                <div class="fw-bold text-dark" th:text="${comp.companyName}">Acme Corporation</div>
+                                <div class="text-muted small" th:if="${comp.contactNumber}" th:text="${comp.contactNumber}">+91 9876543210</div>
+                            </td>
+                            <td class="py-3">
+                                <span class="badge bg-secondary bg-opacity-10 text-dark fw-semibold" th:text="${comp.industry}">Technology</span>
+                            </td>
+                            <td class="py-3">
+                                <a th:if="${comp.website != null && !comp.website.isBlank()}"
+                                   th:href="${comp.website}" target="_blank" class="text-primary small text-truncate d-inline-block" style="max-width: 160px;" th:text="${comp.website}">https://acme.com</a>
+                                <span th:unless="${comp.website != null && !comp.website.isBlank()}" class="text-muted small">—</span>
+                            </td>
+                            <td class="py-3 small text-secondary" th:text="${comp.location != null && !comp.location.isBlank()} ? ${comp.location} : '—'">Bangalore, India</td>
+                            <td class="py-3">
+                                <div class="fw-semibold text-dark small" th:text="${comp.recruiter.fullName}">Jane Recruiter</div>
+                                <div class="text-muted small" th:text="${comp.recruiter.email}">recruiter@acme.com</div>
+                            </td>
+                            <td class="py-3 text-center">
+                                <span th:if="${comp.approvalStatus.name() == 'PENDING'}" class="badge bg-warning text-dark py-1 px-2 rounded-pill">
+                                    <i class="bi bi-clock-history me-1"></i> Pending
+                                </span>
+                                <span th:if="${comp.approvalStatus.name() == 'APPROVED'}" class="badge bg-success py-1 px-2 rounded-pill">
+                                    <i class="bi bi-patch-check-fill me-1"></i> Approved
+                                </span>
+                                <span th:if="${comp.approvalStatus.name() == 'REJECTED'}" class="badge bg-danger py-1 px-2 rounded-pill">
+                                    <i class="bi bi-x-circle-fill me-1"></i> Rejected
+                                </span>
+                            </td>
+                            <td class="pe-4 py-3 text-end">
+                                <a th:href="@{/officer/companies/{id}(id=${comp.id})}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye me-1"></i> Review
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Empty State -->
+                        <tr th:if="${companies.empty}">
+                            <td colspan="7" class="text-center py-5">
+                                <div class="py-3">
+                                    <i class="bi bi-building-x text-muted fs-1 mb-2 d-block"></i>
+                                    <h5 class="fw-semibold text-dark">No Companies Found</h5>
+                                    <p class="text-muted small mb-0">No company registrations match the selected status or search filter.</p>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination Bar -->
+            <div th:if="${companies.totalPages > 1}" class="card-footer bg-white border-top d-flex justify-content-between align-items-center py-3 px-4">
+                <small class="text-muted">
+                    Showing page <span class="fw-semibold" th:text="${companies.number + 1}">1</span> of <span class="fw-semibold" th:text="${companies.totalPages}">1</span>
+                    (<span th:text="${companies.totalElements}">0</span> total organizations)
+                </small>
+                <nav aria-label="Page navigation">
+                    <ul class="pagination pagination-sm mb-0">
+                        <!-- Previous Page -->
+                        <li class="page-item" th:classappend="${!companies.hasPrevious()} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/officer/companies(status=${currentStatus}, search=${search}, page=${companies.number - 1})}">Previous</a>
+                        </li>
+                        <!-- Pages -->
+                        <li class="page-item" th:each="p : ${#numbers.sequence(0, companies.totalPages - 1)}"
+                            th:classappend="${p == companies.number} ? 'active' : ''">
+                            <a class="page-link" th:href="@{/officer/companies(status=${currentStatus}, search=${search}, page=${p})}" th:text="${p + 1}">1</a>
+                        </li>
+                        <!-- Next Page -->
+                        <li class="page-item" th:classappend="${!companies.hasNext()} ? 'disabled' : ''">
+                            <a class="page-link" th:href="@{/officer/companies(status=${currentStatus}, search=${search}, page=${companies.number + 1})}">Next</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
