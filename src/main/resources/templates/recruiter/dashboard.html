@@ -19,6 +19,9 @@
                 <span>CampusConnect</span>
             </a>
             <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/recruiter/jobs}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-briefcase me-1"></i> My Jobs
+                </a>
                 <a th:href="@{/recruiter/profile}" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-building me-1"></i> Organization Profile
                 </a>
@@ -133,9 +136,14 @@
                         <h5 class="fw-bold mb-0">Post a Job</h5>
                     </div>
                     <p class="text-muted small">Create job postings with custom eligibility criteria (CGPA, branches, backlog rules).</p>
-                    <button class="btn btn-outline-success btn-sm mt-auto" disabled>
-                        Available in Module 5 (Job Postings)
-                    </button>
+                    <div class="mt-auto d-flex flex-column gap-2">
+                        <a th:href="@{/recruiter/jobs/new}" class="btn btn-outline-success btn-sm">
+                            <i class="bi bi-plus-circle me-1"></i> Post a Job &rarr;
+                        </a>
+                        <a th:href="@{/recruiter/jobs}" class="btn btn-link btn-sm text-decoration-none text-muted p-0 text-start">
+                            View All Postings &rarr;
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="col-md-4">

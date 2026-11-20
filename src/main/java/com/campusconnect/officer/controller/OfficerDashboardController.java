@@ -1,5 +1,6 @@
 package com.campusconnect.officer.controller;
 
+import com.campusconnect.job.service.JobService;
 import com.campusconnect.officer.service.OfficerCompanyService;
 import com.campusconnect.officer.service.OfficerStudentService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -15,11 +16,14 @@ public class OfficerDashboardController {
 
     private final OfficerStudentService officerStudentService;
     private final OfficerCompanyService officerCompanyService;
+    private final JobService jobService;
 
     public OfficerDashboardController(OfficerStudentService officerStudentService,
-                                    OfficerCompanyService officerCompanyService) {
+                                    OfficerCompanyService officerCompanyService,
+                                    JobService jobService) {
         this.officerStudentService = officerStudentService;
         this.officerCompanyService = officerCompanyService;
+        this.jobService = jobService;
     }
 
     @GetMapping("/dashboard")
@@ -29,6 +33,7 @@ public class OfficerDashboardController {
         }
         model.addAttribute("pendingStudentCount", officerStudentService.getPendingCount());
         model.addAttribute("pendingCompanyCount", officerCompanyService.getPendingCount());
+        model.addAttribute("pendingJobCount", jobService.getPendingJobCount());
         return "officer/dashboard";
     }
 }

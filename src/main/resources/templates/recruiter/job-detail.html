@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Details — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/recruiter/dashboard}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/recruiter/jobs}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-briefcase me-1"></i> My Jobs
+                </a>
+                <a th:href="@{/recruiter/profile}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-building me-1"></i> Company Profile
+                </a>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/recruiter/dashboard}" class="text-decoration-none">Dashboard</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/recruiter/jobs}" class="text-decoration-none">My Jobs</a></li>
+                <li class="breadcrumb-item active" aria-current="page" th:text="${job.title}">Job Title</li>
+            </ol>
+        </nav>
+
+        <!-- Flash Messages -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span th:text="${successMessage}">Success message</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${warningMessage}" class="alert alert-warning alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            <span th:text="${warningMessage}">Warning message</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="bi bi-exclamation-circle-fill me-2"></i>
+            <span th:text="${errorMessage}">Error message</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <div class="row g-4">
+            
+            <!-- Left Column: Job Details & Description -->
+            <div class="col-lg-8">
+                <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white mb-4">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 border-bottom pb-4 mb-4">
+                        <div>
+                            <div class="d-flex align-items-center gap-2 mb-2">
+                                <span class="badge"
+                                      th:classappend="${job.status.name() == 'APPROVED' ? 'bg-success' : (job.status.name() == 'PENDING_APPROVAL' ? 'bg-warning text-dark' : (job.status.name() == 'REJECTED' ? 'bg-danger' : (job.status.name() == 'DRAFT' ? 'bg-secondary' : 'bg-dark')))}"
+                                      th:text="${job.status.name() == 'PENDING_APPROVAL' ? 'Pending Approval' : (job.status.name() == 'APPROVED' ? 'Approved' : (job.status.name() == 'REJECTED' ? 'Rejected' : (job.status.name() == 'DRAFT' ? 'Draft' : 'Closed')))}">
+                                    Status
+                                </span>
+                                <span class="badge bg-light text-primary border" th:text="${job.company.companyName}">Employer</span>
+                            </div>
+                            <h3 class="fw-bold mb-1" th:text="${job.title}">Job Title</h3>
+                            <div class="text-muted small mt-1">
+                                <span class="badge bg-secondary bg-opacity-10 text-dark" th:text="${job.roleType}">Full-Time</span> &bull;
+                                <span th:text="${job.workMode != null ? job.workMode : 'On-site'}">On-site</span>
+                                <span th:if="${job.location}"> &bull; <i class="bi bi-geo-alt"></i> <span th:text="${job.location}">Location</span></span>
+                            </div>
+                        </div>
+                        <div class="text-sm-end">
+                            <span class="fs-5 fw-bold text-success d-block" th:text="${job.salaryPackage != null ? job.salaryPackage : 'Competitive'}">CTC Package</span>
+                            <small class="text-muted d-block mt-1">
+                                Closes: <strong th:text="${#temporals.format(job.applicationCloseDate, 'dd MMM yyyy')}">Deadline</strong>
+                            </small>
+                        </div>
+                    </div>
+
+                    <!-- Rejection Alert if Rejected -->
+                    <div th:if="${job.status.name() == 'REJECTED'}" class="alert alert-danger border-0 shadow-sm rounded-3 p-4 mb-4" role="alert">
+                        <div class="d-flex align-items-center gap-3 mb-2">
+                            <i class="bi bi-exclamation-octagon-fill text-danger fs-3"></i>
+                            <div>
+                                <h6 class="fw-bold mb-0 text-danger">Placement Officer Rejection Remarks</h6>
+                                <small class="text-muted" th:if="${job.decisionAt != null}" th:text="'Reviewed on ' + ${#temporals.format(job.decisionAt, 'dd MMM yyyy, HH:mm')}">Reviewed on Date</small>
+                            </div>
+                        </div>
+                        <p class="mb-0 text-dark ps-4 border-start border-danger border-3" th:text="${job.rejectionReason}">Reason for rejection...</p>
+                        <div class="mt-3 pt-2">
+                            <small class="text-muted">You can edit the job posting details and re-submit for Placement Officer review below.</small>
+                        </div>
+                    </div>
+
+                    <!-- Pending Review Alert -->
+                    <div th:if="${job.status.name() == 'PENDING_APPROVAL'}" class="alert alert-warning border-0 shadow-sm rounded-3 p-3 mb-4 d-flex align-items-center gap-3">
+                        <i class="bi bi-hourglass-split text-warning fs-3"></i>
+                        <div>
+                            <h6 class="fw-bold mb-0">Under Review</h6>
+                            <small class="text-muted">This job posting has been submitted and is currently awaiting Placement Officer verification.</small>
+                        </div>
+                    </div>
+
+                    <!-- Approved Alert -->
+                    <div th:if="${job.status.name() == 'APPROVED'}" class="alert alert-success border-0 shadow-sm rounded-3 p-3 mb-4 d-flex align-items-center gap-3">
+                        <i class="bi bi-patch-check-fill text-success fs-3"></i>
+                        <div>
+                            <h6 class="fw-bold mb-0 text-success">Approved &amp; Published</h6>
+                            <small class="text-muted">This job posting is approved and visible to eligible students during the application window.</small>
+                        </div>
+                    </div>
+
+                    <!-- Job Description -->
+                    <h5 class="fw-bold text-dark mb-3">Job Description &amp; Responsibilities</h5>
+                    <div class="p-3 bg-light rounded-3 text-secondary mb-4" style="white-space: pre-wrap; line-height: 1.6;" th:text="${job.description}">
+                        Job description...
+                    </div>
+
+                    <!-- Action Controls -->
+                    <div class="d-flex flex-wrap gap-2 pt-3 border-top">
+                        <a th:href="@{/recruiter/jobs}" class="btn btn-outline-secondary">
+                            &larr; Back to My Jobs
+                        </a>
+                        <a th:if="${job.isEditable()}" th:href="@{/recruiter/jobs/{id}/edit(id=${job.id})}" class="btn btn-primary">
+                            <i class="bi bi-pencil me-1"></i> Edit Posting
+                        </a>
+                        <form th:if="${job.status.name() == 'DRAFT' || job.status.name() == 'REJECTED'}"
+                              th:action="@{/recruiter/jobs/{id}/submit(id=${job.id})}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-success" onclick="return confirm('Submit this job posting for Placement Officer approval?');">
+                                <i class="bi bi-send-fill me-1"></i> Submit for Approval
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Right Column: Eligibility Cutoffs & Posting Timeline -->
+            <div class="col-lg-4">
+                
+                <!-- Eligibility Criteria Card -->
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+                    <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-sliders text-primary"></i> Eligibility Cutoffs
+                    </h5>
+
+                    <ul class="list-group list-group-flush small">
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                            <span class="text-muted">Minimum CGPA</span>
+                            <span class="fw-bold text-primary" th:text="${job.eligibilityCriteria != null && job.eligibilityCriteria.minCgpa != null} ? (${job.eligibilityCriteria.minCgpa} + ' / 10.0') : 'No cutoff'">7.50</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                            <span class="text-muted">Max Active Backlogs</span>
+                            <span class="fw-bold text-dark" th:text="${job.eligibilityCriteria != null && job.eligibilityCriteria.maxBacklogs != null} ? ${job.eligibilityCriteria.maxBacklogs} : 'No restriction'">0</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-3">
+                            <span class="text-muted">Graduation Batch</span>
+                            <span class="fw-bold text-dark" th:text="${job.eligibilityCriteria != null && job.eligibilityCriteria.graduationYear != null} ? ${job.eligibilityCriteria.graduationYear} : 'All Batches'">2026</span>
+                        </li>
+                    </ul>
+
+                    <div class="mt-3">
+                        <small class="text-muted fw-semibold d-block mb-2">Eligible Engineering Branches:</small>
+                        <div th:if="${job.eligibilityCriteria != null && job.eligibilityCriteria.eligibleBranches != null && !job.eligibilityCriteria.eligibleBranches.isEmpty()}" class="d-flex flex-wrap gap-1">
+                            <span th:each="b : ${job.eligibilityCriteria.eligibleBranches}" class="badge bg-light text-secondary border small" th:text="${b}">Computer Science</span>
+                        </div>
+                        <span th:unless="${job.eligibilityCriteria != null && job.eligibilityCriteria.eligibleBranches != null && !job.eligibilityCriteria.eligibleBranches.isEmpty()}" class="badge bg-light text-secondary border small">
+                            Open to all branches
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Timeline / Details Card -->
+                <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                    <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                        <i class="bi bi-calendar-event text-secondary"></i> Schedule &amp; Dates
+                    </h5>
+                    <ul class="list-group list-group-flush small">
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                            <span class="text-muted">Application Opens</span>
+                            <span class="fw-semibold" th:text="${#temporals.format(job.applicationOpenDate, 'dd MMM yyyy')}">Date</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                            <span class="text-muted">Application Closes</span>
+                            <span class="fw-semibold text-danger" th:text="${#temporals.format(job.applicationCloseDate, 'dd MMM yyyy')}">Date</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center px-0 py-2">
+                            <span class="text-muted">Created On</span>
+                            <span class="fw-semibold text-muted" th:text="${#temporals.format(job.createdAt, 'dd MMM yyyy')}">Date</span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

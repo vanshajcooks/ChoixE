@@ -19,6 +19,9 @@
                 <span>CampusConnect</span>
             </a>
             <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/student/jobs}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-briefcase me-1"></i> Campus Drives
+                </a>
                 <a th:href="@{/student/profile}" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-person-circle me-1"></i> My Profile
                 </a>
@@ -116,9 +119,9 @@
                         <h5 class="fw-bold mb-0">Campus Drives</h5>
                     </div>
                     <p class="text-muted small">Browse approved jobs, view eligibility criteria, and evaluate your compatibility.</p>
-                    <button class="btn btn-outline-primary btn-sm mt-auto" disabled>
-                        Available in Module 5 (Jobs & Eligibility)
-                    </button>
+                    <a th:href="@{/student/jobs}" class="btn btn-outline-primary btn-sm mt-auto">
+                        <i class="bi bi-briefcase me-1"></i> Explore Drives &rarr;
+                    </a>
                 </div>
             </div>
             <div class="col-md-4">
