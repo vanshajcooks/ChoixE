@@ -1,4 +1,4 @@
-package com.campusconnect.campusconnect;
+package com.campusconnect;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

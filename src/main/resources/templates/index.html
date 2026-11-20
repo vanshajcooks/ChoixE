@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${appName} + ' — ' + ${appDescription}">CampusConnect — Campus Placement Management Portal</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        .hero-banner {
+            background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+            color: #ffffff;
+            padding: 3.5rem 1.5rem;
+            border-radius: 0.75rem;
+        }
+        .role-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .role-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+        .role-icon {
+            width: 48px;
+            height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span th:text="${appName}">CampusConnect</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" th:href="@{/}">
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-3">
+                    <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-2">
+                        <span class="badge bg-secondary d-flex align-items-center gap-1 py-2 px-3">
+                            <i class="bi bi-person-circle"></i>
+                            <span sec:authentication="name">User</span>
+                        </span>
+                        <a sec:authorize="hasRole('STUDENT')" th:href="@{/student/dashboard}" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                        </a>
+                        <a sec:authorize="hasRole('RECRUITER')" th:href="@{/recruiter/dashboard}" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                        </a>
+                        <a sec:authorize="hasRole('PLACEMENT_OFFICER')" th:href="@{/officer/dashboard}" class="btn btn-outline-warning btn-sm">
+                            <i class="bi bi-shield-shaded me-1"></i> Console
+                        </a>
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                <i class="bi bi-box-arrow-right me-1"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                    <div sec:authorize="isAnonymous()" class="d-flex align-items-center gap-2">
+                        <a th:href="@{/register}" class="btn btn-outline-light btn-sm px-3">
+                            <i class="bi bi-person-plus me-1"></i> Register
+                        </a>
+                        <a th:href="@{/login}" class="btn btn-primary btn-sm px-3">
+                            <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1">
+
+        <!-- Hero Section -->
+        <div class="hero-banner mb-4 shadow-sm text-center text-md-start">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <div class="d-inline-flex align-items-center gap-2 bg-white bg-opacity-25 px-3 py-1 rounded-pill mb-3">
+                        <i class="bi bi-check-circle-fill text-warning"></i>
+                        <span class="small fw-semibold">Phase 1: Project Initialization Complete</span>
+                    </div>
+                    <h1 class="display-5 fw-bold mb-2">Welcome to CampusConnect</h1>
+                    <p class="lead mb-3 text-light">Centralized Campus Placement Management Portal for students, recruiters, and placement officers.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-dark bg-opacity-50 text-light py-2 px-3"><i class="bi bi-cup-hot me-1"></i> Java 21</span>
+                        <span class="badge bg-dark bg-opacity-50 text-light py-2 px-3"><i class="bi bi-layers me-1"></i> Spring Boot 3.4.2</span>
+                        <span class="badge bg-dark bg-opacity-50 text-light py-2 px-3"><i class="bi bi-database me-1"></i> MySQL 8</span>
+                        <span class="badge bg-dark bg-opacity-50 text-light py-2 px-3"><i class="bi bi-shield-check me-1"></i> Spring Security</span>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center d-none d-md-block">
+                    <i class="bi bi-buildings text-white text-opacity-75" style="font-size: 7rem;"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Role Overview Grid -->
+        <div class="row g-4 mb-4">
+            <!-- Student Portal Card -->
+            <div class="col-md-4">
+                <div class="card h-100 role-card shadow-sm p-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="role-icon bg-primary bg-opacity-10 text-primary">
+                            <i class="bi bi-person-workspace"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-0">Student Portal</h5>
+                            <small class="text-muted">Undergraduates & Postgraduates</small>
+                        </div>
+                    </div>
+                    <ul class="list-unstyled text-muted small mb-0 d-flex flex-column gap-2">
+                        <li><i class="bi bi-check2 text-primary me-2"></i>Self-registration & profile management</li>
+                        <li><i class="bi bi-check2 text-primary me-2"></i>Academic details & resume uploads</li>
+                        <li><i class="bi bi-check2 text-primary me-2"></i>Per-job automated eligibility check</li>
+                        <li><i class="bi bi-check2 text-primary me-2"></i>Job applications & interview schedules</li>
+                        <li><i class="bi bi-check2 text-primary me-2"></i>College placement analytics visibility</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Recruiter Portal Card -->
+            <div class="col-md-4">
+                <div class="card h-100 role-card shadow-sm p-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="role-icon bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-briefcase"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-0">Recruiter Portal</h5>
+                            <small class="text-muted">Companies & HR Representatives</small>
+                        </div>
+                    </div>
+                    <ul class="list-unstyled text-muted small mb-0 d-flex flex-column gap-2">
+                        <li><i class="bi bi-check2 text-success me-2"></i>Company registration & profile</li>
+                        <li><i class="bi bi-check2 text-success me-2"></i>Job postings with custom criteria</li>
+                        <li><i class="bi bi-check2 text-success me-2"></i>Review applicants for own jobs</li>
+                        <li><i class="bi bi-check2 text-success me-2"></i>Schedule interviews & notify candidates</li>
+                        <li><i class="bi bi-check2 text-success me-2"></i>Update recruitment review results</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Placement Office Card -->
+            <div class="col-md-4">
+                <div class="card h-100 role-card shadow-sm p-4">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <div class="role-icon bg-warning bg-opacity-10 text-warning">
+                            <i class="bi bi-award"></i>
+                        </div>
+                        <div>
+                            <h5 class="fw-bold mb-0">Placement Officer</h5>
+                            <small class="text-muted">Administrative Oversight</small>
+                        </div>
+                    </div>
+                    <ul class="list-unstyled text-muted small mb-0 d-flex flex-column gap-2">
+                        <li><i class="bi bi-check2 text-warning me-2"></i>Verify or reject student profiles</li>
+                        <li><i class="bi bi-check2 text-warning me-2"></i>Approve or reject company registrations</li>
+                        <li><i class="bi bi-check2 text-warning me-2"></i>Review & publish job opportunities</li>
+                        <li><i class="bi bi-check2 text-warning me-2"></i>Publish college announcements</li>
+                        <li><i class="bi bi-check2 text-warning me-2"></i>Drive placement analytics & metrics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Next Implementation Steps Card -->
+        <div class="card border-0 shadow-sm bg-white p-4">
+            <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                <i class="bi bi-kanban text-primary"></i>
+                <span>Upcoming Modules (per Approved TRD)</span>
+            </h5>
+            <div class="row g-3">
+                <div class="col-md-6 col-lg-3">
+                    <div class="p-3 bg-light rounded-3 h-100">
+                        <span class="badge bg-primary mb-2">Next Module</span>
+                        <h6 class="fw-bold mb-1">1. Authentication</h6>
+                        <small class="text-muted">Student & Recruiter registration, custom login, role authorization (FR-AUTH-01 to 07).</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="p-3 bg-light rounded-3 h-100">
+                        <span class="badge bg-secondary mb-2">Planned</span>
+                        <h6 class="fw-bold mb-1">2. Student Onboarding</h6>
+                        <small class="text-muted">Academic profiles, resume management, verification workflows (FR-STU, FR-RES).</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="p-3 bg-light rounded-3 h-100">
+                        <span class="badge bg-secondary mb-2">Planned</span>
+                        <h6 class="fw-bold mb-1">3. Company & Jobs</h6>
+                        <small class="text-muted">Company approval, job postings, eligibility criteria engine (FR-COMP, FR-JOB, FR-ELIG).</small>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="p-3 bg-light rounded-3 h-100">
+                        <span class="badge bg-secondary mb-2">Planned</span>
+                        <h6 class="fw-bold mb-1">4. Applications & Drives</h6>
+                        <small class="text-muted">Application workflows, status history, interview scheduling, analytics (FR-APP, FR-REC, FR-AN).</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            <div>CampusConnect &copy; 2026 &bull; Enterprise Campus Placement Management Portal</div>
+            <div class="text-secondary mt-1">Built strictly in accordance with Technical Requirements Document v1.0</div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

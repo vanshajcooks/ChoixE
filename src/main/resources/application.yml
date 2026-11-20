@@ -1,3 +1,5 @@
+server:
+  port: 8080
 
 spring:
   application:
@@ -6,13 +8,15 @@ spring:
   datasource:
     url: ${DB_URL:jdbc:mysql://localhost:3306/campusconnect}
     username: ${DB_USERNAME:campusconnect}
-    password: ${DB_PASSWORD}
+    password: ${DB_PASSWORD:}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: update
     show-sql: true
     open-in-view: false
+    database-platform: org.hibernate.dialect.MySQLDialect
     properties:
       hibernate:
         format_sql: true
@@ -24,6 +28,3 @@ spring:
     multipart:
       max-file-size: 5MB
       max-request-size: 5MB
-
-server:
-  port: 8080

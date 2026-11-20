@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <span class="badge bg-primary d-flex align-items-center gap-1 py-2 px-3">
+                    <i class="bi bi-person-fill"></i>
+                    <span sec:authentication="name">student@college.edu</span>
+                </span>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1">
+        
+        <!-- Welcome Banner -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+                <div>
+                    <h3 class="fw-bold mb-1" th:text="'Hello, ' + (${profile != null} ? ${profile.user.fullName} : ${username})">Hello, Student</h3>
+                    <p class="text-muted mb-0" th:text="${profile != null} ? (${profile.department} + ' &bull; Roll: ' + ${profile.rollNumber}) : 'Student Account'">Department &bull; Roll Number</p>
+                </div>
+                <div>
+                    <!-- Verification Badge -->
+                    <div th:if="${profile != null}">
+                        <span th:if="${profile.verificationStatus.name() == 'PENDING'}" class="badge bg-warning text-dark fs-6 py-2 px-3 rounded-pill">
+                            <i class="bi bi-clock-history me-1"></i> Verification Pending
+                        </span>
+                        <span th:if="${profile.verificationStatus.name() == 'VERIFIED'}" class="badge bg-success fs-6 py-2 px-3 rounded-pill">
+                            <i class="bi bi-patch-check-fill me-1"></i> Verified Profile
+                        </span>
+                        <span th:if="${profile.verificationStatus.name() == 'REJECTED'}" class="badge bg-danger fs-6 py-2 px-3 rounded-pill">
+                            <i class="bi bi-x-circle-fill me-1"></i> Verification Rejected
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Verification Notice Alert -->
+            <div th:if="${profile != null and profile.verificationStatus.name() == 'PENDING'}" class="alert alert-warning d-flex align-items-center gap-2 mt-4 mb-0 small" role="alert">
+                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+                <div>
+                    <strong>Verification in Progress:</strong> Your profile is currently awaiting review by the Placement Officer. Job applications will be enabled once your credentials are verified.
+                </div>
+            </div>
+        </div>
+
+        <!-- Academic Profile Summary -->
+        <div th:if="${profile != null}" class="row g-4 mb-4">
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
+                    <small class="text-muted text-uppercase fw-semibold">Current CGPA</small>
+                    <h3 class="fw-bold text-primary mt-2 mb-0" th:text="${profile.cgpa}">8.50</h3>
+                    <small class="text-secondary">Scale: 10.0</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
+                    <small class="text-muted text-uppercase fw-semibold">Graduation Year</small>
+                    <h3 class="fw-bold text-dark mt-2 mb-0" th:text="${profile.graduationYear}">2026</h3>
+                    <small class="text-secondary">Passing Batch</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
+                    <small class="text-muted text-uppercase fw-semibold">Active Backlogs</small>
+                    <h3 class="fw-bold text-danger mt-2 mb-0" th:text="${profile.activeBacklogs}">0</h3>
+                    <small class="text-secondary">Current Standing</small>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
+                    <small class="text-muted text-uppercase fw-semibold">Roll Number</small>
+                    <h4 class="fw-bold text-secondary mt-2 mb-0" th:text="${profile.rollNumber}">2022CS101</h4>
+                    <small class="text-secondary">Registration ID</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Access Placeholders -->
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <i class="bi bi-briefcase-fill text-primary fs-3"></i>
+                        <h5 class="fw-bold mb-0">Campus Drives</h5>
+                    </div>
+                    <p class="text-muted small">Browse approved jobs, view eligibility criteria, and evaluate your compatibility.</p>
+                    <button class="btn btn-outline-primary btn-sm mt-auto" disabled>
+                        Available in Module 5 (Jobs & Eligibility)
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <i class="bi bi-file-earmark-person-fill text-success fs-3"></i>
+                        <h5 class="fw-bold mb-0">Resume Management</h5>
+                    </div>
+                    <p class="text-muted small">Upload or replace your placement resume (PDF/DOCX, max 5MB).</p>
+                    <button class="btn btn-outline-success btn-sm mt-auto" disabled>
+                        Available in Module 2 (Resumes)
+                    </button>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
+                    <div class="d-flex align-items-center gap-3 mb-3">
+                        <i class="bi bi-calendar-event-fill text-info fs-3"></i>
+                        <h5 class="fw-bold mb-0">Applications & Interviews</h5>
+                    </div>
+                    <p class="text-muted small">Track your job applications, status transitions, and scheduled interview rounds.</p>
+                    <button class="btn btn-outline-info btn-sm mt-auto" disabled>
+                        Available in Module 6 (Interviews)
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
