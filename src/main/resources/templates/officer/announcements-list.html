@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Announcements — Placement Officer</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-2">
+                <a th:href="@{/officer/dashboard}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <a th:href="@{/officer/students}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-people me-1"></i> Students
+                </a>
+                <a th:href="@{/officer/companies}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-building me-1"></i> Companies
+                </a>
+                <a th:href="@{/officer/jobs}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-briefcase me-1"></i> Jobs
+                </a>
+                <a th:href="@{/officer/applications}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-file-earmark-text me-1"></i> Applications
+                </a>
+                <a th:href="@{/officer/interviews}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-calendar-check me-1"></i> Interviews
+                </a>
+                <a th:href="@{/officer/announcements}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-megaphone-fill me-1"></i> Notices
+                </a>
+                <a th:href="@{/notifications}" class="btn btn-outline-light btn-sm position-relative">
+                    <i class="bi bi-bell"></i>
+                    <span th:if="${unreadNotificationCount != null && unreadNotificationCount > 0}"
+                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          th:text="${unreadNotificationCount}">1</span>
+                </a>
+                <span class="badge bg-primary d-none d-md-inline-flex align-items-center gap-1 py-2 px-3">
+                    <i class="bi bi-shield-lock-fill"></i>
+                    <span th:text="${username}">officer@campusconnect.edu</span>
+                </span>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1">
+
+        <!-- Flash Message -->
+        <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <span th:text="${successMessage}">Operation completed successfully.</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Header -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+            <div>
+                <h3 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+                    <i class="bi bi-megaphone-fill text-primary"></i> Campus Announcements Console
+                </h3>
+                <p class="text-muted small mb-0 mt-1">Publish campus placement guidelines, schedule announcements, and broadcast alerts.</p>
+            </div>
+            <a th:href="@{/officer/announcements/new}" class="btn btn-primary btn-sm shadow-sm">
+                <i class="bi bi-plus-circle me-1"></i> Post New Announcement
+            </a>
+        </div>
+
+        <!-- Filters Card -->
+        <div class="card border-0 shadow-sm rounded-3 mb-4">
+            <div class="card-body p-3">
+                <form th:action="@{/officer/announcements}" method="get" class="row g-2 align-items-center">
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted mb-1">Target Audience</label>
+                        <select name="audience" class="form-select form-select-sm">
+                            <option value="ALL_TYPES" th:selected="${currentAudience == 'ALL_TYPES'}">All Audiences</option>
+                            <option th:each="aud : ${audiences}"
+                                    th:value="${aud.name()}"
+                                    th:text="${aud.displayName}"
+                                    th:selected="${currentAudience == aud.name()}">
+                                Students Only
+                            </option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label small text-muted mb-1">Status</label>
+                        <select name="active" class="form-select form-select-sm">
+                            <option value="" th:selected="${currentActive == null}">All Statuses</option>
+                            <option value="true" th:selected="${currentActive == true}">Active Only</option>
+                            <option value="false" th:selected="${currentActive == false}">Inactive / Deactivated Only</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 d-flex align-items-end gap-2 pt-3 pt-md-0">
+                        <button type="submit" class="btn btn-secondary btn-sm flex-grow-1">
+                            <i class="bi bi-funnel me-1"></i> Filter
+                        </button>
+                        <a th:href="@{/officer/announcements}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-arrow-counterclockwise"></i> Reset
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Announcements Table -->
+        <div class="card border-0 shadow-sm rounded-3 overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr class="text-secondary small">
+                            <th>Title & Priority</th>
+                            <th>Audience</th>
+                            <th>Pinned</th>
+                            <th>Status</th>
+                            <th>Published</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="announcement : ${announcements.content}">
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <span class="badge"
+                                          th:classappend="'bg-' + ${announcement.priority.badgeColor}"
+                                          th:text="${announcement.priority.displayName}">
+                                        Normal
+                                    </span>
+                                    <a th:href="@{/announcements/{id}(id=${announcement.id})}"
+                                       class="fw-semibold text-dark text-decoration-none hover-primary"
+                                       th:text="${announcement.title}">
+                                        Placement Drive Guidelines
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                <span class="badge bg-secondary-subtle text-secondary"
+                                      th:text="${announcement.targetAudience.displayName}">
+                                    All Users
+                                </span>
+                            </td>
+                            <td>
+                                <span th:if="${announcement.pinned}" class="badge bg-primary text-white">
+                                    <i class="bi bi-pin-angle-fill me-1"></i> Pinned
+                                </span>
+                                <span th:unless="${announcement.pinned}" class="text-muted small">No</span>
+                            </td>
+                            <td>
+                                <span th:if="${announcement.active}" class="badge bg-success-subtle text-success border border-success-subtle">
+                                    Active
+                                </span>
+                                <span th:unless="${announcement.active}" class="badge bg-secondary-subtle text-secondary">
+                                    Inactive
+                                </span>
+                            </td>
+                            <td class="small text-muted" th:text="${#temporals.format(announcement.createdAt, 'dd MMM yyyy, hh:mm a')}">
+                                20 Nov 2026, 10:00 AM
+                            </td>
+                            <td class="text-end">
+                                <div class="d-inline-flex gap-1">
+                                    <a th:href="@{/announcements/{id}(id=${announcement.id})}" class="btn btn-outline-info btn-sm py-0 px-2" title="Preview">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                    <a th:href="@{/officer/announcements/{id}/edit(id=${announcement.id})}" class="btn btn-outline-primary btn-sm py-0 px-2" title="Edit">
+                                        <i class="bi bi-pencil-square"></i>
+                                    </a>
+                                    <form th:action="@{/officer/announcements/{id}/toggle(id=${announcement.id})}" method="post" class="m-0 d-inline">
+                                        <button type="submit" class="btn btn-outline-warning btn-sm py-0 px-2"
+                                                th:title="${announcement.active} ? 'Deactivate' : 'Activate'">
+                                            <i th:class="${announcement.active} ? 'bi bi-pause-circle' : 'bi bi-play-circle'"></i>
+                                        </button>
+                                    </form>
+                                    <form th:action="@{/officer/announcements/{id}/delete(id=${announcement.id})}" method="post" class="m-0 d-inline"
+                                          onsubmit="return confirm('Are you sure you want to permanently delete this announcement?');">
+                                        <button type="submit" class="btn btn-outline-danger btn-sm py-0 px-2" title="Delete">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr th:if="${announcements == null || announcements.totalElements == 0}">
+                            <td colspan="6" class="text-center py-5 text-muted">
+                                <i class="bi bi-megaphone fs-3 d-block mb-2 text-secondary"></i>
+                                No announcements found matching your filter criteria.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div th:if="${announcements != null && announcements.totalPages > 1}" class="d-flex justify-content-center mt-4">
+            <nav aria-label="Announcements pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item" th:classappend="${announcements.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/officer/announcements(page=${announcements.number - 1}, active=${currentActive}, audience=${currentAudience})}">Previous</a>
+                    </li>
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(0, announcements.totalPages - 1)}"
+                        th:classappend="${i == announcements.number} ? 'active'">
+                        <a class="page-link" th:href="@{/officer/announcements(page=${i}, active=${currentActive}, audience=${currentAudience})}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${announcements.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/officer/announcements(page=${announcements.number + 1}, active=${currentActive}, audience=${currentAudience})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto text-center text-muted small">
+        <div class="container">
+            &copy; 2026 CampusConnect &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

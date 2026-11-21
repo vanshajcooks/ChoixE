@@ -28,6 +28,9 @@
                 <a th:href="@{/student/interviews}" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-calendar-check me-1"></i> Interviews
                 </a>
+                <a th:href="@{/announcements}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-megaphone me-1"></i> Notices
+                </a>
                 <a th:href="@{/student/profile}" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-person-circle me-1"></i> My Profile
                 </a>
@@ -86,6 +89,34 @@
                 <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
                 <div>
                     <strong>Verification in Progress:</strong> Your profile is currently awaiting review by the Placement Officer. Job applications will be enabled once your credentials are verified.
+                </div>
+            </div>
+        </div>
+
+        <!-- Pinned Campus Announcements -->
+        <div th:if="${pinnedAnnouncements != null && !pinnedAnnouncements.isEmpty()}" class="mb-4">
+            <div class="card border-0 shadow-sm rounded-4 overflow-hidden border-start border-4 border-primary">
+                <div class="card-header bg-white border-0 pt-3 pb-0 px-4 d-flex justify-content-between align-items-center">
+                    <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+                        <i class="bi bi-pin-angle-fill text-primary"></i> Pinned Campus Announcements
+                    </h6>
+                    <a th:href="@{/announcements}" class="small text-decoration-none">View All <i class="bi bi-chevron-right"></i></a>
+                </div>
+                <div class="card-body px-4 py-3">
+                    <div class="d-flex flex-column gap-2">
+                        <div th:each="notice : ${pinnedAnnouncements}" class="p-3 bg-light rounded-3 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                            <div>
+                                <div class="d-flex align-items-center gap-2 mb-1">
+                                    <span class="badge" th:classappend="'bg-' + ${notice.priority.badgeColor}" th:text="${notice.priority.displayName}">Urgent</span>
+                                    <a th:href="@{/announcements/{id}(id=${notice.id})}" class="fw-bold text-dark text-decoration-none hover-primary" th:text="${notice.title}">Title</a>
+                                </div>
+                                <small class="text-muted" th:text="${#temporals.format(notice.createdAt, 'dd MMM yyyy, hh:mm a')}">Date</small>
+                            </div>
+                            <a th:href="@{/announcements/{id}(id=${notice.id})}" class="btn btn-outline-primary btn-sm flex-shrink-0">
+                                Read Notice
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

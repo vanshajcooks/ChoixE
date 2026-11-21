@@ -17,13 +17,16 @@ public class OfficerDashboardController {
     private final OfficerStudentService officerStudentService;
     private final OfficerCompanyService officerCompanyService;
     private final JobService jobService;
+    private final com.campusconnect.announcement.service.AnnouncementService announcementService;
 
     public OfficerDashboardController(OfficerStudentService officerStudentService,
                                     OfficerCompanyService officerCompanyService,
-                                    JobService jobService) {
+                                    JobService jobService,
+                                    com.campusconnect.announcement.service.AnnouncementService announcementService) {
         this.officerStudentService = officerStudentService;
         this.officerCompanyService = officerCompanyService;
         this.jobService = jobService;
+        this.announcementService = announcementService;
     }
 
     @GetMapping("/dashboard")
@@ -34,6 +37,7 @@ public class OfficerDashboardController {
         model.addAttribute("pendingStudentCount", officerStudentService.getPendingCount());
         model.addAttribute("pendingCompanyCount", officerCompanyService.getPendingCount());
         model.addAttribute("pendingJobCount", jobService.getPendingJobCount());
+        model.addAttribute("activeAnnouncementCount", announcementService.getActiveAnnouncementCount());
         return "officer/dashboard";
     }
 }

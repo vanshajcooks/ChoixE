@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class StudentDashboardController {
 
     private final StudentProfileRepository studentProfileRepository;
+    private final com.campusconnect.announcement.service.AnnouncementService announcementService;
 
-    public StudentDashboardController(StudentProfileRepository studentProfileRepository) {
+    public StudentDashboardController(StudentProfileRepository studentProfileRepository,
+                                    com.campusconnect.announcement.service.AnnouncementService announcementService) {
         this.studentProfileRepository = studentProfileRepository;
+        this.announcementService = announcementService;
     }
 
     @GetMapping("/dashboard")
@@ -26,6 +29,7 @@ public class StudentDashboardController {
                     .ifPresent(profile -> model.addAttribute("profile", profile));
             model.addAttribute("username", userDetails.getUsername());
         }
+        model.addAttribute("pinnedAnnouncements", announcementService.getPinnedAnnouncementsForStudent());
         return "student/dashboard";
     }
 }

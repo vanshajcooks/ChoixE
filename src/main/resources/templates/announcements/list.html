@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Announcements — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-2">
+                <a sec:authorize="hasRole('STUDENT')" th:href="@{/student/dashboard}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <a sec:authorize="hasRole('STUDENT')" th:href="@{/student/interviews}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-calendar-check me-1"></i> Interviews
+                </a>
+                <a sec:authorize="hasRole('RECRUITER')" th:href="@{/recruiter/dashboard}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <a sec:authorize="hasRole('RECRUITER')" th:href="@{/recruiter/interviews}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-calendar-check me-1"></i> Interviews
+                </a>
+                <a sec:authorize="hasRole('PLACEMENT_OFFICER')" th:href="@{/officer/dashboard}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <a sec:authorize="hasRole('PLACEMENT_OFFICER')" th:href="@{/officer/announcements}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-megaphone-fill me-1"></i> Manage Notices
+                </a>
+
+                <!-- Notification Bell -->
+                <a th:href="@{/notifications}" class="btn btn-outline-light btn-sm position-relative me-1" title="Notifications">
+                    <i class="bi bi-bell-fill"></i>
+                    <span th:if="${unreadNotificationCount != null && unreadNotificationCount > 0}"
+                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          style="font-size: 0.65rem;"
+                          th:text="${unreadNotificationCount > 99 ? '99+' : unreadNotificationCount}">
+                        1
+                    </span>
+                </a>
+
+                <span class="badge bg-primary d-none d-md-inline-flex align-items-center gap-1 py-2 px-3">
+                    <i class="bi bi-person-fill"></i>
+                    <span th:text="${username}">user@campusconnect.edu</span>
+                </span>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1" style="max-width: 950px;">
+
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h3 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+                    <i class="bi bi-megaphone-fill text-primary"></i> Campus Announcements
+                </h3>
+                <p class="text-muted small mb-0 mt-1">Official circulars, placement guidelines, company visit schedules, and recruitment notices.</p>
+            </div>
+            <div sec:authorize="hasRole('PLACEMENT_OFFICER')">
+                <a th:href="@{/officer/announcements/new}" class="btn btn-primary btn-sm shadow-sm">
+                    <i class="bi bi-plus-circle me-1"></i> New Notice
+                </a>
+            </div>
+        </div>
+
+        <!-- Announcements List -->
+        <div th:if="${announcements != null && announcements.totalElements > 0}" class="d-flex flex-column gap-3">
+            <div th:each="announcement : ${announcements.content}"
+                 class="card border-0 shadow-sm rounded-3 overflow-hidden position-relative"
+                 th:classappend="${announcement.pinned} ? 'border-start border-4 border-primary' : ''">
+                <div class="card-body p-4">
+                    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <!-- Pinned Badge -->
+                            <span th:if="${announcement.pinned}" class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle d-inline-flex align-items-center gap-1">
+                                <i class="bi bi-pin-angle-fill"></i> Pinned
+                            </span>
+                            <!-- Priority Badge -->
+                            <span class="badge"
+                                  th:classappend="'bg-' + ${announcement.priority.badgeColor}"
+                                  th:text="${announcement.priority.displayName}">
+                                Normal
+                            </span>
+                            <!-- Audience Badge -->
+                            <span class="badge bg-secondary-subtle text-secondary"
+                                  th:text="${announcement.targetAudience.displayName}">
+                                All Users
+                            </span>
+                        </div>
+                        <small class="text-muted d-flex align-items-center gap-1">
+                            <i class="bi bi-clock"></i>
+                            <span th:text="${#temporals.format(announcement.createdAt, 'dd MMM yyyy, hh:mm a')}">20 Nov 2026, 10:00 AM</span>
+                        </small>
+                    </div>
+
+                    <!-- Title -->
+                    <h5 class="card-title fw-bold text-dark mb-2">
+                        <a th:href="@{/announcements/{id}(id=${announcement.id})}" class="text-decoration-none text-dark hover-primary" th:text="${announcement.title}">
+                            Campus Placement Drive 2026 Registration Open
+                        </a>
+                    </h5>
+
+                    <!-- Content excerpt -->
+                    <p class="card-text text-secondary mb-3" style="white-space: pre-line;"
+                       th:text="${#strings.abbreviate(announcement.content, 250)}">
+                        Placement circular description details...
+                    </p>
+
+                    <!-- Card Footer Info -->
+                    <div class="d-flex justify-content-between align-items-center border-top pt-3">
+                        <small class="text-muted">
+                            <i class="bi bi-person-badge me-1"></i> Posted by:
+                            <span class="fw-semibold text-dark" th:text="${announcement.author.fullName}">Chief Placement Officer</span>
+                        </small>
+                        <a th:href="@{/announcements/{id}(id=${announcement.id})}" class="btn btn-outline-primary btn-sm">
+                            Read Full Notice <i class="bi bi-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty State -->
+        <div th:if="${announcements == null || announcements.totalElements == 0}" class="card border-0 shadow-sm rounded-3 py-5 text-center">
+            <div class="card-body">
+                <i class="bi bi-megaphone text-muted" style="font-size: 3rem;"></i>
+                <h5 class="fw-semibold text-dark mt-3">No Announcements Found</h5>
+                <p class="text-muted small mb-0">There are currently no active campus announcements for your profile.</p>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div th:if="${announcements != null && announcements.totalPages > 1}" class="d-flex justify-content-center mt-4">
+            <nav aria-label="Announcements pagination">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item" th:classappend="${announcements.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/announcements(page=${announcements.number - 1})}">Previous</a>
+                    </li>
+                    <li class="page-item"
+                        th:each="i : ${#numbers.sequence(0, announcements.totalPages - 1)}"
+                        th:classappend="${i == announcements.number} ? 'active'">
+                        <a class="page-link" th:href="@{/announcements(page=${i})}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${announcements.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/announcements(page=${announcements.number + 1})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto text-center text-muted small">
+        <div class="container">
+            &copy; 2026 CampusConnect &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

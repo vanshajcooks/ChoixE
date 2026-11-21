@@ -14,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RecruiterDashboardController {
 
     private final CompanyRepository companyRepository;
+    private final com.campusconnect.announcement.service.AnnouncementService announcementService;
 
-    public RecruiterDashboardController(CompanyRepository companyRepository) {
+    public RecruiterDashboardController(CompanyRepository companyRepository,
+                                      com.campusconnect.announcement.service.AnnouncementService announcementService) {
         this.companyRepository = companyRepository;
+        this.announcementService = announcementService;
     }
 
     @GetMapping("/dashboard")
@@ -26,6 +29,7 @@ public class RecruiterDashboardController {
                     .ifPresent(company -> model.addAttribute("company", company));
             model.addAttribute("username", userDetails.getUsername());
         }
+        model.addAttribute("pinnedAnnouncements", announcementService.getPinnedAnnouncementsForRecruiter());
         return "recruiter/dashboard";
     }
 }

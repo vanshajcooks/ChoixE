@@ -5,6 +5,7 @@ public enum NotificationType {
     INTERVIEW_UPDATED("Interview Updated", "bi-calendar-check text-warning"),
     INTERVIEW_CANCELLED("Interview Cancelled", "bi-calendar-x text-danger"),
     APPLICATION_STATUS_CHANGED("Application Status Updated", "bi-check2-circle text-info"),
+    ANNOUNCEMENT("Campus Announcement", "bi-megaphone text-primary"),
     GENERAL("Notification", "bi-bell text-secondary");
 
     private final String displayName;

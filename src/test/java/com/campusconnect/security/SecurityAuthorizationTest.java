@@ -336,4 +336,55 @@ class SecurityAuthorizationTest {
         mockMvc.perform(get("/officer/interviews"))
                 .andExpect(status().isOk());
     }
+
+    // ==================== Module 7: Announcements Security ====================
+
+    @Test
+    void unauthenticatedOfficerAnnouncements_RedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/officer/announcements"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "student@college.edu", roles = {"STUDENT"})
+    void studentCannotAccessOfficerAnnouncements() throws Exception {
+        mockMvc.perform(get("/officer/announcements"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "recruiter@corp.com", roles = {"RECRUITER"})
+    void recruiterCannotAccessOfficerAnnouncements() throws Exception {
+        mockMvc.perform(get("/officer/announcements"))
+                .andExpect(status().isForbidden());
+    }
+
+    @Test
+    @WithMockUser(username = "officer@campusconnect.edu", roles = {"PLACEMENT_OFFICER"})
+    void officerCanAccessOfficerAnnouncements() throws Exception {
+        mockMvc.perform(get("/officer/announcements"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void unauthenticatedPublicAnnouncements_RedirectsToLogin() throws Exception {
+        mockMvc.perform(get("/announcements"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrlPattern("**/login"));
+    }
+
+    @Test
+    @WithMockUser(username = "student@college.edu", roles = {"STUDENT"})
+    void studentCanAccessPublicAnnouncements() throws Exception {
+        mockMvc.perform(get("/announcements"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    @WithMockUser(username = "recruiter@corp.com", roles = {"RECRUITER"})
+    void recruiterCanAccessPublicAnnouncements() throws Exception {
+        mockMvc.perform(get("/announcements"))
+                .andExpect(status().isOk());
+    }
 }
