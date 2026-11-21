@@ -37,4 +37,8 @@ public interface StudentProfileRepository extends JpaRepository<StudentProfile, 
     Page<StudentProfile> searchStudents(@Param("status") VerificationStatus status,
                                         @Param("search") String search,
                                         Pageable pageable);
+
+    @Query("SELECT s.department, COUNT(s.id), SUM(CASE WHEN s.verificationStatus = com.campusconnect.student.entity.VerificationStatus.VERIFIED THEN 1L ELSE 0L END) " +
+           "FROM StudentProfile s GROUP BY s.department ORDER BY s.department ASC")
+    java.util.List<Object[]> findDepartmentStudentCounts();
 }

@@ -18,15 +18,18 @@ public class OfficerDashboardController {
     private final OfficerCompanyService officerCompanyService;
     private final JobService jobService;
     private final com.campusconnect.announcement.service.AnnouncementService announcementService;
+    private final com.campusconnect.analytics.service.PlacementAnalyticsService placementAnalyticsService;
 
     public OfficerDashboardController(OfficerStudentService officerStudentService,
                                     OfficerCompanyService officerCompanyService,
                                     JobService jobService,
-                                    com.campusconnect.announcement.service.AnnouncementService announcementService) {
+                                    com.campusconnect.announcement.service.AnnouncementService announcementService,
+                                    com.campusconnect.analytics.service.PlacementAnalyticsService placementAnalyticsService) {
         this.officerStudentService = officerStudentService;
         this.officerCompanyService = officerCompanyService;
         this.jobService = jobService;
         this.announcementService = announcementService;
+        this.placementAnalyticsService = placementAnalyticsService;
     }
 
     @GetMapping("/dashboard")
@@ -38,6 +41,7 @@ public class OfficerDashboardController {
         model.addAttribute("pendingCompanyCount", officerCompanyService.getPendingCount());
         model.addAttribute("pendingJobCount", jobService.getPendingJobCount());
         model.addAttribute("activeAnnouncementCount", announcementService.getActiveAnnouncementCount());
+        model.addAttribute("placedStudentCount", placementAnalyticsService.getPlacedStudentsCount());
         return "officer/dashboard";
     }
 }

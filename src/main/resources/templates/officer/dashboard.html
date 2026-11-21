@@ -37,6 +37,9 @@
                 <a th:href="@{/officer/announcements}" class="btn btn-outline-light btn-sm">
                     <i class="bi bi-megaphone me-1"></i> Notices
                 </a>
+                <a th:href="@{/officer/analytics}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-graph-up me-1"></i> Analytics
+                </a>
                 <a th:href="@{/notifications}" class="btn btn-outline-light btn-sm position-relative">
                     <i class="bi bi-bell"></i>
                     <span th:if="${unreadNotificationCount != null && unreadNotificationCount > 0}"
@@ -117,14 +120,16 @@
                 </a>
             </div>
             <div class="col-md-3">
-                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white">
-                    <div class="d-flex align-items-center justify-content-between mb-2">
-                        <small class="text-muted text-uppercase fw-semibold">Total Placed</small>
-                        <i class="bi bi-award text-success fs-4"></i>
+                <a th:href="@{/officer/analytics}" class="text-decoration-none">
+                    <div class="card border-0 shadow-sm rounded-3 p-3 bg-white h-100 hover-shadow transition">
+                        <div class="d-flex align-items-center justify-content-between mb-2">
+                            <small class="text-muted text-uppercase fw-semibold">Total Placed</small>
+                            <i class="bi bi-award text-success fs-4"></i>
+                        </div>
+                        <h3 class="fw-bold text-success mb-0" th:text="${placedStudentCount}">0</h3>
+                        <small class="text-success fw-semibold">View Placement Analytics &rarr;</small>
                     </div>
-                    <h3 class="fw-bold text-success mb-0">--</h3>
-                    <small class="text-secondary">Students placed this cycle</small>
-                </div>
+                </a>
             </div>
         </div>
 

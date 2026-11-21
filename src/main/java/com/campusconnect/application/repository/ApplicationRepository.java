@@ -92,4 +92,22 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
     Page<Application> searchOfficerApplications(@Param("status") ApplicationStatus status,
                                                 @Param("search") String search,
                                                 Pageable pageable);
+
+    long countByStatus(ApplicationStatus status);
+
+    @Query("SELECT COUNT(DISTINCT a.student.id) FROM Application a WHERE a.status = :status")
+    long countDistinctPlacedStudents(@Param("status") ApplicationStatus status);
+
+    @Query("SELECT s.department, COUNT(DISTINCT a.student.id) FROM Application a JOIN a.student s WHERE a.status = :status GROUP BY s.department")
+    java.util.List<Object[]> findPlacedStudentCountByDepartment(@Param("status") ApplicationStatus status);
+
+    @Query("SELECT new com.campusconnect.analytics.dto.CompanyPlacementStat(c.companyName, c.industry, COUNT(a.id), COUNT(DISTINCT a.student.id)) " +
+           "FROM Application a JOIN a.job j JOIN j.company c " +
+           "WHERE a.status = :status " +
+           "GROUP BY c.id, c.companyName, c.industry " +
+           "ORDER BY COUNT(a.id) DESC")
+    java.util.List<com.campusconnect.analytics.dto.CompanyPlacementStat> findCompanyPlacementStats(@Param("status") ApplicationStatus status);
+
+    @Query("SELECT a FROM Application a JOIN FETCH a.job j JOIN FETCH j.company c JOIN FETCH a.student s WHERE a.status = :status")
+    java.util.List<Application> findSelectedApplicationsWithJobDetails(@Param("status") ApplicationStatus status);
 }
