@@ -33,13 +33,16 @@ public class RecruiterApplicantController {
     private final ApplicationService applicationService;
     private final JobService jobService;
     private final FileStorageService fileStorageService;
+    private final com.campusconnect.interview.service.InterviewService interviewService;
 
     public RecruiterApplicantController(ApplicationService applicationService,
                                         JobService jobService,
-                                        FileStorageService fileStorageService) {
+                                        FileStorageService fileStorageService,
+                                        com.campusconnect.interview.service.InterviewService interviewService) {
         this.applicationService = applicationService;
         this.jobService = jobService;
         this.fileStorageService = fileStorageService;
+        this.interviewService = interviewService;
     }
 
     @GetMapping("/recruiter/applications")
@@ -106,6 +109,7 @@ public class RecruiterApplicantController {
             Application application = applicationService.getApplicationDetailForRecruiter(userDetails.getUsername(), id);
             model.addAttribute("app", application);
             model.addAttribute("application", application);
+            model.addAttribute("interviews", interviewService.getInterviewsForApplication(id));
             model.addAttribute("statusUpdateRequest", new ApplicationStatusUpdateRequest());
             model.addAttribute("username", userDetails.getUsername());
             return "recruiter/applicant-detail";

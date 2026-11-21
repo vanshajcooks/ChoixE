@@ -32,19 +32,22 @@ public class ApplicationService {
     private final StudentService studentService;
     private final EligibilityService eligibilityService;
     private final CompanyService companyService;
+    private final com.campusconnect.notification.service.NotificationService notificationService;
 
     public ApplicationService(ApplicationRepository applicationRepository,
                               ApplicationStatusHistoryRepository historyRepository,
                               JobService jobService,
                               StudentService studentService,
                               EligibilityService eligibilityService,
-                              CompanyService companyService) {
+                              CompanyService companyService,
+                              com.campusconnect.notification.service.NotificationService notificationService) {
         this.applicationRepository = applicationRepository;
         this.historyRepository = historyRepository;
         this.jobService = jobService;
         this.studentService = studentService;
         this.eligibilityService = eligibilityService;
         this.companyService = companyService;
+        this.notificationService = notificationService;
     }
 
     // ==================== Student Operations ====================
@@ -225,6 +228,17 @@ public class ApplicationService {
                 comments != null && !comments.isBlank() ? comments.trim() : null
         );
         historyRepository.save(history);
+
+        notificationService.createNotification(
+                application.getStudent().getUser(),
+                "Application Status Updated: " + application.getJob().getTitle(),
+                String.format("Your application for %s at %s has been updated to %s.",
+                        application.getJob().getTitle(),
+                        application.getJob().getCompany().getCompanyName(),
+                        newStatus.getDisplayName()),
+                com.campusconnect.notification.entity.NotificationType.APPLICATION_STATUS_CHANGED,
+                "/student/applications/" + application.getId()
+        );
     }
 
     @Transactional(readOnly = true)

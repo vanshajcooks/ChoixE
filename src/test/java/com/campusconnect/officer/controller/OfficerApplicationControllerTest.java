@@ -36,6 +36,9 @@ class OfficerApplicationControllerTest {
     @MockBean
     private ApplicationService applicationService;
 
+    @MockBean
+    private com.campusconnect.interview.service.InterviewService interviewService;
+
     private Application mockApplication;
 
     @BeforeEach
@@ -81,11 +84,14 @@ class OfficerApplicationControllerTest {
     void viewApplicationDetail_AsOfficer_ReturnsDetailView() throws Exception {
         when(applicationService.getApplicationDetailForOfficer(90L))
                 .thenReturn(mockApplication);
+        when(interviewService.getInterviewsForApplication(90L))
+                .thenReturn(List.of());
 
         mockMvc.perform(get("/officer/applications/90"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("officer/application-detail"))
-                .andExpect(model().attributeExists("application"));
+                .andExpect(model().attributeExists("application"))
+                .andExpect(model().attributeExists("interviews"));
     }
 
     @Test

@@ -40,6 +40,9 @@ class StudentApplicationControllerTest {
     @MockBean
     private ApplicationService applicationService;
 
+    @MockBean
+    private com.campusconnect.interview.service.InterviewService interviewService;
+
     private Application mockApplication;
 
     @BeforeEach

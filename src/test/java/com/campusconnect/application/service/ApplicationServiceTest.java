@@ -53,6 +53,9 @@ class ApplicationServiceTest {
     @Mock
     private CompanyService companyService;
 
+    @Mock
+    private com.campusconnect.notification.service.NotificationService notificationService;
+
     @InjectMocks
     private ApplicationService applicationService;
 

@@ -136,6 +136,33 @@
                 </div>
             </div>
 
+            <!-- Scheduled Interviews Section -->
+            <div th:if="${interviews != null && !interviews.isEmpty()}" class="mb-4">
+                <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar-event text-primary"></i> Scheduled Interview Rounds
+                </h5>
+                <div class="d-flex flex-column gap-2">
+                    <div th:each="inv : ${interviews}" class="p-3 bg-white rounded-3 border d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="d-flex align-items-center gap-2">
+                                <strong class="text-dark" th:text="${inv.roundName}">Round 1</strong>
+                                <span class="badge" th:classappend="${inv.status.badgeClass}" th:text="${inv.status.displayName}">Scheduled</span>
+                                <span class="badge" th:classappend="${inv.mode.badgeClass}" th:text="${inv.mode.displayName}">Virtual</span>
+                            </div>
+                            <div class="text-muted small mt-1">
+                                <i class="bi bi-clock me-1"></i> <span th:text="${#temporals.format(inv.scheduledAt, 'dd MMM yyyy, HH:mm')}">Date</span>
+                                &bull; <i class="bi bi-geo-alt me-1"></i> <span th:text="${inv.locationOrLink}">Link/Venue</span>
+                            </div>
+                        </div>
+                        <div>
+                            <a th:href="@{/officer/interviews/{id}(id=${inv.id})}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-eye me-1"></i> Audit Round
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Recruitment Stage Progression & Status History Timeline -->
             <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
                 <i class="bi bi-clock-history text-secondary"></i> Review &amp; Status Timeline

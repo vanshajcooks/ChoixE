@@ -94,6 +94,38 @@
                 </div>
             </div>
 
+            <!-- Scheduled Interviews Section -->
+            <div th:if="${interviews != null && !interviews.isEmpty()}" class="mb-4">
+                <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar-check text-primary"></i> Scheduled Interview Rounds
+                </h5>
+                <div class="d-flex flex-column gap-3">
+                    <div th:each="inv : ${interviews}" class="p-3 bg-white rounded-3 border border-start border-4 border-primary shadow-sm">
+                        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 mb-2">
+                            <div class="d-flex align-items-center gap-2">
+                                <h6 class="fw-bold mb-0 text-dark" th:text="${inv.roundName}">Round 1: Technical Screening</h6>
+                                <span class="badge" th:classappend="${inv.status.badgeClass}" th:text="${inv.status.displayName}">Scheduled</span>
+                                <span class="badge" th:classappend="${inv.mode.badgeClass}" th:text="${inv.mode.displayName}">Virtual</span>
+                            </div>
+                            <span class="fw-semibold text-dark small" th:text="${#temporals.format(inv.scheduledAt, 'dd MMM yyyy, HH:mm')}">Date &amp; Time</span>
+                        </div>
+                        <div class="small text-secondary mb-2">
+                            <i class="bi bi-geo-alt me-1 text-danger"></i>
+                            <strong>Venue / Link:</strong>
+                            <span th:if="${#strings.startsWith(inv.locationOrLink, 'http')}">
+                                <a th:href="${inv.locationOrLink}" target="_blank" class="fw-semibold text-decoration-none">
+                                    <i class="bi bi-box-arrow-up-right me-1"></i> Join Video Conference
+                                </a>
+                            </span>
+                            <span th:unless="${#strings.startsWith(inv.locationOrLink, 'http')}" th:text="${inv.locationOrLink}">Venue</span>
+                        </div>
+                        <div th:if="${inv.instructions != null && !inv.instructions.isBlank()}" class="small bg-light p-2 rounded-2 text-muted">
+                            <strong>Instructions:</strong> <span th:text="${inv.instructions}">Guidelines</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Recruitment Stage Progression & Status History Timeline -->
             <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
                 <i class="bi bi-clock-history text-primary"></i> Application Status History

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Interviews — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/officer/dashboard}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <a th:href="@{/officer/students}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-people me-1"></i> Students
+                </a>
+                <a th:href="@{/officer/companies}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-building me-1"></i> Companies
+                </a>
+                <a th:href="@{/officer/jobs}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-briefcase me-1"></i> Jobs
+                </a>
+                <a th:href="@{/officer/applications}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-file-earmark-text me-1"></i> Applications
+                </a>
+                <a th:href="@{/officer/interviews}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-calendar-check me-1"></i> Interviews
+                </a>
+                <a th:href="@{/notifications}" class="btn btn-outline-light btn-sm position-relative">
+                    <i class="bi bi-bell"></i>
+                    <span th:if="${unreadNotificationCount != null && unreadNotificationCount > 0}"
+                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          th:text="${unreadNotificationCount}">1</span>
+                </a>
+                <span class="badge bg-primary d-flex align-items-center gap-1 py-2 px-3">
+                    <i class="bi bi-shield-lock-fill"></i>
+                    <span th:text="${username}">officer@campusconnect.edu</span>
+                </span>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/officer/dashboard}" class="text-decoration-none">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Interview Schedules</li>
+            </ol>
+        </nav>
+
+        <!-- Header -->
+        <div class="mb-4">
+            <h3 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-calendar-check-fill text-primary"></i> Campus Interview Schedules
+            </h3>
+            <p class="text-muted small mb-0 mt-1">Placement Office campus-wide interview monitoring and coordination.</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="card border-0 shadow-sm rounded-4 p-3 bg-white mb-4">
+            <form th:action="@{/officer/interviews}" method="get" class="row g-2 align-items-center">
+                <div class="col-md-5">
+                    <select name="companyId" class="form-select form-select-sm">
+                        <option value="">All Companies</option>
+                        <option th:each="comp : ${companies}"
+                                th:value="${comp.id}"
+                                th:text="${comp.companyName}"
+                                th:selected="${comp.id == currentCompanyId}">Company Name</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <select name="status" class="form-select form-select-sm">
+                        <option value="ALL" th:selected="${currentStatus == 'ALL'}">All Statuses</option>
+                        <option th:each="st : ${statuses}"
+                                th:value="${st.name()}"
+                                th:text="${st.displayName}"
+                                th:selected="${st.name() == currentStatus}">Status</option>
+                    </select>
+                </div>
+                <div class="col-md-3 d-flex gap-2">
+                    <button type="submit" class="btn btn-primary btn-sm w-100">
+                        <i class="bi bi-filter me-1"></i> Filter
+                    </button>
+                    <a th:href="@{/officer/interviews}" class="btn btn-outline-secondary btn-sm">Reset</a>
+                </div>
+            </form>
+        </div>
+
+        <!-- Interviews Table Card -->
+        <div class="card border-0 shadow-sm rounded-4 bg-white overflow-hidden">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Candidate</th>
+                            <th>Company &amp; Role</th>
+                            <th>Round Name</th>
+                            <th>Scheduled Date &amp; Time</th>
+                            <th>Mode</th>
+                            <th>Status</th>
+                            <th class="text-end pe-4">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:if="${interviews == null || interviews.isEmpty()}">
+                            <td colspan="7" class="text-center py-5 text-muted">
+                                <i class="bi bi-calendar-x fs-1 d-block mb-2"></i>
+                                No interview schedules found matching the filter criteria.
+                            </td>
+                        </tr>
+                        <tr th:each="item : ${interviews.content}">
+                            <td class="ps-4">
+                                <div class="fw-bold text-dark" th:text="${item.application.student.user.fullName}">Candidate Name</div>
+                                <small class="text-muted">Roll: <span th:text="${item.application.student.rollNumber}">2022CS101</span></small>
+                            </td>
+                            <td>
+                                <div class="fw-semibold text-dark" th:text="${item.application.job.company.companyName}">Company</div>
+                                <small class="text-muted" th:text="${item.application.job.title}">Position</small>
+                            </td>
+                            <td>
+                                <strong th:text="${item.roundName}">Technical Round</strong>
+                            </td>
+                            <td>
+                                <span class="fw-semibold text-dark" th:text="${#temporals.format(item.scheduledAt, 'dd MMM yyyy, HH:mm')}">Date &amp; Time</span>
+                            </td>
+                            <td>
+                                <span class="badge" th:classappend="${item.mode.badgeClass}">
+                                    <i class="bi me-1" th:classappend="${item.mode.iconClass}"></i>
+                                    <span th:text="${item.mode.displayName}">Virtual</span>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge" th:classappend="${item.status.badgeClass}" th:text="${item.status.displayName}">Scheduled</span>
+                            </td>
+                            <td class="text-end pe-4">
+                                <a th:href="@{/officer/interviews/{id}(id=${item.id})}" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-eye me-1"></i> Audit
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Pagination -->
+        <div th:if="${interviews != null && interviews.totalPages > 1}" class="d-flex justify-content-center mt-4">
+            <nav aria-label="Page navigation">
+                <ul class="pagination pagination-sm">
+                    <li class="page-item" th:classappend="${interviews.first} ? 'disabled'">
+                        <a class="page-link" th:href="@{/officer/interviews(page=${interviews.number - 1}, companyId=${currentCompanyId}, status=${currentStatus})}">&laquo;</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, interviews.totalPages - 1)}"
+                        th:classappend="${i == interviews.number} ? 'active'">
+                        <a class="page-link" th:href="@{/officer/interviews(page=${i}, companyId=${currentCompanyId}, status=${currentStatus})}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${interviews.last} ? 'disabled'">
+                        <a class="page-link" th:href="@{/officer/interviews(page=${interviews.number + 1}, companyId=${currentCompanyId}, status=${currentStatus})}">&raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

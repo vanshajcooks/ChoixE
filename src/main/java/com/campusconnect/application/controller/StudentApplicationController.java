@@ -16,9 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class StudentApplicationController {
 
     private final ApplicationService applicationService;
+    private final com.campusconnect.interview.service.InterviewService interviewService;
 
-    public StudentApplicationController(ApplicationService applicationService) {
+    public StudentApplicationController(ApplicationService applicationService,
+                                      com.campusconnect.interview.service.InterviewService interviewService) {
         this.applicationService = applicationService;
+        this.interviewService = interviewService;
     }
 
     @PostMapping("/student/jobs/{jobId}/apply")
@@ -60,6 +63,7 @@ public class StudentApplicationController {
             Application application = applicationService.getStudentApplicationDetail(userDetails.getUsername(), id);
             model.addAttribute("app", application);
             model.addAttribute("application", application);
+            model.addAttribute("interviews", interviewService.getInterviewsForApplication(id));
             model.addAttribute("username", userDetails.getUsername());
             return "student/application-detail";
         } catch (IllegalArgumentException e) {

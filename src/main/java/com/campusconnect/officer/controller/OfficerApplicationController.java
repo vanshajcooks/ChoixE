@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OfficerApplicationController {
 
     private final ApplicationService applicationService;
+    private final com.campusconnect.interview.service.InterviewService interviewService;
 
-    public OfficerApplicationController(ApplicationService applicationService) {
+    public OfficerApplicationController(ApplicationService applicationService,
+                                      com.campusconnect.interview.service.InterviewService interviewService) {
         this.applicationService = applicationService;
+        this.interviewService = interviewService;
     }
 
     @GetMapping
@@ -60,6 +63,7 @@ public class OfficerApplicationController {
             Application application = applicationService.getApplicationDetailForOfficer(id);
             model.addAttribute("app", application);
             model.addAttribute("application", application);
+            model.addAttribute("interviews", interviewService.getInterviewsForApplication(id));
             model.addAttribute("username", userDetails.getUsername());
             return "officer/application-detail";
         } catch (IllegalArgumentException e) {

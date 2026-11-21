@@ -50,6 +50,9 @@ class RecruiterApplicantControllerTest {
     @MockBean
     private FileStorageService fileStorageService;
 
+    @MockBean
+    private com.campusconnect.interview.service.InterviewService interviewService;
+
     private Application mockApplication;
     private Job mockJob;
 

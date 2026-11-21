@@ -146,6 +146,44 @@
                 </div>
             </div>
 
+            <!-- Interview Rounds Section -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar-event text-primary"></i> Scheduled Interviews
+                </h5>
+                <a th:unless="${app.status.isTerminal()}"
+                   th:href="@{/recruiter/applications/{appId}/interviews/new(appId=${app.id})}"
+                   class="btn btn-primary btn-sm">
+                    <i class="bi bi-calendar-plus me-1"></i> Schedule Interview
+                </a>
+            </div>
+
+            <div class="card border-0 shadow-sm rounded-4 bg-light p-3 mb-4">
+                <div th:if="${interviews == null || interviews.isEmpty()}" class="text-center py-3 text-muted">
+                    <small>No interview rounds scheduled yet for this candidate.</small>
+                </div>
+                <div th:unless="${interviews == null || interviews.isEmpty()}" class="d-flex flex-column gap-2">
+                    <div th:each="inv : ${interviews}" class="p-3 bg-white rounded-3 border d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                        <div>
+                            <div class="d-flex align-items-center gap-2">
+                                <strong class="text-dark" th:text="${inv.roundName}">Round 1</strong>
+                                <span class="badge" th:classappend="${inv.status.badgeClass}" th:text="${inv.status.displayName}">Scheduled</span>
+                                <span class="badge" th:classappend="${inv.mode.badgeClass}" th:text="${inv.mode.displayName}">Virtual</span>
+                            </div>
+                            <div class="text-muted small mt-1">
+                                <i class="bi bi-clock me-1"></i> <span th:text="${#temporals.format(inv.scheduledAt, 'dd MMM yyyy, HH:mm')}">Time</span>
+                                &bull; <i class="bi bi-geo-alt me-1"></i> <span th:text="${inv.locationOrLink}">Link/Venue</span>
+                            </div>
+                        </div>
+                        <div>
+                            <a th:href="@{/recruiter/interviews/{id}/edit(id=${inv.id})}" class="btn btn-outline-primary btn-sm">
+                                <i class="bi bi-pencil-square me-1"></i> Manage
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Recruitment Stage Progression & Status History Timeline -->
             <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2">
                 <i class="bi bi-clock-history text-secondary"></i> Review &amp; Status Timeline

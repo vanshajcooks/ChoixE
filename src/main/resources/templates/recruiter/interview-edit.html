@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Interview — CampusConnect</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
+                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+                <span>CampusConnect</span>
+            </a>
+            <div class="d-flex align-items-center gap-3">
+                <a th:href="@{/recruiter/dashboard}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                </a>
+                <a th:href="@{/recruiter/applications}" class="btn btn-outline-light btn-sm">
+                    <i class="bi bi-people me-1"></i> Applicants
+                </a>
+                <a th:href="@{/recruiter/interviews}" class="btn btn-primary btn-sm">
+                    <i class="bi bi-calendar-check me-1"></i> Interviews
+                </a>
+                <a th:href="@{/notifications}" class="btn btn-outline-light btn-sm position-relative">
+                    <i class="bi bi-bell"></i>
+                    <span th:if="${unreadNotificationCount != null && unreadNotificationCount > 0}"
+                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                          th:text="${unreadNotificationCount}">1</span>
+                </a>
+                <span class="badge bg-primary d-flex align-items-center gap-1 py-2 px-3">
+                    <i class="bi bi-building"></i>
+                    <span th:text="${username}">recruiter@acme.com</span>
+                </span>
+                <form th:action="@{/logout}" method="post" class="m-0">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                        <i class="bi bi-box-arrow-right me-1"></i> Logout
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-4 flex-grow-1" style="max-width: 820px;">
+
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-3">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a th:href="@{/recruiter/dashboard}" class="text-decoration-none">Dashboard</a></li>
+                <li class="breadcrumb-item"><a th:href="@{/recruiter/interviews}" class="text-decoration-none">Interviews</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Manage Interview</li>
+            </ol>
+        </nav>
+
+        <!-- Flash Messages -->
+        <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-x-circle-fill me-2"></i>
+            <span th:text="${errorMessage}">Error message</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
+        <!-- Candidate & Job Summary Card -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white mb-4">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+                <div>
+                    <span class="badge bg-light text-primary border mb-1" th:text="${app.job.title}">Job Title</span>
+                    <h4 class="fw-bold text-dark mb-1" th:text="${app.student.user.fullName}">Candidate Full Name</h4>
+                    <small class="text-muted">
+                        Roll: <strong th:text="${app.student.rollNumber}">2022CS101</strong> &bull;
+                        Dept: <span th:text="${app.student.department}">Computer Science</span> &bull;
+                        Email: <span th:text="${app.student.user.email}">student@college.edu</span>
+                    </small>
+                </div>
+                <div class="text-sm-end">
+                    <small class="text-muted d-block">Current Status</small>
+                    <span class="badge" th:classappend="${interview.status.badgeClass}" th:text="${interview.status.displayName}">Status</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Management Form Card -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 p-md-5 bg-white">
+            <h4 class="fw-bold text-dark mb-4 d-flex align-items-center gap-2">
+                <i class="bi bi-pencil-square text-primary"></i> Update Schedule &amp; Feedback
+            </h4>
+
+            <form th:action="@{/recruiter/interviews/{id}(id=${interview.id})}"
+                  th:object="${interviewRequest}" method="post">
+
+                <div class="row g-3 mb-3">
+                    <!-- Round Name -->
+                    <div class="col-md-7">
+                        <label for="roundName" class="form-label fw-semibold">Round / Stage Name <span class="text-danger">*</span></label>
+                        <input type="text" th:field="*{roundName}" id="roundName" class="form-control"
+                               placeholder="e.g. Round 1: Technical Screening"
+                               th:classappend="${#fields.hasErrors('roundName')} ? 'is-invalid' : ''" required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('roundName')}" th:errors="*{roundName}">Round name error</div>
+                    </div>
+
+                    <!-- Interview Status -->
+                    <div class="col-md-5">
+                        <label for="status" class="form-label fw-semibold">Interview Status <span class="text-danger">*</span></label>
+                        <select th:field="*{status}" id="status" class="form-select"
+                                th:classappend="${#fields.hasErrors('status')} ? 'is-invalid' : ''" required>
+                            <option th:each="st : ${statuses}" th:value="${st.name()}" th:text="${st.displayName}">Scheduled</option>
+                        </select>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Status error</div>
+                    </div>
+                </div>
+
+                <div class="row g-3 mb-3">
+                    <!-- Scheduled Date & Time -->
+                    <div class="col-md-6">
+                        <label for="scheduledAt" class="form-label fw-semibold">Scheduled Date &amp; Time <span class="text-danger">*</span></label>
+                        <input type="datetime-local" th:field="*{scheduledAt}" id="scheduledAt" class="form-control"
+                               th:classappend="${#fields.hasErrors('scheduledAt')} ? 'is-invalid' : ''" required>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('scheduledAt')}" th:errors="*{scheduledAt}">Scheduled date/time error</div>
+                        <small class="text-muted">Changing the date/time automatically notifies the candidate.</small>
+                    </div>
+
+                    <!-- Mode -->
+                    <div class="col-md-6">
+                        <label for="mode" class="form-label fw-semibold">Interview Mode <span class="text-danger">*</span></label>
+                        <select th:field="*{mode}" id="mode" class="form-select"
+                                th:classappend="${#fields.hasErrors('mode')} ? 'is-invalid' : ''" required>
+                            <option th:each="m : ${modes}" th:value="${m.name()}" th:text="${m.displayName}">Virtual</option>
+                        </select>
+                        <div class="invalid-feedback" th:if="${#fields.hasErrors('mode')}" th:errors="*{mode}">Mode error</div>
+                    </div>
+                </div>
+
+                <!-- Meeting Link or Location -->
+                <div class="mb-3">
+                    <label for="locationOrLink" class="form-label fw-semibold">Meeting URL or Physical Location <span class="text-danger">*</span></label>
+                    <input type="text" th:field="*{locationOrLink}" id="locationOrLink" class="form-control"
+                           placeholder="e.g. https://meet.google.com/xyz or Admin Block, Room 204"
+                           th:classappend="${#fields.hasErrors('locationOrLink')} ? 'is-invalid' : ''" required>
+                    <div class="invalid-feedback" th:if="${#fields.hasErrors('locationOrLink')}" th:errors="*{locationOrLink}">Location or link error</div>
+                </div>
+
+                <!-- Instructions -->
+                <div class="mb-3">
+                    <label for="instructions" class="form-label fw-semibold">Preparation Instructions &amp; Agenda</label>
+                    <textarea th:field="*{instructions}" id="instructions" class="form-control" rows="3"
+                              placeholder="e.g. Please be ready with your code editor."></textarea>
+                </div>
+
+                <!-- Feedback Notes -->
+                <div class="mb-4">
+                    <label for="feedback" class="form-label fw-semibold">Recruiter Evaluation &amp; Feedback Notes</label>
+                    <textarea th:field="*{feedback}" id="feedback" class="form-control" rows="3"
+                              placeholder="Record performance notes, technical rating, or next round recommendations..."></textarea>
+                    <small class="text-muted">Internal notes for recruitment assessment.</small>
+                </div>
+
+                <!-- Submit Controls -->
+                <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                    <a th:href="@{/recruiter/interviews}" class="btn btn-outline-secondary">
+                        Back to Interviews
+                    </a>
+                    <button type="submit" class="btn btn-primary px-4 fw-semibold">
+                        <i class="bi bi-check2-circle me-1"></i> Save Changes
+                    </button>
+                </div>
+
+            </form>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-top py-3 mt-auto">
+        <div class="container text-center text-muted small">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
