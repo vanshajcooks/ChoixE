@@ -21,10 +21,7 @@
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" th:href="@{/}">
-                <span class="brand-icon-wrapper">
-                    <i class="bi bi-mortarboard-fill"></i>
-                </span>
-                <span th:text="${appName}">CampusConnect</span>
+                Campus<span class="brand-accent">Connect</span>
             </a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -44,17 +41,14 @@
                 </ul>
                 <div class="d-flex align-items-center gap-2">
                     <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-2">
-                        <span class="user-badge" sec:authorize="hasRole('STUDENT')" th:classappend="'student'">
-                            <i class="bi bi-person-fill"></i>
-                            <span sec:authentication="name">User</span>
-                        </span>
-                        <span class="user-badge" sec:authorize="hasRole('RECRUITER')" th:classappend="'recruiter'">
-                            <i class="bi bi-building"></i>
-                            <span sec:authentication="name">User</span>
-                        </span>
-                        <span class="user-badge" sec:authorize="hasRole('PLACEMENT_OFFICER')" th:classappend="'officer'">
-                            <i class="bi bi-shield-shaded"></i>
-                            <span sec:authentication="name">User</span>
+                        <a sec:authorize="hasRole('STUDENT')" th:href="@{/student/profile}" class="btn btn-profile">
+                            <i class="bi bi-person-fill"></i> Profile
+                        </a>
+                        <a sec:authorize="hasRole('RECRUITER')" th:href="@{/recruiter/profile}" class="btn btn-profile">
+                            <i class="bi bi-building"></i> Profile
+                        </a>
+                        <span sec:authorize="hasRole('PLACEMENT_OFFICER')" class="btn btn-profile">
+                            <i class="bi bi-shield-shaded"></i> Officer
                         </span>
                         
                         <a sec:authorize="hasRole('STUDENT')" th:href="@{/student/dashboard}" class="btn btn-primary btn-sm">
@@ -416,10 +410,7 @@
             <div class="row align-items-center">
                 <div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
                     <div class="d-flex align-items-center justify-content-center justify-content-md-start gap-2 mb-1">
-                        <span class="brand-icon-wrapper" style="width: 24px; height: 24px; font-size: 0.75rem;">
-                            <i class="bi bi-mortarboard-fill"></i>
-                        </span>
-                        <strong class="text-dark">CampusConnect</strong>
+                        <strong class="font-display fs-5 text-dark">Campus<span class="brand-accent">Connect</span></strong>
                         <span class="badge bg-success ms-2 small">System Operational</span>
                     </div>
                     <small class="text-muted">Enterprise Campus Placement &amp; Career Opportunities Management Portal | &copy; 2026</small>

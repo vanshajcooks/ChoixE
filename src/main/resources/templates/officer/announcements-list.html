@@ -18,11 +18,9 @@
 <body class="bg-light d-flex flex-column min-vh-100">
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
-                <span class="brand-icon-wrapper"><i class="bi bi-mortarboard-fill fs-5"></i></span>
-                <span>CampusConnect</span>
+            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">Campus<span class="brand-accent">Connect</span>
             </a>
             <div class="d-flex align-items-center gap-2">
                 <a th:href="@{/officer/dashboard}" class="btn btn-outline-light btn-sm">
@@ -52,9 +50,8 @@
                           class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                           th:text="${unreadNotificationCount}">1</span>
                 </a>
-                <span class="badge bg-primary d-none d-md-inline-flex align-items-center gap-1 py-2 px-3">
-                    <i class="bi bi-shield-lock-fill"></i>
-                    <span th:text="${username}">officer@campusconnect.edu</span>
+                <span class="btn btn-profile">
+                    <i class="bi bi-shield-shaded"></i> Officer
                 </span>
                 <form th:action="@{/logout}" method="post" class="m-0">
                     <button type="submit" class="btn btn-outline-danger btn-sm">
