@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Approvals Management — CampusConnect</title>
+    <title>Company Approvals Management | CampusConnect</title>
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -155,9 +155,9 @@
                             <td class="py-3">
                                 <a th:if="${comp.website != null && !comp.website.isBlank()}"
                                    th:href="${comp.website}" target="_blank" class="text-primary small text-truncate d-inline-block" style="max-width: 160px;" th:text="${comp.website}">https://acme.com</a>
-                                <span th:unless="${comp.website != null && !comp.website.isBlank()}" class="text-muted small">—</span>
+                                <span th:unless="${comp.website != null && !comp.website.isBlank()}" class="text-muted small">-</span>
                             </td>
-                            <td class="py-3 small text-secondary" th:text="${comp.location != null && !comp.location.isBlank()} ? ${comp.location} : '—'">Bangalore, India</td>
+                            <td class="py-3 small text-secondary" th:text="${comp.location != null && !comp.location.isBlank()} ? ${comp.location} : '-'">Bangalore, India</td>
                             <td class="py-3">
                                 <div class="fw-semibold text-dark small" th:text="${comp.recruiter.fullName}">Jane Recruiter</div>
                                 <div class="text-muted small" th:text="${comp.recruiter.email}">recruiter@acme.com</div>
