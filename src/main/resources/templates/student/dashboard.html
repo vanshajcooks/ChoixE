@@ -87,63 +87,96 @@
     <!-- Main Content -->
     <main class="container my-4 flex-grow-1">
         
-        <!-- Welcome Banner -->
-        <div class="card p-4 mb-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="stat-icon bg-primary bg-opacity-10 text-primary d-none d-sm-flex" style="width: 52px; height: 52px; font-size: 1.5rem;">
-                        <i class="bi bi-person-fill"></i>
-                    </div>
-                    <div>
-                        <div class="d-flex align-items-center gap-2 mb-1">
-                            <h3 class="fw-bold mb-0 text-dark" th:text="'Welcome, ' + (${profile != null} ? ${profile.user.fullName} : ${username})">Welcome, Student</h3>
-                            <span class="badge bg-primary bg-opacity-10 text-primary small">Student</span>
+        <!-- Welcome Banner & Verification Status Widget (Reference 2 Bento Style) -->
+        <div class="row g-4 mb-4">
+            <!-- Left Highlight Widget (Reference 2 Dark Sleep-tracker Widget) -->
+            <div class="col-lg-8">
+                <div class="card card-dark-widget p-4 p-md-5 h-100 position-relative overflow-hidden">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-4">
+                        <div>
+                            <span class="badge badge-editorial-lime mb-2">Student Workspace</span>
+                            <h2 class="display-6 fw-bold mb-1" th:text="'Welcome, ' + (${profile != null} ? ${profile.user.fullName} : ${username})">Welcome, Student</h2>
+                            <p class="text-secondary small mb-0" th:text="${profile != null} ? (${profile.department} + ' | Roll: ' + ${profile.rollNumber}) : 'Academic Candidate Profile'">Department | Roll Number</p>
                         </div>
-                        <p class="text-muted mb-0" th:text="${profile != null} ? (${profile.department} + ' &bull; Roll: ' + ${profile.rollNumber}) : 'Student Account'">Department &bull; Roll Number</p>
+                        <div th:if="${profile != null}">
+                            <span th:if="${profile.verificationStatus.name() == 'PENDING'}" class="badge bg-warning text-dark py-2 px-3 fw-bold">
+                                <i class="bi bi-clock-history me-1"></i> Under Review
+                            </span>
+                            <span th:if="${profile.verificationStatus.name() == 'VERIFIED'}" class="badge badge-editorial-green py-2 px-3 fw-bold">
+                                <i class="bi bi-patch-check-fill me-1"></i> Verified
+                            </span>
+                            <span th:if="${profile.verificationStatus.name() == 'REJECTED'}" class="badge bg-danger text-white py-2 px-3 fw-bold">
+                                <i class="bi bi-x-circle-fill me-1"></i> Rejected
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class="d-flex flex-column align-items-md-end gap-2">
-                    <!-- Verification Badge -->
-                    <div th:if="${profile != null}">
-                        <span th:if="${profile.verificationStatus.name() == 'PENDING'}" class="badge bg-warning text-warning-text py-2 px-3">
-                            <i class="bi bi-clock-history me-1"></i> Verification Pending
-                        </span>
-                        <span th:if="${profile.verificationStatus.name() == 'VERIFIED'}" class="badge bg-success text-success-text py-2 px-3">
-                            <i class="bi bi-patch-check-fill me-1"></i> Verified Profile
-                        </span>
-                        <span th:if="${profile.verificationStatus.name() == 'REJECTED'}" class="badge bg-danger text-danger-text py-2 px-3">
-                            <i class="bi bi-x-circle-fill me-1"></i> Verification Rejected
-                        </span>
+
+                    <!-- Progress / Key Academic Metrics Inside Dark Card -->
+                    <div class="row g-3 mt-auto pt-3 border-top border-secondary border-opacity-25" th:if="${profile != null}">
+                        <div class="col-sm-4">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">CUMULATIVE CGPA</small>
+                            <span class="fs-4 fw-bold text-white font-display" th:text="${profile.cgpa}">8.50</span>
+                            <small class="text-secondary d-block" style="font-size: 0.75rem;">Scale: 10.0</small>
+                        </div>
+                        <div class="col-sm-4">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">ACTIVE BACKLOGS</small>
+                            <span class="fs-4 fw-bold font-display" th:classappend="${profile.activeBacklogs == 0} ? 'text-success' : 'text-danger'" th:text="${profile.activeBacklogs}">0</span>
+                            <small class="text-secondary d-block" style="font-size: 0.75rem;">Allowed: 0</small>
+                        </div>
+                        <div class="col-sm-4">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">PASSING YEAR</small>
+                            <span class="fs-4 fw-bold text-white font-display" th:text="${profile.graduationYear}">2026</span>
+                            <small class="text-secondary d-block" style="font-size: 0.75rem;">Eligible Batch</small>
+                        </div>
                     </div>
-                    <div>
-                        <a th:href="@{/student/profile}" class="btn btn-outline-primary btn-sm">
+
+                    <div class="mt-4 pt-2 d-flex justify-content-between align-items-center">
+                        <a th:href="@{/student/profile}" class="btn btn-sm btn-light">
                             <i class="bi bi-person-lines-fill me-1"></i> View Full Profile
                         </a>
+                        <span class="chip-hashtag text-secondary" style="color: #9ca3af !important;">#CampusPlacement #Verified</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Verification Notice Alert -->
-            <div th:if="${profile != null and profile.verificationStatus.name() == 'PENDING'}" class="alert alert-warning d-flex align-items-center gap-2 mt-4 mb-0" role="alert">
-                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5 text-warning"></i>
-                <div>
-                    <strong>Verification in Progress:</strong> Your profile is currently awaiting review by the Placement Officer. Job applications will be enabled once your credentials are verified.
+            <!-- Right Bento Quick Summary Tile -->
+            <div class="col-lg-4">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(16, 185, 129, 0.12); color: var(--cc-emerald);">
+                            <i class="bi bi-briefcase-fill"></i>
+                        </div>
+                        <h4 class="fw-bold font-display text-dark mb-2">Campus Drives</h4>
+                        <p class="text-muted small mb-3">Live recruitment drives matching your department and academic criteria.</p>
+                    </div>
+
+                    <div class="p-3 rounded-4 mb-3" style="background-color: var(--cc-bg-warm); border: 1px solid var(--cc-ribbon-border);">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="small fw-bold text-dark">Automated Screening</span>
+                            <span class="badge badge-editorial-green">Active</span>
+                        </div>
+                        <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">Your CGPA is automatically evaluated against criteria.</small>
+                    </div>
+
+                    <a th:href="@{/student/jobs}" class="btn btn-emerald w-100">
+                        EXPLORE DRIVES <i class="bi bi-arrow-up-right ms-1"></i>
+                    </a>
                 </div>
             </div>
         </div>
 
         <!-- Pinned Campus Announcements -->
         <div th:if="${pinnedAnnouncements != null && !pinnedAnnouncements.isEmpty()}" class="mb-4">
-            <div class="card overflow-hidden" style="border-left: 4px solid var(--cc-primary) !important;">
-                <div class="card-header bg-white border-0 pt-3 pb-0 px-4 d-flex justify-content-between align-items-center">
+            <div class="card overflow-hidden" style="border-left: 5px solid var(--cc-emerald) !important; border-radius: var(--cc-radius-card);">
+                <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
                     <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
-                        <i class="bi bi-pin-angle-fill text-primary"></i> Pinned Campus Announcements
+                        <i class="bi bi-pin-angle-fill text-success"></i> Official Campus Announcements
                     </h6>
-                    <a th:href="@{/announcements}" class="small text-decoration-none">View All <i class="bi bi-chevron-right"></i></a>
+                    <a th:href="@{/announcements}" class="small fw-bold text-dark">View All ( ↗ )</a>
                 </div>
                 <div class="card-body px-4 py-3">
                     <div class="d-flex flex-column gap-2">
-                        <div th:each="notice : ${pinnedAnnouncements}" class="p-3 bg-light rounded-3 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 border">
+                        <div th:each="notice : ${pinnedAnnouncements}" class="p-3 rounded-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 border" style="background-color: var(--cc-bg-warm);">
                             <div>
                                 <div class="d-flex align-items-center gap-2 mb-1">
                                     <span class="badge" th:classappend="'bg-' + ${notice.priority.badgeColor}" th:text="${notice.priority.displayName}">Urgent</span>
@@ -151,8 +184,9 @@
                                 </div>
                                 <small class="text-muted" th:text="${#temporals.format(notice.createdAt, 'dd MMM yyyy, hh:mm a')}">Date</small>
                             </div>
-                            <a th:href="@{/announcements/{id}(id=${notice.id})}" class="btn btn-outline-primary btn-sm flex-shrink-0">
-                                Read Notice
+                            <a th:href="@{/announcements/{id}(id=${notice.id})}" class="btn-arrow-action flex-shrink-0">
+                                <span>READ</span>
+                                <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
                             </a>
                         </div>
                     </div>
@@ -160,83 +194,60 @@
             </div>
         </div>
 
-        <!-- Academic Profile Summary Cards -->
-        <div th:if="${profile != null}" class="row g-4 mb-4">
-            <div class="col-6 col-md-3">
-                <div class="stat-card">
-                    <div class="stat-label">Current CGPA</div>
-                    <div class="stat-value text-primary" th:text="${profile.cgpa}">8.50</div>
-                    <small class="text-secondary">Scale: 10.0</small>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="stat-card">
-                    <div class="stat-label">Graduation Year</div>
-                    <div class="stat-value text-dark" th:text="${profile.graduationYear}">2026</div>
-                    <small class="text-secondary">Passing Batch</small>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="stat-card">
-                    <div class="stat-label">Active Backlogs</div>
-                    <div class="stat-value" th:classappend="${profile.activeBacklogs == 0} ? 'text-success' : 'text-danger'" th:text="${profile.activeBacklogs}">0</div>
-                    <small class="text-secondary">Current Standing</small>
-                </div>
-            </div>
-            <div class="col-6 col-md-3">
-                <div class="stat-card">
-                    <div class="stat-label">Roll Number</div>
-                    <div class="stat-value text-dark fs-3" th:text="${profile.rollNumber}">2022CS101</div>
-                    <small class="text-secondary">Registration ID</small>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Access Feature Cards -->
+        <!-- Bento Feature Action Tiles (Reference 1 & 2 Bento Grid) -->
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(37, 99, 235, 0.1); color: var(--cc-primary-blue);">
                             <i class="bi bi-briefcase-fill"></i>
                         </div>
-                        <h5 class="fw-bold mb-0">Campus Drives</h5>
+                        <h5 class="fw-bold font-display text-dark mb-2">Campus Drives</h5>
+                        <p class="text-muted small mb-4">Browse approved jobs, view eligibility criteria, and evaluate your compatibility in real time.</p>
                     </div>
-                    <p class="text-muted small">Browse approved jobs, view eligibility criteria, and evaluate your compatibility in real time.</p>
-                    <a th:href="@{/student/jobs}" class="btn btn-outline-primary btn-sm mt-auto">
-                        Explore Drives <i class="bi bi-arrow-right"></i>
-                    </a>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#OpenDrives</span>
+                        <a th:href="@{/student/jobs}" class="btn-arrow-action">
+                            <span>VIEW</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
+                        </a>
+                    </div>
                 </div>
             </div>
+
             <div class="col-md-4">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-success bg-opacity-10 text-success">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(16, 185, 129, 0.12); color: var(--cc-emerald);">
                             <i class="bi bi-file-earmark-person-fill"></i>
                         </div>
-                        <h5 class="fw-bold mb-0">Resume &amp; Profile</h5>
+                        <h5 class="fw-bold font-display text-dark mb-2">Profile &amp; Resumes</h5>
+                        <p class="text-muted small mb-4">Keep academic transcripts current and upload tailored PDF resumes for employer review.</p>
                     </div>
-                    <p class="text-muted small">Update your academic records or upload an updated placement resume for recruiter reviews.</p>
-                    <a th:href="@{/student/profile}" class="btn btn-outline-success btn-sm mt-auto">
-                        Manage Profile <i class="bi bi-arrow-right"></i>
-                    </a>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#ResumeSync</span>
+                        <a th:href="@{/student/profile}" class="btn-arrow-action">
+                            <span>MANAGE</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
+                        </a>
+                    </div>
                 </div>
             </div>
+
             <div class="col-md-4">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-info bg-opacity-10 text-info">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(245, 158, 11, 0.12); color: var(--cc-warning-text);">
                             <i class="bi bi-calendar-check-fill"></i>
                         </div>
-                        <h5 class="fw-bold mb-0">Applications &amp; Rounds</h5>
+                        <h5 class="fw-bold font-display text-dark mb-2">Applications &amp; Rounds</h5>
+                        <p class="text-muted small mb-4">Track interview slots, technical assessment links, and shortlist outcomes across all applications.</p>
                     </div>
-                    <p class="text-muted small">Track your active applications, interview schedules, round statuses, and feedback.</p>
-                    <div class="mt-auto d-flex flex-column gap-2">
-                        <a th:href="@{/student/applications}" class="btn btn-outline-info btn-sm">
-                            Track Applications <i class="bi bi-arrow-right"></i>
-                        </a>
-                        <a th:href="@{/student/interviews}" class="btn btn-link btn-sm text-decoration-none text-muted p-0 text-start">
-                            View Interview Schedules
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#Interviews</span>
+                        <a th:href="@{/student/applications}" class="btn-arrow-action">
+                            <span>TRACK</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
                         </a>
                     </div>
                 </div>

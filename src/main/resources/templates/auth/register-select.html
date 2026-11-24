@@ -37,58 +37,71 @@
     <!-- Main Content -->
     <main class="container my-auto py-5">
         <div class="text-center mb-5">
-            <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 fw-semibold text-uppercase">Get Started</span>
-            <h2 class="fw-bold text-dark mt-2 mb-2">Create Your CampusConnect Account</h2>
-            <p class="text-muted">Select your portal role to begin your registration</p>
+            <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3 border" style="background-color: #ffffff; border-color: var(--cc-ribbon-border) !important;">
+                <span class="d-inline-block rounded-circle" style="width: 7px; height: 7px; background-color: var(--cc-emerald);"></span>
+                <span class="small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.05em; color: var(--cc-ink);">Get Started</span>
+            </div>
+            <h2 class="display-6 fw-bold font-display text-dark mb-2">Create Your CampusConnect Account</h2>
+            <p class="text-muted" style="max-width: 500px; margin: 0 auto;">Select your role to register your university placement portal credentials.</p>
         </div>
 
         <div class="row justify-content-center g-4">
             <!-- Student Option -->
-            <div class="col-md-5 col-lg-4">
-                <div class="card h-100 p-4 role-card text-center d-flex flex-column justify-content-between">
+            <div class="col-md-5 col-lg-5">
+                <div class="card h-100 p-4 p-md-5 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card); background: #ffffff;">
                     <div>
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.6rem;">
-                            <i class="bi bi-person-workspace"></i>
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div class="card-icon-bubble mb-0" style="background-color: rgba(16, 185, 129, 0.12); color: var(--cc-emerald);">
+                                <i class="bi bi-person-workspace"></i>
+                            </div>
+                            <span class="badge badge-editorial-green">Students</span>
                         </div>
-                        <h4 class="fw-bold text-dark mb-2">Student Account</h4>
-                        <p class="text-muted small mb-4">Register as a student to maintain your academic profile, verify credentials, and apply for verified campus placement opportunities.</p>
+                        <h4 class="fw-bold font-display text-dark mb-2">Student Account</h4>
+                        <p class="text-muted small mb-4">Register as an undergraduate or postgraduate to build your academic profile, evaluate eligibility, and apply to hiring drives.</p>
                         <ul class="list-unstyled text-start small text-secondary d-flex flex-column gap-2 mb-4">
-                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill text-primary"></i> Academic profile &amp; resume upload</li>
-                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill text-primary"></i> Job-specific automated eligibility check</li>
-                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill text-primary"></i> Application &amp; interview progress tracker</li>
+                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-success fw-bold"></i> Academic details &amp; PDF resume upload</li>
+                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-success fw-bold"></i> Automated real-time eligibility checks</li>
+                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-success fw-bold"></i> Direct interview schedule notifications</li>
                         </ul>
                     </div>
-                    <a th:href="@{/register/student}" class="btn btn-primary w-100 py-2">
-                        Register as Student <i class="bi bi-arrow-right ms-1"></i>
-                    </a>
+                    <div class="pt-3 border-top">
+                        <a th:href="@{/register/student}" class="btn btn-emerald w-100 py-3">
+                            REGISTER AS STUDENT <i class="bi bi-arrow-up-right ms-1"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
 
             <!-- Recruiter Option -->
-            <div class="col-md-5 col-lg-4">
-                <div class="card h-100 p-4 role-card text-center d-flex flex-column justify-content-between">
+            <div class="col-md-5 col-lg-5">
+                <div class="card h-100 p-4 p-md-5 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card); background: #ffffff;">
                     <div>
-                        <div class="stat-icon bg-success bg-opacity-10 text-success mx-auto mb-3" style="width: 56px; height: 56px; font-size: 1.6rem;">
-                            <i class="bi bi-briefcase-fill"></i>
+                        <div class="d-flex justify-content-between align-items-start mb-4">
+                            <div class="card-icon-bubble mb-0" style="background-color: rgba(17, 24, 39, 0.08); color: var(--cc-ink);">
+                                <i class="bi bi-building"></i>
+                            </div>
+                            <span class="badge bg-dark text-white">Employers</span>
                         </div>
-                        <h4 class="fw-bold text-dark mb-2">Company / Recruiter</h4>
+                        <h4 class="fw-bold font-display text-dark mb-2">Company / Recruiter</h4>
                         <p class="text-muted small mb-4">Register as an employer representative to post job opportunities, configure eligibility rules, and coordinate interview rounds.</p>
                         <ul class="list-unstyled text-start small text-secondary d-flex flex-column gap-2 mb-4">
-                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill text-success"></i> Company profile &amp; verified job postings</li>
-                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill text-success"></i> Review applicant profiles &amp; resumes</li>
-                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check-circle-fill text-success"></i> Schedule interviews &amp; update outcomes</li>
+                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-dark fw-bold"></i> Company verification &amp; active job postings</li>
+                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-dark fw-bold"></i> Verified student candidate pool</li>
+                            <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-dark fw-bold"></i> Schedule interview rounds &amp; update results</li>
                         </ul>
                     </div>
-                    <a th:href="@{/register/recruiter}" class="btn btn-success w-100 py-2">
-                        Register as Recruiter <i class="bi bi-arrow-right ms-1"></i>
-                    </a>
+                    <div class="pt-3 border-top">
+                        <a th:href="@{/register/recruiter}" class="btn btn-dark w-100 py-3">
+                            REGISTER AS RECRUITER <i class="bi bi-arrow-up-right ms-1"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="text-center mt-5">
             <span class="text-muted small">Already have an account?</span>
-            <a th:href="@{/login}" class="small fw-semibold text-primary ms-1">Sign in here</a>
+            <a th:href="@{/login}" class="small fw-bold text-dark ms-1">Sign in here ( ↗ )</a>
         </div>
     </main>
 

@@ -97,137 +97,158 @@
     <!-- Main Content -->
     <main class="container my-4 flex-grow-1">
         
-        <!-- Welcome Banner -->
-        <div class="card p-4 mb-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="stat-icon bg-warning bg-opacity-10 text-warning d-none d-sm-flex" style="width: 52px; height: 52px; font-size: 1.5rem;">
-                        <i class="bi bi-shield-lock-fill"></i>
-                    </div>
-                    <div>
-                        <div class="d-flex align-items-center gap-2 mb-1">
-                            <h3 class="fw-bold mb-0 text-dark">Chief Placement Officer Dashboard</h3>
-                            <span class="badge bg-warning text-warning-text small">Admin Console</span>
-                        </div>
-                        <p class="text-muted mb-0">Oversee campus recruitment drives, student verifications, employer approvals, and placement analytics.</p>
-                    </div>
-                </div>
-                <div>
-                    <span class="badge bg-success bg-opacity-10 text-success py-2 px-3">
-                        <i class="bi bi-check-circle-fill me-1"></i> System Operational
-                    </span>
-                </div>
-            </div>
-        </div>
-
-        <!-- Metric Overview Cards -->
+        <!-- Welcome Banner & System Status Widget (Reference 2 Bento Style) -->
         <div class="row g-4 mb-4">
-            <div class="col-6 col-md-3">
-                <a th:href="@{/officer/students(status='PENDING')}" class="text-decoration-none">
-                    <div class="stat-card card-interactive h-100">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="stat-label">Pending Students</div>
-                            <i class="bi bi-person-exclamation text-warning fs-4"></i>
+            <!-- Left Highlight Widget (Dark Card) -->
+            <div class="col-lg-8">
+                <div class="card card-dark-widget p-4 p-md-5 h-100 position-relative overflow-hidden">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-4">
+                        <div>
+                            <span class="badge badge-editorial-lime mb-2">Administrative Console</span>
+                            <h2 class="display-6 fw-bold mb-1">Chief Placement Officer</h2>
+                            <p class="text-secondary small mb-0">Institutional placement governance, drive audits, and verification pipeline.</p>
                         </div>
-                        <div class="stat-value text-dark" th:text="${pendingStudentCount}">0</div>
-                        <small class="text-warning fw-semibold mt-1 d-inline-block">Review awaiting</small>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a th:href="@{/officer/companies(status='PENDING')}" class="text-decoration-none">
-                    <div class="stat-card card-interactive h-100">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="stat-label">Pending Companies</div>
-                            <i class="bi bi-building-exclamation text-warning fs-4"></i>
+                        <div>
+                            <span class="badge badge-editorial-green py-2 px-3 fw-bold">
+                                <i class="bi bi-shield-check me-1"></i> System Active
+                            </span>
                         </div>
-                        <div class="stat-value text-dark" th:text="${pendingCompanyCount}">0</div>
-                        <small class="text-warning fw-semibold mt-1 d-inline-block">Review awaiting</small>
                     </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a th:href="@{/officer/jobs(status='PENDING_APPROVAL')}" class="text-decoration-none">
-                    <div class="stat-card card-interactive h-100">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="stat-label">Pending Jobs</div>
-                            <i class="bi bi-briefcase text-warning fs-4"></i>
-                        </div>
-                        <div class="stat-value text-dark" th:text="${pendingJobCount}">0</div>
-                        <small class="text-warning fw-semibold mt-1 d-inline-block">Review awaiting</small>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a th:href="@{/officer/analytics}" class="text-decoration-none">
-                    <div class="stat-card card-interactive h-100">
-                        <div class="d-flex align-items-center justify-content-between mb-2">
-                            <div class="stat-label">Total Placed</div>
-                            <i class="bi bi-award text-success fs-4"></i>
-                        </div>
-                        <div class="stat-value text-success" th:text="${placedStudentCount}">0</div>
-                        <small class="text-success fw-semibold mt-1 d-inline-block">View Analytics</small>
-                    </div>
-                </a>
-            </div>
-        </div>
 
-        <!-- Administrative Actions Grid -->
-        <div class="row g-4">
-            <div class="col-md-6 col-lg-3">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary">
-                            <i class="bi bi-person-check-fill"></i>
+                    <!-- Metrics Inside Dark Highlight Card -->
+                    <div class="row g-3 mt-auto pt-3 border-top border-secondary border-opacity-25">
+                        <div class="col-sm-3 col-6">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">STUDENT AUDITS</small>
+                            <span class="fs-4 fw-bold font-display" th:classappend="${pendingStudentCount > 0} ? 'text-warning' : 'text-white'" th:text="${pendingStudentCount}">0</span>
+                            <small class="text-secondary d-block" style="font-size: 0.75rem;">Awaiting verification</small>
                         </div>
-                        <h6 class="fw-bold mb-0">Student Verification</h6>
+                        <div class="col-sm-3 col-6">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">COMPANY AUDITS</small>
+                            <span class="fs-4 fw-bold font-display" th:classappend="${pendingCompanyCount > 0} ? 'text-warning' : 'text-white'" th:text="${pendingCompanyCount}">0</span>
+                            <small class="text-secondary d-block" style="font-size: 0.75rem;">Awaiting approval</small>
+                        </div>
+                        <div class="col-sm-3 col-6">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">JOB APPROVALS</small>
+                            <span class="fs-4 fw-bold font-display" th:classappend="${pendingJobCount > 0} ? 'text-warning' : 'text-white'" th:text="${pendingJobCount}">0</span>
+                            <small class="text-secondary d-block" style="font-size: 0.75rem;">Drive approvals</small>
+                        </div>
+                        <div class="col-sm-3 col-6">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">TOTAL PLACED</small>
+                            <span class="fs-4 fw-bold text-success font-display" th:text="${placedStudentCount}">0</span>
+                            <small class="text-secondary d-block" style="font-size: 0.75rem;">Offers extended</small>
+                        </div>
                     </div>
-                    <p class="text-muted small">Review submitted academic details, CGPA, backlogs, and verify student profiles.</p>
-                    <a th:href="@{/officer/students}" class="btn btn-primary btn-sm mt-auto">
-                        <i class="bi bi-people-fill me-1"></i> Review Students
-                    </a>
+
+                    <div class="mt-4 pt-2 d-flex justify-content-between align-items-center">
+                        <a th:href="@{/officer/analytics}" class="btn btn-sm btn-light">
+                            <i class="bi bi-graph-up me-1"></i> View Full Analytics
+                        </a>
+                        <span class="chip-hashtag text-secondary" style="color: #9ca3af !important;">#InstitutionalAudit #PlacementConsole</span>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-building-check"></i>
-                        </div>
-                        <h6 class="fw-bold mb-0">Company Approvals</h6>
-                    </div>
-                    <p class="text-muted small">Verify newly registered employer organizations before allowing job creation.</p>
-                    <a th:href="@{/officer/companies}" class="btn btn-success btn-sm mt-auto">
-                        <i class="bi bi-building-check me-1"></i> Review Companies
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-warning bg-opacity-10 text-warning">
-                            <i class="bi bi-card-checklist"></i>
-                        </div>
-                        <h6 class="fw-bold mb-0">Job Approvals</h6>
-                    </div>
-                    <p class="text-muted small">Inspect job criteria, eligible branches, and approve postings for publication.</p>
-                    <a th:href="@{/officer/jobs}" class="btn btn-warning btn-sm mt-auto text-dark fw-semibold">
-                        <i class="bi bi-card-checklist me-1"></i> Review Jobs
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-3">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-info bg-opacity-10 text-info">
+
+            <!-- Right Bento Quick Broadcast Tile -->
+            <div class="col-lg-4">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(16, 185, 129, 0.12); color: var(--cc-emerald);">
                             <i class="bi bi-megaphone-fill"></i>
                         </div>
-                        <h6 class="fw-bold mb-0">Campus Notices</h6>
+                        <h4 class="fw-bold font-display text-dark mb-2">Campus Circular</h4>
+                        <p class="text-muted small mb-3">Broadcast announcements, scheduling updates, or priority circulars to candidates and employers.</p>
                     </div>
-                    <p class="text-muted small">Broadcast campus placement announcements, circulars, and policy guidelines.</p>
-                    <a th:href="@{/officer/announcements}" class="btn btn-outline-info btn-sm mt-auto">
-                        <i class="bi bi-megaphone me-1"></i> Manage Notices
+
+                    <div class="p-3 rounded-4 mb-3" style="background-color: var(--cc-bg-warm); border: 1px solid var(--cc-ribbon-border);">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="small fw-bold text-dark">Real-Time Dispatch</span>
+                            <span class="badge badge-editorial-green">Instant</span>
+                        </div>
+                        <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">Priority notifications appear on recipient dashboards.</small>
+                    </div>
+
+                    <a th:href="@{/officer/announcements}" class="btn btn-emerald w-100">
+                        BROADCAST NOTICE <i class="bi bi-arrow-up-right ms-1"></i>
                     </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Administrative Actions Bento Grid (Reference 1 & 2 Bento Grid) -->
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(37, 99, 235, 0.1); color: var(--cc-primary-blue);">
+                            <i class="bi bi-person-check-fill"></i>
+                        </div>
+                        <h5 class="fw-bold font-display text-dark mb-2">Student Verification</h5>
+                        <p class="text-muted small mb-4">Review submitted academic records, CGPA, backlogs, and approve verified student profiles.</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#AcademicAudit</span>
+                        <a th:href="@{/officer/students}" class="btn-arrow-action">
+                            <span>REVIEW</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(16, 185, 129, 0.12); color: var(--cc-emerald);">
+                            <i class="bi bi-building-check"></i>
+                        </div>
+                        <h5 class="fw-bold font-display text-dark mb-2">Company Approvals</h5>
+                        <p class="text-muted small mb-4">Verify newly registered employer organizations before allowing recruitment drive creation.</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#CompanyAudit</span>
+                        <a th:href="@{/officer/companies}" class="btn-arrow-action">
+                            <span>REVIEW</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(245, 158, 11, 0.12); color: var(--cc-warning-text);">
+                            <i class="bi bi-card-checklist"></i>
+                        </div>
+                        <h5 class="fw-bold font-display text-dark mb-2">Job Drive Approvals</h5>
+                        <p class="text-muted small mb-4">Inspect job criteria, salary packages, degree branches, and approve postings for publication.</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#JobGates</span>
+                        <a th:href="@{/officer/jobs}" class="btn-arrow-action">
+                            <span>REVIEW</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-3">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(17, 24, 39, 0.08); color: var(--cc-ink);">
+                            <i class="bi bi-graph-up-arrow"></i>
+                        </div>
+                        <h5 class="fw-bold font-display text-dark mb-2">Placement Analytics</h5>
+                        <p class="text-muted small mb-4">Export comprehensive placement statistics, department-wise breakdowns, and salary distributions.</p>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#Intelligence</span>
+                        <a th:href="@{/officer/analytics}" class="btn-arrow-action">
+                            <span>REPORTS</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>

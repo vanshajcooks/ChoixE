@@ -87,79 +87,114 @@
     <!-- Main Content -->
     <main class="container my-4 flex-grow-1">
         
-        <!-- Welcome Banner -->
-        <div class="card p-4 mb-4">
-            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                <div class="d-flex align-items-center gap-3">
-                    <div class="stat-icon bg-success bg-opacity-10 text-success d-none d-sm-flex" style="width: 52px; height: 52px; font-size: 1.5rem;">
-                        <i class="bi bi-building"></i>
-                    </div>
-                    <div>
-                        <div class="d-flex align-items-center gap-2 mb-1">
-                            <h3 class="fw-bold mb-0 text-dark" th:text="${company != null} ? ${company.companyName} : 'Employer Portal'">Company Name</h3>
-                            <span class="badge bg-success bg-opacity-10 text-success small">Recruiter</span>
+        <!-- Welcome Banner & Company Status Widget (Reference 2 Bento Style) -->
+        <div class="row g-4 mb-4">
+            <!-- Left Highlight Widget (Dark Card) -->
+            <div class="col-lg-8">
+                <div class="card card-dark-widget p-4 p-md-5 h-100 position-relative overflow-hidden">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-start gap-3 mb-4">
+                        <div>
+                            <span class="badge badge-editorial-lime mb-2">Employer Console</span>
+                            <h2 class="display-6 fw-bold mb-1" th:text="${company != null} ? ${company.companyName} : 'Employer Portal'">Company Name</h2>
+                            <p class="text-secondary small mb-0" th:text="${company != null} ? ('Industry: ' + ${company.industry} + ' | Representative: ' + ${company.recruiter.fullName}) : 'Recruiter Account'">Industry | Representative</p>
                         </div>
-                        <p class="text-muted mb-0" th:text="${company != null} ? ('Industry: ' + ${company.industry} + ' &bull; Recruiter: ' + ${company.recruiter.fullName}) : 'Recruiter Account'">Industry &bull; Representative</p>
+                        <div th:if="${company != null}">
+                            <span th:if="${company.approvalStatus.name() == 'PENDING'}" class="badge bg-warning text-dark py-2 px-3 fw-bold">
+                                <i class="bi bi-clock-history me-1"></i> Review Pending
+                            </span>
+                            <span th:if="${company.approvalStatus.name() == 'APPROVED'}" class="badge badge-editorial-green py-2 px-3 fw-bold">
+                                <i class="bi bi-patch-check-fill me-1"></i> Verified Partner
+                            </span>
+                            <span th:if="${company.approvalStatus.name() == 'REJECTED'}" class="badge bg-danger text-white py-2 px-3 fw-bold">
+                                <i class="bi bi-x-circle-fill me-1"></i> Rejected
+                            </span>
+                        </div>
                     </div>
-                </div>
-                <div class="d-flex flex-column align-items-md-end gap-2">
-                    <!-- Approval Badge -->
-                    <div th:if="${company != null}">
-                        <span th:if="${company.approvalStatus.name() == 'PENDING'}" class="badge bg-warning text-warning-text py-2 px-3">
-                            <i class="bi bi-clock-history me-1"></i> Approval Pending
-                        </span>
-                        <span th:if="${company.approvalStatus.name() == 'APPROVED'}" class="badge bg-success text-success-text py-2 px-3">
-                            <i class="bi bi-patch-check-fill me-1"></i> Approved Employer
-                        </span>
-                        <span th:if="${company.approvalStatus.name() == 'REJECTED'}" class="badge bg-danger text-danger-text py-2 px-3">
-                            <i class="bi bi-x-circle-fill me-1"></i> Registration Rejected
-                        </span>
+
+                    <!-- Company Metadata Row inside Dark Card -->
+                    <div class="row g-3 mt-auto pt-3 border-top border-secondary border-opacity-25" th:if="${company != null}">
+                        <div class="col-sm-4">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">OFFICIAL WEBSITE</small>
+                            <a th:if="${company.website}" th:href="${company.website}" target="_blank" class="fw-bold text-white font-display text-truncate d-block" th:text="${company.website}">https://company.com</a>
+                            <span th:unless="${company.website}" class="text-secondary small fst-italic">Not specified</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">HEADQUARTERS</small>
+                            <span class="fs-6 fw-bold text-white font-display d-block text-truncate" th:text="${company.location != null && !company.location.isBlank()} ? ${company.location} : 'Not specified'">Location</span>
+                        </div>
+                        <div class="col-sm-4">
+                            <small class="text-secondary d-block fw-semibold" style="font-size: 0.72rem; letter-spacing: 0.05em;">CONTACT LINE</small>
+                            <span class="fs-6 fw-bold text-white font-display d-block text-truncate" th:text="${company.contactNumber != null && !company.contactNumber.isBlank()} ? ${company.contactNumber} : 'Not specified'">Phone</span>
+                        </div>
                     </div>
-                    <div>
-                        <a th:href="@{/recruiter/profile}" class="btn btn-outline-primary btn-sm">
-                            <i class="bi bi-pencil-square me-1"></i> Manage Profile
+
+                    <div class="mt-4 pt-2 d-flex justify-content-between align-items-center">
+                        <a th:href="@{/recruiter/profile/edit}" class="btn btn-sm btn-light">
+                            <i class="bi bi-pencil me-1"></i> Edit Profile
                         </a>
+                        <span class="chip-hashtag text-secondary" style="color: #9ca3af !important;">#CampusPartner #EnterpriseRecruiting</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Approval Notice Alert -->
-            <div th:if="${company != null and company.approvalStatus.name() == 'PENDING'}" class="alert alert-warning d-flex align-items-center gap-2 mt-4 mb-0" role="alert">
-                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5 text-warning"></i>
-                <div>
-                    <strong>Approval in Progress:</strong> Your company profile is currently being reviewed by the Placement Office. Once approved, you can create and submit job postings for publication.
-                </div>
-            </div>
+            <!-- Right Bento Quick Action Tile -->
+            <div class="col-lg-4">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(16, 185, 129, 0.12); color: var(--cc-emerald);">
+                            <i class="bi bi-plus-circle-fill"></i>
+                        </div>
+                        <h4 class="fw-bold font-display text-dark mb-2">Create Job Drive</h4>
+                        <p class="text-muted small mb-3">Publish opportunities with customizable CGPA rules, allowed degrees, and maximum backlogs.</p>
+                    </div>
 
-            <!-- Rejection Alert -->
-            <div th:if="${company != null and company.approvalStatus.name() == 'REJECTED'}" class="alert alert-danger mt-4 mb-0" role="alert">
-                <div class="d-flex align-items-center gap-2 mb-1">
-                    <i class="bi bi-exclamation-octagon-fill fs-5"></i>
-                    <h6 class="fw-bold mb-0">Registration Rejected by Placement Office</h6>
+                    <div class="p-3 rounded-4 mb-3" style="background-color: var(--cc-bg-warm); border: 1px solid var(--cc-ribbon-border);">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="small fw-bold text-dark">Pre-Screening Rules</span>
+                            <span class="badge badge-editorial-green">Automated</span>
+                        </div>
+                        <small class="text-muted d-block mt-1" style="font-size: 0.75rem;">Only verified students matching criteria can apply.</small>
+                    </div>
+
+                    <a th:href="@{/recruiter/jobs/new}" class="btn btn-emerald w-100">
+                        POST NEW JOB <i class="bi bi-arrow-up-right ms-1"></i>
+                    </a>
                 </div>
-                <p class="mb-2 mt-2" th:text="${company.rejectionReason}">Reason for rejection will appear here.</p>
-                <small class="text-muted d-block mb-2" th:if="${company.decisionAt != null}">
-                    Reviewed on <span th:text="${#temporals.format(company.decisionAt, 'dd MMM yyyy, hh:mm a')}">Date</span>
-                    <span th:if="${company.decisionBy != null}"> by <strong th:text="${company.decisionBy}">Officer</strong></span>
-                </small>
-                <a th:href="@{/recruiter/profile/edit}" class="btn btn-outline-danger btn-sm">
-                    <i class="bi bi-pencil me-1"></i> Correct Company Details
-                </a>
             </div>
+        </div>
+
+        <!-- Approval Notice Alert if Pending -->
+        <div th:if="${company != null and company.approvalStatus.name() == 'PENDING'}" class="alert alert-warning d-flex align-items-center gap-2 mb-4" role="alert">
+            <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5 text-warning"></i>
+            <div>
+                <strong>Approval in Progress:</strong> Your company profile is currently being reviewed by the Placement Office. Once approved, you can create and submit job postings for publication.
+            </div>
+        </div>
+
+        <!-- Rejection Alert -->
+        <div th:if="${company != null and company.approvalStatus.name() == 'REJECTED'}" class="alert alert-danger mb-4" role="alert">
+            <div class="d-flex align-items-center gap-2 mb-1">
+                <i class="bi bi-exclamation-octagon-fill fs-5"></i>
+                <h6 class="fw-bold mb-0">Registration Rejected by Placement Office</h6>
+            </div>
+            <p class="mb-2 mt-2" th:text="${company.rejectionReason}">Reason for rejection will appear here.</p>
+            <a th:href="@{/recruiter/profile/edit}" class="btn btn-outline-danger btn-sm">
+                <i class="bi bi-pencil me-1"></i> Correct Company Details
+            </a>
         </div>
 
         <!-- Pinned Campus Announcements -->
         <div th:if="${pinnedAnnouncements != null && !pinnedAnnouncements.isEmpty()}" class="mb-4">
-            <div class="card overflow-hidden" style="border-left: 4px solid var(--cc-primary) !important;">
-                <div class="card-header bg-white border-0 pt-3 pb-0 px-4 d-flex justify-content-between align-items-center">
+            <div class="card overflow-hidden" style="border-left: 5px solid var(--cc-emerald) !important; border-radius: var(--cc-radius-card);">
+                <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
                     <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
-                        <i class="bi bi-pin-angle-fill text-primary"></i> Pinned Campus Announcements
+                        <i class="bi bi-pin-angle-fill text-success"></i> Official Campus Announcements
                     </h6>
-                    <a th:href="@{/announcements}" class="small text-decoration-none">View All <i class="bi bi-chevron-right"></i></a>
+                    <a th:href="@{/announcements}" class="small fw-bold text-dark">View All ( ↗ )</a>
                 </div>
                 <div class="card-body px-4 py-3">
                     <div class="d-flex flex-column gap-2">
-                        <div th:each="notice : ${pinnedAnnouncements}" class="p-3 bg-light rounded-3 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 border">
+                        <div th:each="notice : ${pinnedAnnouncements}" class="p-3 rounded-4 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 border" style="background-color: var(--cc-bg-warm);">
                             <div>
                                 <div class="d-flex align-items-center gap-2 mb-1">
                                     <span class="badge" th:classappend="'bg-' + ${notice.priority.badgeColor}" th:text="${notice.priority.displayName}">Urgent</span>
@@ -167,8 +202,9 @@
                                 </div>
                                 <small class="text-muted" th:text="${#temporals.format(notice.createdAt, 'dd MMM yyyy, hh:mm a')}">Date</small>
                             </div>
-                            <a th:href="@{/announcements/{id}(id=${notice.id})}" class="btn btn-outline-primary btn-sm flex-shrink-0">
-                                Read Notice
+                            <a th:href="@{/announcements/{id}(id=${notice.id})}" class="btn-arrow-action flex-shrink-0">
+                                <span>READ</span>
+                                <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
                             </a>
                         </div>
                     </div>
@@ -176,86 +212,62 @@
             </div>
         </div>
 
-        <!-- Organization Overview -->
-        <div th:if="${company != null}" class="card p-4 mb-4">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h5 class="fw-bold text-dark mb-0">Organization Profile Details</h5>
-                <a th:href="@{/recruiter/profile/edit}" class="btn btn-outline-secondary btn-sm">
-                    <i class="bi bi-pencil me-1"></i> Edit Details
-                </a>
-            </div>
-            <div class="row g-3">
-                <div class="col-md-3">
-                    <small class="text-muted d-block">Website</small>
-                    <a th:if="${company.website}" th:href="${company.website}" target="_blank" class="fw-semibold text-primary" th:text="${company.website}">https://company.com</a>
-                    <span th:unless="${company.website}" class="text-muted fst-italic">Not specified</span>
-                </div>
-                <div class="col-md-3">
-                    <small class="text-muted d-block">Industry</small>
-                    <span class="fw-semibold text-dark" th:text="${company.industry}">Technology</span>
-                </div>
-                <div class="col-md-3">
-                    <small class="text-muted d-block">Location / HQ</small>
-                    <span class="fw-semibold text-dark" th:text="${company.location != null && !company.location.isBlank()} ? ${company.location} : 'Not specified'">Location</span>
-                </div>
-                <div class="col-md-3">
-                    <small class="text-muted d-block">Official Phone</small>
-                    <span class="fw-semibold text-dark" th:text="${company.contactNumber != null && !company.contactNumber.isBlank()} ? ${company.contactNumber} : 'Not specified'">Phone</span>
-                </div>
-                <div class="col-md-12" th:if="${company.description}">
-                    <small class="text-muted d-block">About Company</small>
-                    <p class="text-secondary small mb-0 mt-1" th:text="${company.description}">Description...</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quick Access Feature Cards -->
+        <!-- Bento Feature Action Tiles -->
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-success bg-opacity-10 text-success">
-                            <i class="bi bi-plus-circle-fill"></i>
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(16, 185, 129, 0.12); color: var(--cc-emerald);">
+                            <i class="bi bi-briefcase-fill"></i>
                         </div>
-                        <h5 class="fw-bold mb-0">Post a Job</h5>
+                        <h5 class="fw-bold font-display text-dark mb-2">My Job Drives</h5>
+                        <p class="text-muted small mb-4">View active postings, configure drive criteria, check publication status, and manage deadlines.</p>
                     </div>
-                    <p class="text-muted small">Create job postings with custom eligibility criteria (CGPA, branches, backlog rules).</p>
-                    <div class="mt-auto d-flex flex-column gap-2">
-                        <a th:href="@{/recruiter/jobs/new}" class="btn btn-outline-success btn-sm">
-                            <i class="bi bi-plus-circle me-1"></i> Post a Job
-                        </a>
-                        <a th:href="@{/recruiter/jobs}" class="btn btn-link btn-sm text-decoration-none text-muted p-0 text-start">
-                            View All Postings
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#DriveControl</span>
+                        <a th:href="@{/recruiter/jobs}" class="btn-arrow-action">
+                            <span>VIEW</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
                         </a>
                     </div>
                 </div>
             </div>
+
             <div class="col-md-4">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(37, 99, 235, 0.1); color: var(--cc-primary-blue);">
                             <i class="bi bi-people-fill"></i>
                         </div>
-                        <h5 class="fw-bold mb-0">Applicant Tracking</h5>
+                        <h5 class="fw-bold font-display text-dark mb-2">Applicant Pipeline</h5>
+                        <p class="text-muted small mb-4">Review eligible student submissions, examine transcripts, download resumes, and shortlist candidates.</p>
                     </div>
-                    <p class="text-muted small">Review verified applicants, evaluate academic profiles, and update recruitment review stages.</p>
-                    <a th:href="@{/recruiter/applications}" class="btn btn-outline-primary btn-sm mt-auto">
-                        Track Applicants <i class="bi bi-arrow-right"></i>
-                    </a>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#Screening</span>
+                        <a th:href="@{/recruiter/applications}" class="btn-arrow-action">
+                            <span>TRACK</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
+                        </a>
+                    </div>
                 </div>
             </div>
+
             <div class="col-md-4">
-                <div class="card card-interactive p-4 h-100">
-                    <div class="d-flex align-items-center gap-3 mb-3">
-                        <div class="stat-icon bg-info bg-opacity-10 text-info">
+                <div class="card p-4 h-100 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card);">
+                    <div>
+                        <div class="card-icon-bubble" style="background-color: rgba(245, 158, 11, 0.12); color: var(--cc-warning-text);">
                             <i class="bi bi-calendar-check-fill"></i>
                         </div>
-                        <h5 class="fw-bold mb-0">Interview Rounds</h5>
+                        <h5 class="fw-bold font-display text-dark mb-2">Interview Logistics</h5>
+                        <p class="text-muted small mb-4">Coordinate multi-round schedules, dispatch meeting links, and record round progression seamlessly.</p>
                     </div>
-                    <p class="text-muted small">Schedule interview rounds, provide meeting links, and notify shortlisted candidates seamlessly.</p>
-                    <a th:href="@{/recruiter/interviews}" class="btn btn-outline-info btn-sm mt-auto">
-                        Manage Interviews <i class="bi bi-arrow-right"></i>
-                    </a>
+                    <div class="d-flex justify-content-between align-items-center pt-3 border-top">
+                        <span class="chip-hashtag">#Rounds</span>
+                        <a th:href="@{/recruiter/interviews}" class="btn-arrow-action">
+                            <span>MANAGE</span>
+                            <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
