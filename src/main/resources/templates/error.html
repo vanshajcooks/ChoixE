@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error | CampusConnect</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- CampusConnect Custom Theme -->
+    <link rel="stylesheet" th:href="@{/css/theme.css}" href="/css/theme.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">
+                <span class="brand-glyph"><i class="bi bi-mortarboard-fill"></i></span>
+                <span>Campus<span class="brand-accent">Connect</span></span>
+            </a>
+            <div class="d-flex align-items-center gap-2">
+                <a th:href="@{/}" class="btn btn-light btn-sm">
+                    Home
+                </a>
+                <a th:href="@{/login}" class="btn btn-primary btn-sm">
+                    Sign In
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container my-auto py-5 text-center">
+        <div class="mx-auto" style="max-width: 540px;">
+            <div class="card p-4 p-md-5" style="border-radius: var(--cc-radius-card); background: #ffffff;">
+                <div class="card-icon-bubble mx-auto mb-3" style="background-color: var(--cc-slate-100); color: var(--cc-ink);">
+                    <i class="bi bi-shield-exclamation fs-4"></i>
+                </div>
+                
+                <span class="badge bg-light text-dark mb-3" th:text="${status} != null ? 'Error ' + ${status} : 'Notice'">Error</span>
+                
+                <h3 class="fw-bold font-display text-dark mb-2" th:if="${status == 403}">Access Restricted</h3>
+                <h3 class="fw-bold font-display text-dark mb-2" th:if="${status == 404}">Page Not Found</h3>
+                <h3 class="fw-bold font-display text-dark mb-2" th:if="${status != 403 and status != 404}">Something went wrong</h3>
+                
+                <p class="text-secondary small mb-4" th:if="${status == 403}">
+                    You do not have the required role or permissions to access this workspace. Please sign in with an authorized account.
+                </p>
+                <p class="text-secondary small mb-4" th:if="${status == 404}">
+                    The requested page could not be located. It may have moved or been retired.
+                </p>
+                <p class="text-secondary small mb-4" th:if="${status != 403 and status != 404}" th:text="${message} != null ? ${message} : 'An unexpected condition occurred.'">
+                    An unexpected condition occurred.
+                </p>
+
+                <div class="d-flex justify-content-center align-items-center gap-3">
+                    <a th:href="@{/}" class="btn btn-primary">
+                        Back to Home
+                    </a>
+                    <a th:href="@{/login}" class="btn btn-light">
+                        Sign In
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-3 mt-auto text-center text-secondary small border-top">
+        <div class="container">
+            CampusConnect &copy; 2026 &bull; Placement Management Portal
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

@@ -267,53 +267,30 @@
         <div class="container footer-content-wrap">
             <div class="row g-4 g-lg-5">
                 <!-- Brand Information Column -->
-                <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
+                <div class="col-lg-5 col-md-12 mb-4 mb-lg-0">
                     <div class="footer-brand-title">CampusConnect</div>
                     <p class="small mb-0" style="max-width: 320px; color: #a1a1aa !important; line-height: 1.65;">
                         Campus placement &amp; recruitment management portal. Zero-error academic eligibility checks, verified credentials, and real-time interview coordination.
                     </p>
                 </div>
 
-                <!-- Students Column -->
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="footer-col-title">Students</div>
+                <!-- Registration Column -->
+                <div class="col-6 col-md-3 col-lg-3 offset-lg-1">
+                    <div class="footer-col-title">Registration</div>
                     <ul class="footer-nav-list">
-                        <li><a th:href="@{/register/student}" class="footer-link">Register</a></li>
-                        <li><a th:href="@{/student/dashboard}" class="footer-link">Dashboard</a></li>
-                        <li><a th:href="@{/student/jobs}" class="footer-link">Browse Drives</a></li>
-                        <li><a th:href="@{/student/applications}" class="footer-link">Applications</a></li>
+                        <li><a th:href="@{/register/student}" class="footer-link">Student Registration</a></li>
+                        <li><a th:href="@{/register/recruiter}" class="footer-link">Recruiter Registration</a></li>
+                        <li><a th:href="@{/register}" class="footer-link">Account Options</a></li>
                     </ul>
                 </div>
 
-                <!-- Recruiters Column -->
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="footer-col-title">Recruiters</div>
+                <!-- Portals & Access Column -->
+                <div class="col-6 col-md-3 col-lg-3">
+                    <div class="footer-col-title">Portals &amp; Access</div>
                     <ul class="footer-nav-list">
-                        <li><a th:href="@{/register/recruiter}" class="footer-link">Register</a></li>
-                        <li><a th:href="@{/recruiter/dashboard}" class="footer-link">Dashboard</a></li>
-                        <li><a th:href="@{/recruiter/jobs/new}" class="footer-link">Post Drive</a></li>
-                        <li><a th:href="@{/recruiter/applicants}" class="footer-link">Applicants</a></li>
-                    </ul>
-                </div>
-
-                <!-- Administration Column -->
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="footer-col-title">Officer</div>
-                    <ul class="footer-nav-list">
-                        <li><a th:href="@{/officer/dashboard}" class="footer-link">Console</a></li>
-                        <li><a th:href="@{/officer/students}" class="footer-link">Students</a></li>
-                        <li><a th:href="@{/officer/jobs}" class="footer-link">Drives</a></li>
-                        <li><a th:href="@{/officer/analytics}" class="footer-link">Analytics</a></li>
-                    </ul>
-                </div>
-
-                <!-- Public & Notices Column -->
-                <div class="col-6 col-md-4 col-lg-2">
-                    <div class="footer-col-title">Access</div>
-                    <ul class="footer-nav-list">
-                        <li><a th:href="@{/announcements}" class="footer-link">Notices</a></li>
-                        <li><a th:href="@{/login}" class="footer-link">Sign In</a></li>
-                        <li><a th:href="@{/register}" class="footer-link">Get Started</a></li>
+                        <li><a th:href="@{/login}" class="footer-link">Account Sign In</a></li>
+                        <li><a th:href="@{/announcements}" class="footer-link">Notice Board</a></li>
+                        <li><a href="#portals" class="footer-link">Workspaces Overview</a></li>
                     </ul>
                 </div>
             </div>
