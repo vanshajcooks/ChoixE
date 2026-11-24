@@ -11,7 +11,7 @@ public class HomeController {
 
     @GetMapping({"/", "/home"})
     public String home(Model model, @AuthenticationPrincipal UserDetails userDetails) {
-        model.addAttribute("appName", "CampusConnect");
+        model.addAttribute("appName", "ChoixE");
         model.addAttribute("appDescription", "Campus Placement Management Portal");
         if (userDetails != null) {
             model.addAttribute("username", userDetails.getUsername());

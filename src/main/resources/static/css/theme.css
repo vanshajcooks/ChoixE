@@ -1,5 +1,5 @@
 /* ==========================================================================
-   CampusConnect Signature Design System
+   ChoixE Signature Design System
    Inspired by Mobbin: Ultra-clean, High-Contrast, Minimalist & Editorial
    ========================================================================== */
 
@@ -169,25 +169,9 @@ a:hover {
 }
 
 
-.navbar-brand::before {
-    content: "\F47C";
-    font-family: 'bootstrap-icons' !important;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: #09090b;
-    color: #ffffff;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: normal;
-    margin-right: 0.5rem;
-}
 
-.navbar-brand:has(.brand-glyph)::before {
-    display: none;
-}
+
+
 
 .navbar-brand {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
@@ -202,18 +186,7 @@ a:hover {
     margin-right: 2.5rem;
 }
 
-.brand-glyph {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 28px;
-    height: 28px;
-    background: #09090b;
-    color: #ffffff;
-    border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 900;
-}
+
 
 .navbar-brand .brand-accent {
     color: var(--cc-slate-400);

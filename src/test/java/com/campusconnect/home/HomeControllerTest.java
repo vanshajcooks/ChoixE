@@ -26,7 +26,7 @@ class HomeControllerTest {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
-                .andExpect(model().attribute("appName", "CampusConnect"));
+                .andExpect(model().attribute("appName", "ChoixE"));
     }
 
     @Test
@@ -34,7 +34,7 @@ class HomeControllerTest {
         mockMvc.perform(get("/home"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
-                .andExpect(model().attribute("appName", "CampusConnect"));
+                .andExpect(model().attribute("appName", "ChoixE"));
     }
 
     @Test
@@ -43,7 +43,7 @@ class HomeControllerTest {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
                 .andExpect(view().name("index"))
-                .andExpect(model().attribute("appName", "CampusConnect"))
+                .andExpect(model().attribute("appName", "ChoixE"))
                 .andExpect(model().attribute("username", "student1"));
     }
 }

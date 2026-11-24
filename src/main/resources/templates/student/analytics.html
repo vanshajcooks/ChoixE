@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Placement Highlights &amp; Statistics | CampusConnect</title>
+    <title>Placement Highlights &amp; Statistics | ChoixE</title>
     <!-- Google Fonts: Plus Jakarta Sans -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,7 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <!-- CampusConnect Custom Theme -->
+    <!-- ChoixE Custom Theme -->
     <link rel="stylesheet" th:href="@{/css/theme.css}" href="/css/theme.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -20,10 +20,7 @@
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand" th:href="@{/}">
-                <span class="brand-glyph"><i class="bi bi-mortarboard-fill"></i></span>
-                <span>Campus<span class="brand-accent">Connect</span></span>
-            </a>
+            <a class="navbar-brand" th:href="@{/}">ChoixE</a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#studentNav" aria-controls="studentNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -194,7 +191,7 @@
         <div class="card p-4 p-md-5 mb-4" style="border-radius: var(--cc-radius-card); background: #ffffff;">
             <div class="mb-4">
                 <h5 class="fw-bold text-dark font-display mb-1">Our Recruiting Partners</h5>
-                <p class="text-secondary small mb-0">Organizations actively hiring from CampusConnect drives.</p>
+                <p class="text-secondary small mb-0">Organizations actively hiring from ChoixE drives.</p>
             </div>
             <div class="row g-3">
                 <div th:each="comp : ${companyStats}" class="col-md-4 col-sm-6">
@@ -224,7 +221,7 @@
     <!-- Footer -->
     <footer class="py-3 mt-auto text-center text-secondary small border-top">
         <div class="container">
-            CampusConnect &copy; 2026 &bull; Placement Management Portal
+            ChoixE &copy; 2026 &bull; Placement Management Portal
         </div>
     </footer>
 
