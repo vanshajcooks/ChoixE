@@ -17,7 +17,7 @@
 </head>
 <body class="d-flex flex-column min-vh-100">
 
-    <!-- Navigation Bar (Mobbin Minimalist Navbar) -->
+    <!-- Navigation Bar (Mobbin Minimalist Navbar - Clean, No Social Icons) -->
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" th:href="@{/}">
@@ -31,7 +31,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-3">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" th:href="@{/}">
-                            Drives
+                            Home
                         </a>
                     </li>
                     <li class="nav-item">
@@ -40,23 +40,12 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#showcase">
-                            Directory
-                        </a>
-                    </li>
-                    <li class="nav-item">
                         <a class="nav-link" href="#portals">
                             Portals
                         </a>
                     </li>
                 </ul>
-                <div class="d-flex align-items-center gap-3">
-                    <!-- Social icons from Mobbin header -->
-                    <div class="d-none d-md-flex align-items-center gap-3 pe-2 border-end" style="border-color: var(--cc-slate-200) !important;">
-                        <a href="#" class="text-secondary" title="YouTube"><i class="bi bi-youtube fs-6"></i></a>
-                        <a href="#" class="text-secondary" title="Twitter / X"><i class="bi bi-twitter-x fs-6"></i></a>
-                    </div>
-
+                <div class="d-flex align-items-center gap-2">
                     <div sec:authorize="isAuthenticated()" class="d-flex align-items-center gap-2">
                         <a sec:authorize="hasRole('STUDENT')" th:href="@{/student/profile}" class="btn btn-profile">
                             <i class="bi bi-person-fill"></i> Profile
@@ -100,8 +89,8 @@
     <!-- Main Content -->
     <main class="flex-grow-1">
 
-        <!-- Hero Section (Mobbin Screenshot 1 Style) -->
-        <section class="pt-5 pb-4 text-center">
+        <!-- Hero Section (Mobbin Minimalist Headline & Dual Pills) -->
+        <section class="pt-5 pb-5 text-center">
             <div class="container py-lg-4">
                 <div class="mx-auto" style="max-width: 880px;">
                     
@@ -111,21 +100,20 @@
                         placements <span class="hero-inline-badge badge-white"><i class="bi bi-lightning-charge-fill text-dark"></i></span> that work.
                     </h1>
                     
-                    <p class="lead mx-auto mb-4" style="line-height: 1.6; font-size: 1.15rem; color: var(--cc-slate-500) !important; max-width: 580px;">
-                        The campus recruitment reference platform for students and companies.<br>
-                        Over 450+ verified offers extended, zero-error academic auditing.
+                    <p class="lead mx-auto mb-4" style="line-height: 1.65; font-size: 1.15rem; color: var(--cc-slate-500) !important; max-width: 580px;">
+                        Campus placement &amp; recruitment management portal. Zero-error academic eligibility checks, verified credentials, and real-time interview coordination.
                     </p>
                     
-                    <!-- Actions from Mobbin Screenshot 1: Black Pill + Light Pill -->
-                    <div sec:authorize="isAnonymous()" class="d-flex justify-content-center align-items-center gap-3 mb-4">
+                    <!-- High-contrast Dual Pills -->
+                    <div sec:authorize="isAnonymous()" class="d-flex justify-content-center align-items-center gap-3 mb-2">
                         <a th:href="@{/register}" class="btn btn-primary btn-lg">
                             Join for free
                         </a>
                         <a th:href="@{/announcements}" class="btn btn-light btn-lg">
-                            See drives <i class="bi bi-arrow-right ms-1"></i>
+                            View notices <i class="bi bi-arrow-right ms-1"></i>
                         </a>
                     </div>
-                    <div sec:authorize="isAuthenticated()" class="d-flex justify-content-center align-items-center gap-3 mb-4">
+                    <div sec:authorize="isAuthenticated()" class="d-flex justify-content-center align-items-center gap-3 mb-2">
                         <a sec:authorize="hasRole('STUDENT')" th:href="@{/student/jobs}" class="btn btn-primary btn-lg">
                             Browse Drives
                         </a>
@@ -150,225 +138,8 @@
             </div>
         </section>
 
-        <!-- Inset App Canvas & Directory (Mobbin Screenshot 2 Style) -->
-        <section id="showcase" class="pb-5">
-            <div class="container">
-                <div class="inset-canvas">
-                    
-                    <!-- Pill Search Bar from Mobbin Screenshot 2 -->
-                    <div class="pill-search-container mb-5">
-                        <i class="bi bi-search pill-search-icon"></i>
-                        <input type="text" class="pill-search-input" placeholder="Search placement drives, roles, technologies, packages...">
-                    </div>
-
-                    <!-- Column Directory Taxonomy (Mobbin Screenshot 2) -->
-                    <div class="row g-4 mb-5">
-                        <div class="col-6 col-md-3">
-                            <div class="directory-heading">Categories</div>
-                            <a href="#" class="directory-item">Technology</a>
-                            <a href="#" class="directory-item">Finance &amp; Quant</a>
-                            <a href="#" class="directory-item">Data &amp; AI</a>
-                            <a href="#" class="directory-item">Cloud &amp; DevOps</a>
-                            <a href="#" class="directory-item">Consulting</a>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="directory-heading">Stages</div>
-                            <a href="#" class="directory-item">Application Open</a>
-                            <a href="#" class="directory-item">Shortlisting</a>
-                            <a href="#" class="directory-item">Technical Round 1</a>
-                            <a href="#" class="directory-item">System Design</a>
-                            <a href="#" class="directory-item">Offer Extended</a>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="directory-heading">Overview</div>
-                            <a href="#" class="directory-item">Automated Eligibility</a>
-                            <a href="#" class="directory-item">Verified Credentials</a>
-                            <a href="#" class="directory-item">Interview Rounds</a>
-                            <a href="#" class="directory-item">Placement Reports</a>
-                            <a href="#" class="directory-item">Official Notices</a>
-                        </div>
-                        <div class="col-6 col-md-3">
-                            <div class="directory-heading">Drive Tiers</div>
-                            <a href="#" class="directory-item">Super Dream (&gt;20 LPA)</a>
-                            <a href="#" class="directory-item">Dream Tier (12-20 LPA)</a>
-                            <a href="#" class="directory-item">Enterprise Corporate</a>
-                            <a href="#" class="directory-item">High-Growth Startups</a>
-                            <a href="#" class="directory-item">Core Engineering</a>
-                        </div>
-                    </div>
-
-                    <!-- Subnav Tab Filter Row (Mobbin Screenshot 2: Latest, Most popular, Filter button) -->
-                    <div class="subnav-tabs">
-                        <a href="#" class="subnav-tab active">Latest</a>
-                        <a href="#" class="subnav-tab">Most popular</a>
-                        <a href="#" class="subnav-tab">Super Dream</a>
-                        <button type="button" class="btn-filter-pill">
-                            <i class="bi bi-sliders"></i> Filter
-                        </button>
-                    </div>
-
-                    <!-- Drive Showcase Cards Grid (Mobbin Screenshot 2) -->
-                    <div class="row g-4">
-                        <!-- Card 1: Google India -->
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card p-4 h-100 d-flex flex-column" style="border-radius: 20px;">
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <div class="card-icon-bubble mb-0" style="background: #09090b; color: #ffffff;">
-                                        <i class="bi bi-google"></i>
-                                    </div>
-                                    <span class="badge bg-dark text-white">Live Drive</span>
-                                </div>
-                                <h5 class="fw-bold mb-1 font-display">Google India</h5>
-                                <p class="text-secondary small mb-3">Associate Software Engineer | Bengaluru</p>
-                                
-                                <div class="p-3 rounded-4 mb-3" style="background: var(--cc-slate-100);">
-                                    <div class="row g-2 text-center">
-                                        <div class="col-4 border-end" style="border-color: var(--cc-slate-200) !important;">
-                                            <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">PACKAGE</small>
-                                            <strong class="text-dark small">28.5 LPA</strong>
-                                        </div>
-                                        <div class="col-4 border-end" style="border-color: var(--cc-slate-200) !important;">
-                                            <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">MIN CGPA</small>
-                                            <strong class="text-dark small">8.00 Cutoff</strong>
-                                        </div>
-                                        <div class="col-4">
-                                            <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">BACKLOGS</small>
-                                            <strong class="text-dark small">0 Allowed</strong>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center" style="border-color: var(--cc-slate-200) !important;">
-                                    <div class="d-flex gap-1">
-                                        <span class="chip-hashtag">#Tier1</span>
-                                        <span class="chip-hashtag">#SoftwareEng</span>
-                                    </div>
-                                    <a th:href="@{/register/student}" class="btn btn-sm btn-light">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 2: Microsoft -->
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card p-4 h-100 d-flex flex-column" style="border-radius: 20px;">
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <div class="card-icon-bubble mb-0" style="background: #2563eb; color: #ffffff;">
-                                        <i class="bi bi-microsoft"></i>
-                                    </div>
-                                    <span class="badge bg-light text-dark">Technical Round 1</span>
-                                </div>
-                                <h5 class="fw-bold mb-1 font-display">Microsoft</h5>
-                                <p class="text-secondary small mb-3">Software Development Engineer | Hyderabad</p>
-                                
-                                <div class="p-3 rounded-4 mb-3" style="background: var(--cc-slate-100);">
-                                    <div class="row g-2 text-center">
-                                        <div class="col-4 border-end" style="border-color: var(--cc-slate-200) !important;">
-                                            <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">PACKAGE</small>
-                                            <strong class="text-dark small">24.0 LPA</strong>
-                                        </div>
-                                        <div class="col-4 border-end" style="border-color: var(--cc-slate-200) !important;">
-                                            <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">MIN CGPA</small>
-                                            <strong class="text-dark small">7.50 Cutoff</strong>
-                                        </div>
-                                        <div class="col-4">
-                                            <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">BACKLOGS</small>
-                                            <strong class="text-dark small">0 Allowed</strong>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center" style="border-color: var(--cc-slate-200) !important;">
-                                    <div class="d-flex gap-1">
-                                        <span class="chip-hashtag">#Cloud</span>
-                                        <span class="chip-hashtag">#Azure</span>
-                                    </div>
-                                    <a th:href="@{/register/student}" class="btn btn-sm btn-light">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Card 3: Deloitte Digital -->
-                        <div class="col-lg-4 col-md-6">
-                            <div class="card p-4 h-100 d-flex flex-column" style="border-radius: 20px;">
-                                <div class="d-flex justify-content-between align-items-start mb-3">
-                                    <div class="card-icon-bubble mb-0" style="background: #09090b; color: #ffffff;">
-                                        <i class="bi bi-briefcase-fill"></i>
-                                    </div>
-                                    <span class="badge bg-light text-dark">Shortlisting</span>
-                                </div>
-                                <h5 class="fw-bold mb-1 font-display">Deloitte Digital</h5>
-                                <p class="text-secondary small mb-3">Analyst - Tech Consulting | Pan India</p>
-                                
-                                <div class="p-3 rounded-4 mb-3" style="background: var(--cc-slate-100);">
-                                    <div class="row g-2 text-center">
-                                        <div class="col-4 border-end" style="border-color: var(--cc-slate-200) !important;">
-                                            <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">PACKAGE</small>
-                                            <strong class="text-dark small">14.0 LPA</strong>
-                                        </div>
-                                        <div class="col-4 border-end" style="border-color: var(--cc-slate-200) !important;">
-                                            <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">MIN CGPA</small>
-                                            <strong class="text-dark small">7.00 Cutoff</strong>
-                                        </div>
-                                        <div class="col-4">
-                                            <small class="text-muted d-block fw-bold" style="font-size: 0.65rem;">BACKLOGS</small>
-                                            <strong class="text-dark small">&le; 1 Backlog</strong>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center" style="border-color: var(--cc-slate-200) !important;">
-                                    <div class="d-flex gap-1">
-                                        <span class="chip-hashtag">#Consulting</span>
-                                        <span class="chip-hashtag">#Enterprise</span>
-                                    </div>
-                                    <a th:href="@{/register/student}" class="btn btn-sm btn-light">View Details</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- Metrics Row -->
-        <section class="py-5">
-            <div class="container">
-                <div class="row g-4">
-                    <div class="col-6 col-lg-3">
-                        <div class="stat-card">
-                            <div class="stat-label">Placement Ratio</div>
-                            <div class="stat-value">98.4%</div>
-                            <small class="text-secondary">Across Engineering Batches</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="stat-card">
-                            <div class="stat-label">Hiring Partners</div>
-                            <div class="stat-value">120+</div>
-                            <small class="text-secondary">Verified Corporate Employers</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="stat-card">
-                            <div class="stat-label">Offers Extended</div>
-                            <div class="stat-value">450+</div>
-                            <small class="text-secondary">Annual Career Placements</small>
-                        </div>
-                    </div>
-                    <div class="col-6 col-lg-3">
-                        <div class="stat-card">
-                            <div class="stat-label">Eligibility Engine</div>
-                            <div class="stat-value text-dark">100%</div>
-                            <small class="text-secondary">Zero-Error Academic Auditing</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
         <!-- Stakeholder Portals Section -->
-        <section id="portals" class="py-5">
+        <section id="portals" class="py-5" style="background-color: var(--cc-bg-inset);">
             <div class="container py-lg-4">
                 <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5 gap-3">
                     <div>
@@ -380,7 +151,7 @@
                     </div>
                     <div>
                         <a th:href="@{/register}" class="btn-arrow-action">
-                            <span>VIEW ALL PORTALS</span>
+                            <span>REGISTER ACCOUNT</span>
                             <span class="arrow-circle"><i class="bi bi-arrow-up-right"></i></span>
                         </a>
                     </div>
@@ -389,7 +160,7 @@
                 <div class="row g-4">
                     <!-- Student Card -->
                     <div class="col-lg-4">
-                        <div class="card p-4 p-md-5 h-100 d-flex flex-column" style="border-radius: var(--cc-radius-card);">
+                        <div class="card p-4 p-md-5 h-100 d-flex flex-column" style="border-radius: var(--cc-radius-card); background: #ffffff;">
                             <div class="d-flex justify-content-between align-items-start mb-4">
                                 <div class="card-icon-bubble mb-0" style="background-color: var(--cc-slate-100); color: var(--cc-ink);">
                                     <i class="bi bi-person-workspace"></i>
@@ -398,7 +169,7 @@
                             </div>
 
                             <h4 class="fw-bold font-display text-dark mb-2">Candidate Workspace</h4>
-                            <p class="text-secondary small mb-4">Verified profile setup, real-time eligibility evaluation per drive, and multi-round interview tracking.</p>
+                            <p class="text-secondary small mb-4">Verified profile setup, automated eligibility checks per drive, and multi-round interview tracking.</p>
 
                             <ul class="list-unstyled text-secondary small mb-4 d-flex flex-column gap-2 flex-grow-1">
                                 <li class="d-flex align-items-center gap-2"><i class="bi bi-check2 text-dark fw-bold"></i> Verified academic details &amp; PDF resume</li>
@@ -422,7 +193,7 @@
 
                     <!-- Recruiter Card -->
                     <div class="col-lg-4">
-                        <div class="card p-4 p-md-5 h-100 d-flex flex-column" style="border-radius: var(--cc-radius-card);">
+                        <div class="card p-4 p-md-5 h-100 d-flex flex-column" style="border-radius: var(--cc-radius-card); background: #ffffff;">
                             <div class="d-flex justify-content-between align-items-start mb-4">
                                 <div class="card-icon-bubble mb-0" style="background-color: var(--cc-slate-100); color: var(--cc-ink);">
                                     <i class="bi bi-building"></i>
@@ -455,7 +226,7 @@
 
                     <!-- Placement Officer Card -->
                     <div class="col-lg-4">
-                        <div class="card p-4 p-md-5 h-100 d-flex flex-column" style="border-radius: var(--cc-radius-card);">
+                        <div class="card p-4 p-md-5 h-100 d-flex flex-column" style="border-radius: var(--cc-radius-card); background: #ffffff;">
                             <div class="d-flex justify-content-between align-items-start mb-4">
                                 <div class="card-icon-bubble mb-0" style="background-color: var(--cc-slate-100); color: var(--cc-ink);">
                                     <i class="bi bi-shield-check"></i>
@@ -491,76 +262,74 @@
 
     </main>
 
-    <!-- Mobbin Signature Dark Footer with Watermark (Screenshots 3, 4, 5) -->
+    <!-- Mobbin Signature Dark Footer with Watermark (Only Working Links, No Social Media, Refined Spacing) -->
     <footer class="site-footer-dark mt-auto">
         <div class="container footer-content-wrap">
-            <div class="row g-5">
-                <div class="col-lg-4">
+            <div class="row g-4 g-lg-5">
+                <!-- Brand Information Column -->
+                <div class="col-lg-4 col-md-12 mb-4 mb-lg-0">
                     <div class="footer-brand-title">CampusConnect</div>
-                    <p class="small mb-4" style="max-width: 320px; color: #a1a1aa !important; line-height: 1.6;">
-                        The campus placement reference portal. Zero-error eligibility checks, verified student credentials, and real-time interview pipelines.
+                    <p class="small mb-0" style="max-width: 320px; color: #a1a1aa !important; line-height: 1.65;">
+                        Campus placement &amp; recruitment management portal. Zero-error academic eligibility checks, verified credentials, and real-time interview coordination.
                     </p>
-                    <div class="d-flex align-items-center gap-3">
-                        <a href="#" class="footer-social-link" title="YouTube"><i class="bi bi-youtube"></i></a>
-                        <a href="#" class="footer-social-link" title="Twitter / X"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#" class="footer-social-link" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                        <a href="#" class="footer-social-link" title="GitHub"><i class="bi bi-github"></i></a>
-                    </div>
                 </div>
 
-                <div class="col-6 col-lg-2">
-                    <div class="footer-col-title">Products</div>
+                <!-- Students Column -->
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="footer-col-title">Students</div>
                     <ul class="footer-nav-list">
-                        <li><a th:href="@{/announcements}" class="footer-link">Drives &amp; Notices</a></li>
-                        <li><a th:href="@{/register/student}" class="footer-link">Student Portal <span class="footer-pill-new">New</span></a></li>
-                        <li><a th:href="@{/register/recruiter}" class="footer-link">Recruiter Pool</a></li>
-                        <li><a th:href="@{/login}" class="footer-link">Officer Console <span class="footer-pill-new">v2</span></a></li>
+                        <li><a th:href="@{/register/student}" class="footer-link">Register</a></li>
+                        <li><a th:href="@{/student/dashboard}" class="footer-link">Dashboard</a></li>
+                        <li><a th:href="@{/student/jobs}" class="footer-link">Browse Drives</a></li>
+                        <li><a th:href="@{/student/applications}" class="footer-link">Applications</a></li>
                     </ul>
                 </div>
 
-                <div class="col-6 col-lg-2">
-                    <div class="footer-col-title">Resources</div>
+                <!-- Recruiters Column -->
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="footer-col-title">Recruiters</div>
                     <ul class="footer-nav-list">
-                        <li><a th:href="@{/announcements}" class="footer-link">Notice Board</a></li>
-                        <li><a href="#" class="footer-link">Eligibility Rules</a></li>
-                        <li><a href="#" class="footer-link">Salary Package Reports</a></li>
-                        <li><a href="#" class="footer-link">Interview Guides</a></li>
+                        <li><a th:href="@{/register/recruiter}" class="footer-link">Register</a></li>
+                        <li><a th:href="@{/recruiter/dashboard}" class="footer-link">Dashboard</a></li>
+                        <li><a th:href="@{/recruiter/jobs/new}" class="footer-link">Post Drive</a></li>
+                        <li><a th:href="@{/recruiter/applicants}" class="footer-link">Applicants</a></li>
                     </ul>
                 </div>
 
-                <div class="col-6 col-lg-2">
-                    <div class="footer-col-title">Company</div>
+                <!-- Administration Column -->
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="footer-col-title">Officer</div>
                     <ul class="footer-nav-list">
-                        <li><a href="#" class="footer-link">About CampusConnect</a></li>
-                        <li><a href="#" class="footer-link">Partner Campuses</a></li>
-                        <li><a href="#" class="footer-link">Academic Trust</a></li>
-                        <li><a href="#" class="footer-link">Support Desk</a></li>
+                        <li><a th:href="@{/officer/dashboard}" class="footer-link">Console</a></li>
+                        <li><a th:href="@{/officer/students}" class="footer-link">Students</a></li>
+                        <li><a th:href="@{/officer/jobs}" class="footer-link">Drives</a></li>
+                        <li><a th:href="@{/officer/analytics}" class="footer-link">Analytics</a></li>
                     </ul>
                 </div>
 
-                <div class="col-6 col-lg-2">
-                    <div class="footer-col-title">Institutional</div>
+                <!-- Public & Notices Column -->
+                <div class="col-6 col-md-4 col-lg-2">
+                    <div class="footer-col-title">Access</div>
                     <ul class="footer-nav-list">
-                        <li><a href="#" class="footer-link">Officer Login</a></li>
-                        <li><a href="#" class="footer-link">Audit Engine</a></li>
-                        <li><a href="#" class="footer-link">FERPA Compliance</a></li>
-                        <li><a href="#" class="footer-link">System Status</a></li>
+                        <li><a th:href="@{/announcements}" class="footer-link">Notices</a></li>
+                        <li><a th:href="@{/login}" class="footer-link">Sign In</a></li>
+                        <li><a th:href="@{/register}" class="footer-link">Get Started</a></li>
                     </ul>
                 </div>
             </div>
 
-            <!-- Bottom Row with Copyright and Links (Screenshots 3, 4, 5) -->
+            <!-- Bottom Row with Copyright and Working Links -->
             <div class="footer-bottom-bar d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-                <div>&copy; CampusConnect 2024&ndash;2026. All rights reserved.</div>
+                <div>&copy; CampusConnect 2026. All rights reserved.</div>
                 <div class="d-flex align-items-center gap-4">
-                    <a href="#" class="text-secondary text-decoration-none small" style="color: #71717a !important;">Privacy</a>
-                    <a href="#" class="text-secondary text-decoration-none small" style="color: #71717a !important;">Terms</a>
-                    <a href="#" class="text-secondary text-decoration-none small" style="color: #71717a !important;">Copyright</a>
+                    <a th:href="@{/announcements}" class="text-secondary text-decoration-none small" style="color: #71717a !important;">Notice Board</a>
+                    <a th:href="@{/login}" class="text-secondary text-decoration-none small" style="color: #71717a !important;">Sign In</a>
+                    <a th:href="@{/register}" class="text-secondary text-decoration-none small" style="color: #71717a !important;">Register</a>
                 </div>
             </div>
         </div>
 
-        <!-- Giant Subtle Watermark Typography (Screenshots 3, 4, 5) -->
+        <!-- Giant Subtle Watermark Typography -->
         <div class="footer-watermark">
             CampusConnect
         </div>
