@@ -1,89 +1,85 @@
 /* ==========================================================================
    CampusConnect Signature Design System
-   Inspired by Reference UI: Hope Rise (Editorial Warmth) & Flux (Bento Dashboard)
+   Inspired by Mobbin: Ultra-clean, High-Contrast, Minimalist & Editorial
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Epilogue:wght@600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap');
 
 :root {
-    /* Reference 1 & 2 Palette */
-    --cc-ink: #111827;
-    --cc-obsidian: #131518;
-    --cc-charcoal: #1a1d21;
-    --cc-charcoal-card: #202428;
-    
-    /* Warm Editorial Canvas (Reference 1) */
-    --cc-bg-warm: #faf7f2;
-    --cc-bg-warm-secondary: #f3ede2;
-    --cc-ribbon-warm: #ece5d6;
-    --cc-ribbon-border: #ded5c2;
+    /* Mobbin Monochromatic & Editorial Palette */
+    --cc-ink: #09090b;
+    --cc-charcoal: #18181b;
+    --cc-slate-900: #0f172a;
+    --cc-slate-800: #1e293b;
+    --cc-slate-700: #334155;
+    --cc-slate-600: #52525b;
+    --cc-slate-500: #71717a;
+    --cc-slate-400: #a1a1aa;
+    --cc-slate-300: #d4d4d8;
+    --cc-slate-200: #e4e4e7;
+    --cc-slate-100: #f4f4f5;
+    --cc-slate-50:  #fafafa;
+    --cc-white:     #ffffff;
 
-    /* Cool Bento Canvas (Reference 2) */
-    --cc-bg-dash: #f3f5f8;
+    /* Canvases */
+    --cc-bg-page: #ffffff;
+    --cc-bg-inset: #f4f4f6;
     --cc-card-bg: #ffffff;
+    --cc-footer-bg: #09090b;
 
-    /* Accents from Reference Images */
+    /* Backwards compatibility for warm tokens -> cleanly mapped to Mobbin neutral palette */
+    --cc-bg-warm: #f4f4f6;
+    --cc-bg-warm-secondary: #f4f4f6;
+    --cc-ribbon-warm: #f4f4f6;
+    --cc-ribbon-border: #e4e4e7;
+    --cc-danger-border: #fecaca;
+    --cc-emerald-border: #a7f3d0;
+    --cc-warning-border: #fde68a;
+
+    /* Subtle Functional Accents */
+    --cc-primary: #09090b;
+    --cc-primary-hover: #27272a;
+    --cc-accent-blue: #2563eb;
     --cc-emerald: #10b981;
-    --cc-emerald-hover: #059669;
     --cc-emerald-light: #ecfdf5;
     --cc-emerald-text: #065f46;
-
-    --cc-lime: #c5f82a;
-    --cc-lime-hover: #b4f000;
-    --cc-lime-dark: #1a1d21;
-
-    --cc-primary: #111827;
-    --cc-primary-blue: #2563eb;
-    
     --cc-warning: #f59e0b;
     --cc-warning-light: #fffbeb;
     --cc-warning-text: #92400e;
-
     --cc-danger: #ef4444;
     --cc-danger-light: #fef2f2;
     --cc-danger-text: #991b1b;
 
-    /* Neutrals */
-    --cc-slate-900: #0f172a;
-    --cc-slate-800: #1e293b;
-    --cc-slate-700: #334155;
-    --cc-slate-600: #4b5563;
-    --cc-slate-500: #6b7280;
-    --cc-slate-400: #9ca3af;
-    --cc-slate-300: #cbd5e1;
-    --cc-slate-200: #e5e7eb;
-    --cc-slate-100: #f3f4f6;
-    --cc-white:     #ffffff;
-
-    /* Radii from References (Large rounded 24px - 28px) */
+    /* Radii */
     --cc-radius-sm: 8px;
     --cc-radius-md: 12px;
-    --cc-radius-lg: 18px;
-    --cc-radius-card: 26px;
+    --cc-radius-lg: 16px;
+    --cc-radius-card: 24px;
+    --cc-radius-inset: 32px;
     --cc-radius-pill: 9999px;
 
-    /* Shadows */
-    --cc-shadow-sm: 0 2px 4px 0 rgba(17, 24, 39, 0.04);
-    --cc-shadow-card: 0 10px 30px -5px rgba(17, 24, 39, 0.05), 0 4px 6px -2px rgba(17, 24, 39, 0.02);
-    --cc-shadow-float: 0 20px 40px -10px rgba(17, 24, 39, 0.08);
+    /* Subtle Shadows */
+    --cc-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+    --cc-shadow-card: 0 4px 20px -2px rgba(0, 0, 0, 0.04), 0 2px 6px -1px rgba(0, 0, 0, 0.02);
+    --cc-shadow-float: 0 20px 40px -10px rgba(0, 0, 0, 0.08), 0 4px 10px -2px rgba(0, 0, 0, 0.03);
 }
 
 /* ==========================================================================
-   Typography
+   Base & Typography
    ========================================================================== */
 
 body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
-    background-color: var(--cc-bg-warm) !important;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+    background-color: var(--cc-bg-page) !important;
     color: var(--cc-slate-700);
     letter-spacing: -0.012em;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* Big Display Typography inspired by Reference 1 */
+/* Mobbin-style Display Headlines */
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: 'Epilogue', 'Plus Jakarta Sans', sans-serif !important;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
     color: var(--cc-ink);
     font-weight: 800;
     letter-spacing: -0.035em;
@@ -91,11 +87,16 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 .display-title {
-    font-size: clamp(2.5rem, 6vw, 4.5rem);
-    font-weight: 900;
-    letter-spacing: -0.04em;
+    font-size: clamp(2.75rem, 6.5vw, 4.75rem);
+    font-weight: 850;
+    letter-spacing: -0.045em;
     color: var(--cc-ink);
-    line-height: 1.08;
+    line-height: 1.06;
+}
+
+.font-display {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    letter-spacing: -0.03em;
 }
 
 a {
@@ -105,161 +106,194 @@ a {
 }
 
 a:hover {
-    color: var(--cc-emerald);
+    color: var(--cc-slate-500);
 }
 
 /* ==========================================================================
-   Navigation Bar (Clean Editorial Glass & High-Contrast Links)
+   Hero Inline Badges (Mobbin signature inline app logos)
+   ========================================================================== */
+
+.hero-inline-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: clamp(2.4rem, 4.2vw, 3.5rem);
+    height: clamp(2.4rem, 4.2vw, 3.5rem);
+    border-radius: clamp(10px, 1.4vw, 16px);
+    vertical-align: middle;
+    margin: 0 0.12em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-inline-badge:hover {
+    transform: translateY(-2px) scale(1.05);
+}
+
+.hero-inline-badge.badge-blue {
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: #ffffff;
+}
+
+.hero-inline-badge.badge-dark {
+    background: #09090b;
+    color: #ffffff;
+}
+
+.hero-inline-badge.badge-white {
+    background: #ffffff;
+    border: 1px solid var(--cc-slate-200);
+    color: #09090b;
+}
+
+.hero-inline-badge.badge-purple {
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    color: #ffffff;
+}
+
+.hero-inline-badge i {
+    font-size: clamp(1.1rem, 2.1vw, 1.7rem);
+}
+
+/* ==========================================================================
+   Navigation Bar (Mobbin Minimalist Floating Bar)
    ========================================================================== */
 
 .navbar {
-    background: rgba(250, 247, 242, 0.95) !important;
+    background: rgba(255, 255, 255, 0.88) !important;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08) !important;
-    padding-top: 0.9rem;
-    padding-bottom: 0.9rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
-/* Minimalist Editorial Brand (Clean Wordmark, No Boxy AI Icon) */
+
+.navbar-brand::before {
+    content: "\F47C";
+    font-family: 'bootstrap-icons' !important;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #09090b;
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: normal;
+    margin-right: 0.5rem;
+}
+
+.navbar-brand:has(.brand-glyph)::before {
+    display: none;
+}
+
 .navbar-brand {
-    font-family: 'Epilogue', sans-serif !important;
-    font-weight: 800 !important;
-    font-size: 1.35rem;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-weight: 850 !important;
+    font-size: 1.25rem;
     letter-spacing: -0.04em;
     color: var(--cc-ink) !important;
     display: inline-flex;
     align-items: center;
-    gap: 0.2rem;
-    text-decoration: none;
+    gap: 0.5rem;
     padding: 0;
-    margin-right: 2rem;
+    margin-right: 2.5rem;
 }
 
-.navbar-brand .brand-accent {
-    color: var(--cc-emerald);
+.brand-glyph {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: #09090b;
+    color: #ffffff;
+    border-radius: 8px;
+    font-size: 0.85rem;
     font-weight: 900;
 }
 
-/* Hide legacy icon wrapper if present */
-.navbar-brand .brand-icon-wrapper {
-    display: none !important;
+.navbar-brand .brand-accent {
+    color: var(--cc-slate-400);
+    font-weight: 700;
 }
 
-/* Navbar Links (Clear high contrast, never invisible white text) */
 .navbar .nav-link,
 .navbar-dark .navbar-nav .nav-link,
 .navbar-light .navbar-nav .nav-link {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
-    color: #475569 !important; /* Slate-600: strong contrast against linen */
-    font-weight: 700 !important;
-    font-size: 0.78rem !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
-    padding: 0.5rem 1rem !important;
+    color: var(--cc-slate-600) !important;
+    font-weight: 600 !important;
+    font-size: 0.88rem !important;
+    letter-spacing: -0.01em !important;
+    padding: 0.45rem 0.85rem !important;
     border-radius: var(--cc-radius-pill) !important;
-    transition: all 0.18s ease-in-out !important;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
+    transition: all 0.15s ease-in-out !important;
+    text-transform: none !important;
 }
 
 .navbar .nav-link:hover,
 .navbar-dark .navbar-nav .nav-link:hover,
 .navbar-light .navbar-nav .nav-link:hover {
     color: var(--cc-ink) !important;
-    background-color: rgba(0, 0, 0, 0.06) !important;
+    background-color: var(--cc-slate-100) !important;
 }
 
 .navbar .nav-link.active,
 .navbar-dark .navbar-nav .nav-link.active,
 .navbar-light .navbar-nav .nav-link.active {
-    color: #ffffff !important;
-    background-color: var(--cc-ink) !important;
-    box-shadow: 0 2px 6px rgba(17, 24, 39, 0.18) !important;
-}
-
-/* Sub-nav buttons inside navbars (.btn-outline-light or legacy buttons) */
-.navbar .btn-outline-light,
-.navbar .btn-nav-action {
-    background-color: #ffffff !important;
-    border: 1px solid var(--cc-slate-300) !important;
-    color: var(--cc-slate-700) !important;
-    font-weight: 700 !important;
-    font-size: 0.78rem !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.04em !important;
-    border-radius: var(--cc-radius-pill) !important;
-    padding: 0.45rem 1rem !important;
-    box-shadow: var(--cc-shadow-sm) !important;
-    transition: all 0.15s ease-in-out !important;
-}
-
-.navbar .btn-outline-light:hover,
-.navbar .btn-nav-action:hover {
-    background-color: var(--cc-slate-100) !important;
-    border-color: var(--cc-slate-400) !important;
     color: var(--cc-ink) !important;
-    transform: translateY(-1px);
+    font-weight: 700 !important;
+    background-color: transparent !important;
 }
 
-/* User Profile Pill Button (Clean PROFILE button instead of exposed email) */
 .navbar .btn-profile,
 .navbar .user-badge {
-    background-color: #ffffff !important;
-    border: 1px solid var(--cc-slate-300) !important;
+    background-color: var(--cc-slate-100) !important;
+    border: 1px solid transparent !important;
     border-radius: var(--cc-radius-pill) !important;
-    padding: 0.45rem 1.05rem !important;
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-weight: 700 !important;
-    font-size: 0.76rem !important;
-    text-transform: uppercase !important;
-    letter-spacing: 0.05em !important;
+    padding: 0.45rem 1rem !important;
+    font-weight: 600 !important;
+    font-size: 0.84rem !important;
     color: var(--cc-ink) !important;
     display: inline-flex !important;
     align-items: center !important;
-    gap: 0.45rem !important;
-    box-shadow: var(--cc-shadow-sm) !important;
-    transition: all 0.15s ease-in-out !important;
+    gap: 0.4rem !important;
+    transition: all 0.15s ease !important;
+    text-transform: none !important;
 }
 
 .navbar .btn-profile:hover,
 .navbar .user-badge:hover {
-    background-color: var(--cc-slate-50) !important;
-    border-color: var(--cc-slate-400) !important;
-    color: var(--cc-ink) !important;
-    transform: translateY(-1px);
+    background-color: var(--cc-slate-200) !important;
 }
 
-/* Ensure navbar toggler is visible on warm background */
 .navbar-toggler {
-    border: 1px solid var(--cc-slate-300) !important;
+    border: 1px solid var(--cc-slate-200) !important;
     border-radius: var(--cc-radius-md) !important;
     padding: 0.35rem 0.65rem !important;
 }
 
-.navbar-toggler-icon {
-    filter: invert(0.2) !important;
-}
-
 /* ==========================================================================
-   Buttons (Consistent Font, Sizing, and Radius)
+   Buttons (Mobbin Signature High-Contrast Pills)
    ========================================================================== */
 
 .btn {
     font-family: 'Plus Jakarta Sans', sans-serif !important;
-    font-weight: 700 !important;
-    letter-spacing: 0.04em !important;
-    text-transform: uppercase !important;
+    font-weight: 650 !important;
+    letter-spacing: -0.015em !important;
     border-radius: var(--cc-radius-pill) !important;
-    padding: 0.6rem 1.35rem !important;
-    font-size: 0.8rem !important;
+    padding: 0.65rem 1.45rem !important;
+    font-size: 0.875rem !important;
     line-height: 1.4 !important;
     transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1) !important;
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
     gap: 0.45rem !important;
+    text-transform: none !important;
 }
 
 .btn:active {
@@ -267,143 +301,251 @@ a:hover {
 }
 
 .btn-sm {
-    padding: 0.42rem 0.95rem !important;
-    font-size: 0.74rem !important;
+    padding: 0.45rem 1rem !important;
+    font-size: 0.8rem !important;
 }
 
 .btn-lg {
-    padding: 0.8rem 1.85rem !important;
-    font-size: 0.86rem !important;
+    padding: 0.85rem 1.95rem !important;
+    font-size: 0.95rem !important;
 }
 
-/* Emerald Pill Button from Reference 1 */
-.btn-emerald, .btn-primary {
-    background-color: var(--cc-emerald) !important;
-    border: 1px solid var(--cc-emerald) !important;
+/* Primary Black Pill (Mobbin 'Join for free') */
+.btn-primary, .btn-dark, .btn-emerald {
+    background-color: var(--cc-ink) !important;
+    border: 1px solid var(--cc-ink) !important;
     color: #ffffff !important;
-    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.25) !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
 }
 
-.btn-emerald:hover, .btn-primary:hover {
-    background-color: var(--cc-emerald-hover) !important;
-    border-color: var(--cc-emerald-hover) !important;
+.btn-primary:hover, .btn-dark:hover, .btn-emerald:hover {
+    background-color: #27272a !important;
+    border-color: #27272a !important;
     color: #ffffff !important;
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 18px rgba(16, 185, 129, 0.35) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.14) !important;
 }
 
-/* Dark Obsidian Pill Button */
-.btn-dark {
-    background-color: var(--cc-obsidian) !important;
-    border: 1px solid var(--cc-obsidian) !important;
-    color: #ffffff !important;
-    box-shadow: 0 4px 12px rgba(17, 24, 39, 0.2) !important;
-}
-
-.btn-dark:hover {
-    background-color: var(--cc-charcoal) !important;
-    color: #ffffff !important;
-    transform: translateY(-2px) !important;
-}
-
-/* Clean White / Light Pill Button */
-.btn-light, .btn-outline-secondary {
-    background-color: #ffffff !important;
-    border: 1px solid var(--cc-slate-300) !important;
+/* Secondary Light Neutral Pill (Mobbin 'See plans ->') */
+.btn-light, .btn-secondary, .btn-outline-secondary, .btn-outline-light {
+    background-color: var(--cc-slate-100) !important;
+    border: 1px solid transparent !important;
     color: var(--cc-ink) !important;
-    box-shadow: var(--cc-shadow-sm) !important;
+    box-shadow: none !important;
 }
 
-.btn-light:hover, .btn-outline-secondary:hover {
-    background-color: var(--cc-slate-50) !important;
-    border-color: var(--cc-slate-400) !important;
+.btn-light:hover, .btn-secondary:hover, .btn-outline-secondary:hover, .btn-outline-light:hover {
+    background-color: var(--cc-slate-200) !important;
+    border-color: transparent !important;
     color: var(--cc-ink) !important;
-    transform: translateY(-2px) !important;
+    transform: translateY(-1px) !important;
 }
 
-/* Outline Buttons (Normalized sizing and font) */
+/* Minimalist Outline Buttons */
 .btn-outline-primary {
     background-color: transparent !important;
-    border: 1px solid var(--cc-emerald) !important;
-    color: var(--cc-emerald) !important;
+    border: 1px solid var(--cc-slate-300) !important;
+    color: var(--cc-ink) !important;
 }
 
 .btn-outline-primary:hover {
-    background-color: var(--cc-emerald) !important;
+    background-color: var(--cc-ink) !important;
+    border-color: var(--cc-ink) !important;
     color: #ffffff !important;
-    transform: translateY(-2px) !important;
 }
 
 .btn-outline-danger {
     background-color: transparent !important;
-    border: 1px solid var(--cc-slate-300) !important;
+    border: 1px solid var(--cc-slate-200) !important;
     color: #dc2626 !important;
 }
 
 .btn-outline-danger:hover {
     background-color: #fef2f2 !important;
-    border-color: #ef4444 !important;
+    border-color: #fecaca !important;
     color: #b91c1c !important;
 }
 
-/* Circular Arrow Action Button from Reference 1 (↗) */
+/* Arrow Action Link */
 .btn-arrow-action {
     display: inline-flex;
     align-items: center;
-    gap: 0.75rem;
-    font-weight: 700;
-    font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
+    gap: 0.6rem;
+    font-weight: 650;
+    font-size: 0.875rem;
     color: var(--cc-ink);
     background: transparent;
     border: none;
     padding: 0;
+    text-transform: none;
+    transition: gap 0.2s ease;
 }
 
 .btn-arrow-action .arrow-circle {
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
     border-radius: 50%;
-    border: 1px solid var(--cc-slate-300);
-    background-color: #ffffff;
+    background-color: var(--cc-slate-100);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     transition: all 0.2s ease;
-    box-shadow: var(--cc-shadow-sm);
+}
+
+.btn-arrow-action:hover {
+    gap: 0.85rem;
+    color: var(--cc-ink);
 }
 
 .btn-arrow-action:hover .arrow-circle {
     background-color: var(--cc-ink);
     color: #ffffff;
-    border-color: var(--cc-ink);
-    transform: scale(1.06);
+    transform: scale(1.05);
 }
 
 /* ==========================================================================
-   Editorial Cards & Bento Containers (26px Radius)
+   Inset Canvas (Mobbin Screenshot 2 Inset Directory Container)
+   ========================================================================== */
+
+.inset-canvas {
+    background-color: var(--cc-bg-inset);
+    border-radius: var(--cc-radius-inset);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid rgba(0, 0, 0, 0.04);
+}
+
+.pill-search-container {
+    max-width: 580px;
+    margin: 0 auto;
+    position: relative;
+}
+
+.pill-search-input {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid var(--cc-slate-200);
+    border-radius: var(--cc-radius-pill);
+    padding: 0.75rem 1.25rem 0.75rem 2.85rem;
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--cc-ink);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    transition: all 0.18s ease;
+}
+
+.pill-search-input:focus {
+    outline: none;
+    border-color: var(--cc-ink);
+    box-shadow: 0 0 0 3px rgba(9, 9, 11, 0.08);
+}
+
+.pill-search-icon {
+    position: absolute;
+    left: 1.15rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--cc-slate-400);
+    font-size: 1rem;
+    pointer-events: none;
+}
+
+/* Category Directory Columns (Mobbin Screenshot 2) */
+.directory-heading {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--cc-slate-500);
+    margin-bottom: 0.85rem;
+}
+
+.directory-item {
+    display: block;
+    font-size: 1.05rem;
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--cc-ink);
+    margin-bottom: 0.4rem;
+    transition: color 0.15s ease;
+}
+
+.directory-item:hover {
+    color: var(--cc-slate-400);
+}
+
+/* Sub-nav Tab Row (Mobbin Screenshot 2: Latest, Most popular, Filter) */
+.subnav-tabs {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border-bottom: 1px solid var(--cc-slate-200);
+    padding-bottom: 0.75rem;
+    margin-bottom: 2rem;
+}
+
+.subnav-tab {
+    font-size: 0.9rem;
+    font-weight: 650;
+    color: var(--cc-slate-500);
+    text-decoration: none;
+    position: relative;
+    padding-bottom: 0.75rem;
+    margin-bottom: -0.75rem;
+    transition: color 0.15s ease;
+}
+
+.subnav-tab:hover {
+    color: var(--cc-ink);
+}
+
+.subnav-tab.active {
+    color: var(--cc-ink);
+    border-bottom: 2px solid var(--cc-ink);
+}
+
+.btn-filter-pill {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 650;
+    color: var(--cc-ink);
+    background: #ffffff;
+    border: 1px solid var(--cc-slate-200);
+    border-radius: var(--cc-radius-pill);
+    padding: 0.4rem 0.95rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.btn-filter-pill:hover {
+    background: var(--cc-slate-50);
+    border-color: var(--cc-slate-300);
+}
+
+/* ==========================================================================
+   Cards & Bento Showcases (Mobbin-style Clean Elevation)
    ========================================================================== */
 
 .card {
     background-color: var(--cc-card-bg) !important;
-    border: 1px solid rgba(0, 0, 0, 0.05) !important;
+    border: 1px solid rgba(0, 0, 0, 0.06) !important;
     border-radius: var(--cc-radius-card) !important;
     box-shadow: var(--cc-shadow-card) !important;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.card:hover, .role-card:hover {
-    transform: translateY(-4px);
+.card:hover {
+    transform: translateY(-3px);
     box-shadow: var(--cc-shadow-float) !important;
 }
 
-/* Card Icon Bubble (Reference 1 Top-Left Circle) */
 .card-icon-bubble {
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
     background-color: var(--cc-slate-100);
     display: flex;
     align-items: center;
@@ -413,13 +555,12 @@ a:hover {
     margin-bottom: 1.25rem;
 }
 
-/* Dark Bento Highlight Card (Reference 2 Sleep Analysis Widget) */
 .card-dark-widget {
-    background-color: var(--cc-charcoal) !important;
-    border: 1px solid var(--cc-charcoal-card) !important;
+    background-color: var(--cc-ink) !important;
+    border: 1px solid #27272a !important;
     border-radius: var(--cc-radius-card) !important;
     color: #ffffff !important;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12) !important;
 }
 
 .card-dark-widget h1, .card-dark-widget h2, .card-dark-widget h3,
@@ -427,117 +568,92 @@ a:hover {
     color: #ffffff !important;
 }
 
-/* Stat & KPI Tiles (Reference 2) */
+/* KPI / Metric Stat Tiles */
 .stat-card {
-    background: var(--cc-card-bg);
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    border-radius: var(--cc-radius-card);
-    padding: 1.5rem 1.4rem;
-    box-shadow: var(--cc-shadow-card);
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 1.5rem 1.35rem;
+    box-shadow: var(--cc-shadow-sm);
     transition: all 0.2s ease;
 }
 
 .stat-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--cc-shadow-float);
+    transform: translateY(-2px);
+    box-shadow: var(--cc-shadow-card);
 }
 
 .stat-card .stat-label {
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.06em;
     color: var(--cc-slate-500);
     margin-bottom: 0.4rem;
 }
 
 .stat-card .stat-value {
-    font-family: 'Epilogue', sans-serif !important;
-    font-size: 2.1rem;
-    font-weight: 900;
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-size: 2.15rem;
+    font-weight: 850;
     color: var(--cc-ink);
     line-height: 1.1;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.04em;
 }
 
 /* ==========================================================================
-   Pill Badges & Tags (Reference 1 & 2)
+   Pills & Badges
    ========================================================================== */
 
 .badge {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    font-weight: 700;
-    padding: 0.4em 0.85em;
-    font-size: 0.74rem;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
+    font-weight: 650;
+    padding: 0.38em 0.85em;
+    font-size: 0.72rem;
+    letter-spacing: 0.02em;
     border-radius: var(--cc-radius-pill);
 }
 
-.badge-editorial-green {
-    background-color: rgba(16, 185, 129, 0.12) !important;
-    color: #047857 !important;
-    border: none !important;
+.badge.bg-dark {
+    background-color: var(--cc-ink) !important;
+    color: #ffffff !important;
 }
 
-.badge-editorial-lime {
-    background-color: var(--cc-lime) !important;
+.badge.bg-light {
+    background-color: var(--cc-slate-100) !important;
     color: var(--cc-ink) !important;
-    border: none !important;
 }
 
 .badge.bg-primary {
     background-color: rgba(37, 99, 235, 0.1) !important;
-    color: var(--cc-primary-blue) !important;
-    border: none !important;
+    color: var(--cc-accent-blue) !important;
 }
 
-.badge.bg-success {
-    background-color: rgba(16, 185, 129, 0.12) !important;
-    color: var(--cc-emerald-text) !important;
-    border: none !important;
+.badge.bg-success, .badge-editorial-green {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: #047857 !important;
 }
 
 .badge.bg-warning {
     background-color: rgba(245, 158, 11, 0.12) !important;
     color: var(--cc-warning-text) !important;
-    border: none !important;
 }
 
 .badge.bg-danger {
-    background-color: rgba(239, 68, 68, 0.12) !important;
+    background-color: rgba(239, 68, 68, 0.1) !important;
     color: var(--cc-danger-text) !important;
-    border: none !important;
 }
 
-/* Hash tag pills (#PlacementDrive #Interview) */
 .chip-hashtag {
-    font-size: 0.74rem;
-    font-weight: 700;
+    font-size: 0.75rem;
+    font-weight: 600;
     color: var(--cc-slate-500);
+    background: var(--cc-slate-100);
+    padding: 0.2rem 0.65rem;
+    border-radius: var(--cc-radius-pill);
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-}
-
-/* ==========================================================================
-   Partner Ribbon Strip (Reference 1)
-   ========================================================================== */
-
-.partner-ribbon {
-    background-color: var(--cc-ribbon-warm);
-    border-top: 1px solid var(--cc-ribbon-border);
-    border-bottom: 1px solid var(--cc-ribbon-border);
-    padding: 1.25rem 0;
-}
-
-.partner-ribbon .partner-name {
-    font-family: 'Epilogue', sans-serif;
-    font-weight: 800;
-    font-size: 1.15rem;
-    letter-spacing: -0.02em;
-    color: var(--cc-ink);
-    opacity: 0.85;
 }
 
 /* ==========================================================================
@@ -557,16 +673,14 @@ a:hover {
 
 .form-control:focus, .form-select:focus {
     border-color: var(--cc-ink);
-    box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
+    box-shadow: 0 0 0 3px rgba(9, 9, 11, 0.08);
     outline: none;
 }
 
 .form-label {
-    font-weight: 700;
+    font-weight: 650;
     font-size: 0.8rem;
-    text-transform: uppercase;
-    letter-spacing: 0.03em;
-    color: var(--cc-slate-600);
+    color: var(--cc-slate-700);
     margin-bottom: 0.4rem;
 }
 
@@ -574,7 +688,7 @@ a:hover {
     border-radius: var(--cc-radius-md);
     border: 1px solid var(--cc-slate-200);
     background-color: #ffffff;
-    color: var(--cc-slate-500);
+    color: var(--cc-slate-400);
 }
 
 /* ==========================================================================
@@ -606,7 +720,7 @@ a:hover {
 }
 
 .table-hover tbody tr:hover {
-    background-color: rgba(250, 247, 242, 0.7);
+    background-color: var(--cc-slate-50);
 }
 
 /* ==========================================================================
@@ -623,19 +737,19 @@ a:hover {
 
 .alert-danger {
     background-color: var(--cc-danger-light);
-    border-color: var(--cc-danger-border);
+    border-color: #fecaca;
     color: var(--cc-danger-text);
 }
 
 .alert-success {
     background-color: var(--cc-emerald-light);
-    border-color: var(--cc-emerald-border);
+    border-color: #a7f3d0;
     color: var(--cc-emerald-text);
 }
 
 .alert-warning {
     background-color: var(--cc-warning-light);
-    border-color: var(--cc-warning-border);
+    border-color: #fde68a;
     color: var(--cc-warning-text);
 }
 
@@ -646,13 +760,186 @@ a:hover {
 }
 
 /* ==========================================================================
-   Footer
+   Mobbin Signature Dark Footer with Watermark (Screenshots 3, 4, 5)
    ========================================================================== */
 
-footer {
+.site-footer-dark {
+    background-color: var(--cc-footer-bg);
+    color: var(--cc-slate-400);
+    position: relative;
+    overflow: hidden;
+    padding-top: 5rem;
+    padding-bottom: 4rem;
+}
+
+.site-footer-dark .footer-brand-title {
+    font-size: 1.5rem;
+    font-weight: 850;
+    letter-spacing: -0.04em;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+}
+
+.site-footer-dark .footer-col-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: #a1a1aa;
+    margin-bottom: 1.25rem;
+}
+
+.site-footer-dark .footer-nav-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.site-footer-dark .footer-link {
+    color: #f4f4f5;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: color 0.15s ease;
+}
+
+.site-footer-dark .footer-link:hover {
+    color: #ffffff;
+}
+
+.footer-pill-new {
+    background-color: #27272a;
+    color: #d4d4d8;
+    font-size: 0.65rem;
+    font-weight: 600;
+    padding: 0.15rem 0.45rem;
+    border-radius: var(--cc-radius-pill);
+    margin-left: 0.45rem;
+}
+
+/* Giant Subtle Watermark across Footer Bottom */
+.footer-watermark {
+    position: absolute;
+    bottom: -1.5rem;
+    left: 0;
+    right: 0;
+    font-size: clamp(4.5rem, 15vw, 13rem);
+    font-weight: 900;
+    letter-spacing: -0.06em;
+    color: rgba(255, 255, 255, 0.035);
+    user-select: none;
+    pointer-events: none;
+    white-space: nowrap;
+    text-align: center;
+    line-height: 0.85;
+    z-index: 0;
+}
+
+.site-footer-dark .footer-content-wrap {
+    position: relative;
+    z-index: 1;
+}
+
+.site-footer-dark .footer-bottom-bar {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 2rem;
+    margin-top: 3.5rem;
+    font-size: 0.84rem;
+    color: #71717a;
+}
+
+.site-footer-dark .footer-social-link {
+    color: #a1a1aa;
+    font-size: 1.15rem;
+    transition: color 0.15s ease;
+}
+
+.site-footer-dark .footer-social-link:hover {
+    color: #ffffff;
+}
+
+/* Default footer fallback */
+footer:not(.site-footer-dark) {
     background-color: #ffffff !important;
     border-top: 1px solid var(--cc-slate-200) !important;
     color: var(--cc-slate-500) !important;
     padding-top: 2rem;
     padding-bottom: 2rem;
+}
+
+
+.badge-editorial-lime {
+    background-color: var(--cc-slate-100) !important;
+    color: var(--cc-ink) !important;
+    border: 1px solid var(--cc-slate-200) !important;
+}
+
+.card-dark-widget .badge-editorial-lime {
+    background-color: #27272a !important;
+    color: #f4f4f5 !important;
+    border: 1px solid #3f3f46 !important;
+}
+
+/* ==========================================================================
+   Micro-Interactions & Component Polish (Dropdowns, Pagination, Modals)
+   ========================================================================== */
+
+.dropdown-menu {
+    border-radius: var(--cc-radius-lg) !important;
+    border: 1px solid var(--cc-slate-200) !important;
+    box-shadow: var(--cc-shadow-float) !important;
+    padding: 0.5rem !important;
+}
+
+.dropdown-item {
+    border-radius: var(--cc-radius-sm) !important;
+    font-size: 0.875rem !important;
+    font-weight: 550 !important;
+    padding: 0.5rem 0.85rem !important;
+    color: var(--cc-ink) !important;
+    transition: background 0.12s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--cc-slate-100) !important;
+}
+
+.pagination .page-link {
+    border-radius: var(--cc-radius-md) !important;
+    margin: 0 0.2rem;
+    color: var(--cc-ink) !important;
+    border: 1px solid var(--cc-slate-200) !important;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--cc-slate-100) !important;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--cc-ink) !important;
+    border-color: var(--cc-ink) !important;
+    color: #ffffff !important;
+}
+
+.modal-content {
+    border-radius: var(--cc-radius-card) !important;
+    border: 1px solid var(--cc-slate-200) !important;
+    box-shadow: var(--cc-shadow-float) !important;
+}
+
+.modal-header {
+    border-bottom: 1px solid var(--cc-slate-100) !important;
+    padding: 1.5rem !important;
+}
+
+.modal-footer {
+    border-top: 1px solid var(--cc-slate-100) !important;
+    padding: 1.25rem 1.5rem !important;
 }

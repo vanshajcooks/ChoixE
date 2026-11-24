@@ -35,7 +35,7 @@
     <main class="container my-auto py-5">
         <div class="text-center mb-5">
             <div class="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3 border" style="background-color: #ffffff; border-color: var(--cc-ribbon-border) !important;">
-                <span class="d-inline-block rounded-circle" style="width: 7px; height: 7px; background-color: var(--cc-emerald);"></span>
+                <span class="d-inline-block rounded-circle" style="width: 7px; height: 7px; background-color: var(--cc-ink);"></span>
                 <span class="small fw-bold text-uppercase" style="font-size: 0.72rem; letter-spacing: 0.05em; color: var(--cc-ink);">Get Started</span>
             </div>
             <h2 class="display-6 fw-bold font-display text-dark mb-2">Create Your CampusConnect Account</h2>
@@ -48,10 +48,10 @@
                 <div class="card h-100 p-4 p-md-5 d-flex flex-column justify-content-between" style="border-radius: var(--cc-radius-card); background: #ffffff;">
                     <div>
                         <div class="d-flex justify-content-between align-items-start mb-4">
-                            <div class="card-icon-bubble mb-0" style="background-color: rgba(16, 185, 129, 0.12); color: var(--cc-emerald);">
+                            <div class="card-icon-bubble mb-0" style="background-color: var(--cc-slate-100); color: var(--cc-ink);">
                                 <i class="bi bi-person-workspace"></i>
                             </div>
-                            <span class="badge badge-editorial-green">Students</span>
+                            <span class="badge bg-light text-dark">Students</span>
                         </div>
                         <h4 class="fw-bold font-display text-dark mb-2">Student Account</h4>
                         <p class="text-muted small mb-4">Register as an undergraduate or postgraduate to build your academic profile, evaluate eligibility, and apply to hiring drives.</p>
@@ -62,8 +62,8 @@
                         </ul>
                     </div>
                     <div class="pt-3 border-top">
-                        <a th:href="@{/register/student}" class="btn btn-emerald w-100 py-3">
-                            REGISTER AS STUDENT <i class="bi bi-arrow-up-right ms-1"></i>
+                        <a th:href="@{/register/student}" class="btn btn-primary w-100 py-3">
+                            Register as Student
                         </a>
                     </div>
                 </div>
@@ -88,8 +88,8 @@
                         </ul>
                     </div>
                     <div class="pt-3 border-top">
-                        <a th:href="@{/register/recruiter}" class="btn btn-dark w-100 py-3">
-                            REGISTER AS RECRUITER <i class="bi bi-arrow-up-right ms-1"></i>
+                        <a th:href="@{/register/recruiter}" class="btn btn-primary w-100 py-3">
+                            Register as Recruiter
                         </a>
                     </div>
                 </div>
