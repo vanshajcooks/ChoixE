@@ -170,7 +170,7 @@
             </div>
         </div>
 
-        <!-- Quick Access Placeholders -->
+        <!-- Quick Access Features -->
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
@@ -208,9 +208,9 @@
                         <h5 class="fw-bold mb-0">Interview Scheduling</h5>
                     </div>
                     <p class="text-muted small">Schedule interview rounds, provide meeting links, and notify shortlisted candidates.</p>
-                    <button class="btn btn-outline-info btn-sm mt-auto" disabled>
-                        Available in Module 6 (Interviews)
-                    </button>
+                    <a th:href="@{/recruiter/interviews}" class="btn btn-outline-info btn-sm mt-auto">
+                        <i class="bi bi-calendar-check me-1"></i> Manage Interviews &rarr;
+                    </a>
                 </div>
             </div>
         </div>
