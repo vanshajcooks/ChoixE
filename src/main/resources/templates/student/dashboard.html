@@ -4,54 +4,82 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Dashboard — CampusConnect</title>
+    <!-- Google Fonts: Plus Jakarta Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- CampusConnect Custom Theme -->
+    <link rel="stylesheet" th:href="@{/css/theme.css}" href="/css/theme.css">
 </head>
 <body class="bg-light d-flex flex-column min-vh-100">
 
     <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <nav class="navbar navbar-expand-lg navbar-dark shadow-sm">
         <div class="container">
-            <a class="navbar-brand fw-bold d-flex align-items-center gap-2" th:href="@{/}">
-                <i class="bi bi-mortarboard-fill text-primary fs-4"></i>
+            <a class="navbar-brand" th:href="@{/}">
+                <span class="brand-icon-wrapper">
+                    <i class="bi bi-mortarboard-fill fs-5"></i>
+                </span>
                 <span>CampusConnect</span>
             </a>
-            <div class="d-flex align-items-center gap-3">
-                <a th:href="@{/student/jobs}" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-briefcase me-1"></i> Campus Drives
-                </a>
-                <a th:href="@{/student/applications}" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-file-earmark-text me-1"></i> My Applications
-                </a>
-                <a th:href="@{/student/interviews}" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-calendar-check me-1"></i> Interviews
-                </a>
-                <a th:href="@{/announcements}" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-megaphone me-1"></i> Notices
-                </a>
-                <a th:href="@{/student/analytics}" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-graph-up me-1"></i> Analytics
-                </a>
-                <a th:href="@{/student/profile}" class="btn btn-outline-light btn-sm">
-                    <i class="bi bi-person-circle me-1"></i> My Profile
-                </a>
-                <a th:href="@{/notifications}" class="btn btn-outline-light btn-sm position-relative">
-                    <i class="bi bi-bell"></i>
-                    <span th:if="${unreadNotificationCount != null && unreadNotificationCount > 0}"
-                          class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-                          th:text="${unreadNotificationCount}">1</span>
-                </a>
-                <span class="badge bg-primary d-flex align-items-center gap-1 py-2 px-3">
-                    <i class="bi bi-person-fill"></i>
-                    <span sec:authentication="name">student@college.edu</span>
-                </span>
-                <form th:action="@{/logout}" method="post" class="m-0">
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-box-arrow-right me-1"></i> Logout
-                    </button>
-                </form>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#studentNavContent" aria-controls="studentNavContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="studentNavContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-2">
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/student/dashboard}">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/student/jobs}">
+                            <i class="bi bi-briefcase"></i> Campus Drives
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/student/applications}">
+                            <i class="bi bi-file-earmark-text"></i> Applications
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/student/interviews}">
+                            <i class="bi bi-calendar-check"></i> Interviews
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/announcements}">
+                            <i class="bi bi-megaphone"></i> Notices
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/student/analytics}">
+                            <i class="bi bi-graph-up"></i> Analytics
+                        </a>
+                    </li>
+                </ul>
+                <div class="d-flex align-items-center gap-2">
+                    <a th:href="@{/notifications}" class="btn btn-nav-action position-relative" title="Notifications">
+                        <i class="bi bi-bell"></i>
+                        <span th:if="${unreadNotificationCount != null && unreadNotificationCount > 0}"
+                              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger border border-white"
+                              style="font-size: 0.65rem;"
+                              th:text="${unreadNotificationCount}">1</span>
+                    </a>
+                    <a th:href="@{/student/profile}" class="user-badge student text-decoration-none">
+                        <i class="bi bi-person-circle"></i>
+                        <span sec:authentication="name">student@college.edu</span>
+                    </a>
+                    <form th:action="@{/logout}" method="post" class="m-0">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </nav>
@@ -60,22 +88,30 @@
     <main class="container my-4 flex-grow-1">
         
         <!-- Welcome Banner -->
-        <div class="card border-0 shadow-sm rounded-4 p-4 mb-4 bg-white">
+        <div class="card p-4 mb-4">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
-                <div>
-                    <h3 class="fw-bold mb-1" th:text="'Hello, ' + (${profile != null} ? ${profile.user.fullName} : ${username})">Hello, Student</h3>
-                    <p class="text-muted mb-0" th:text="${profile != null} ? (${profile.department} + ' &bull; Roll: ' + ${profile.rollNumber}) : 'Student Account'">Department &bull; Roll Number</p>
+                <div class="d-flex align-items-center gap-3">
+                    <div class="stat-icon bg-primary bg-opacity-10 text-primary d-none d-sm-flex" style="width: 52px; height: 52px; font-size: 1.5rem;">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
+                    <div>
+                        <div class="d-flex align-items-center gap-2 mb-1">
+                            <h3 class="fw-bold mb-0 text-dark" th:text="'Welcome, ' + (${profile != null} ? ${profile.user.fullName} : ${username})">Welcome, Student</h3>
+                            <span class="badge bg-primary bg-opacity-10 text-primary small">Student</span>
+                        </div>
+                        <p class="text-muted mb-0" th:text="${profile != null} ? (${profile.department} + ' &bull; Roll: ' + ${profile.rollNumber}) : 'Student Account'">Department &bull; Roll Number</p>
+                    </div>
                 </div>
                 <div class="d-flex flex-column align-items-md-end gap-2">
                     <!-- Verification Badge -->
                     <div th:if="${profile != null}">
-                        <span th:if="${profile.verificationStatus.name() == 'PENDING'}" class="badge bg-warning text-dark fs-6 py-2 px-3 rounded-pill">
+                        <span th:if="${profile.verificationStatus.name() == 'PENDING'}" class="badge bg-warning text-warning-text py-2 px-3">
                             <i class="bi bi-clock-history me-1"></i> Verification Pending
                         </span>
-                        <span th:if="${profile.verificationStatus.name() == 'VERIFIED'}" class="badge bg-success fs-6 py-2 px-3 rounded-pill">
+                        <span th:if="${profile.verificationStatus.name() == 'VERIFIED'}" class="badge bg-success text-success-text py-2 px-3">
                             <i class="bi bi-patch-check-fill me-1"></i> Verified Profile
                         </span>
-                        <span th:if="${profile.verificationStatus.name() == 'REJECTED'}" class="badge bg-danger fs-6 py-2 px-3 rounded-pill">
+                        <span th:if="${profile.verificationStatus.name() == 'REJECTED'}" class="badge bg-danger text-danger-text py-2 px-3">
                             <i class="bi bi-x-circle-fill me-1"></i> Verification Rejected
                         </span>
                     </div>
@@ -88,8 +124,8 @@
             </div>
 
             <!-- Verification Notice Alert -->
-            <div th:if="${profile != null and profile.verificationStatus.name() == 'PENDING'}" class="alert alert-warning d-flex align-items-center gap-2 mt-4 mb-0 small" role="alert">
-                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5"></i>
+            <div th:if="${profile != null and profile.verificationStatus.name() == 'PENDING'}" class="alert alert-warning d-flex align-items-center gap-2 mt-4 mb-0" role="alert">
+                <i class="bi bi-exclamation-triangle-fill flex-shrink-0 fs-5 text-warning"></i>
                 <div>
                     <strong>Verification in Progress:</strong> Your profile is currently awaiting review by the Placement Officer. Job applications will be enabled once your credentials are verified.
                 </div>
@@ -98,7 +134,7 @@
 
         <!-- Pinned Campus Announcements -->
         <div th:if="${pinnedAnnouncements != null && !pinnedAnnouncements.isEmpty()}" class="mb-4">
-            <div class="card border-0 shadow-sm rounded-4 overflow-hidden border-start border-4 border-primary">
+            <div class="card overflow-hidden" style="border-left: 4px solid var(--cc-primary) !important;">
                 <div class="card-header bg-white border-0 pt-3 pb-0 px-4 d-flex justify-content-between align-items-center">
                     <h6 class="fw-bold text-dark mb-0 d-flex align-items-center gap-2">
                         <i class="bi bi-pin-angle-fill text-primary"></i> Pinned Campus Announcements
@@ -107,11 +143,11 @@
                 </div>
                 <div class="card-body px-4 py-3">
                     <div class="d-flex flex-column gap-2">
-                        <div th:each="notice : ${pinnedAnnouncements}" class="p-3 bg-light rounded-3 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2">
+                        <div th:each="notice : ${pinnedAnnouncements}" class="p-3 bg-light rounded-3 d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-2 border">
                             <div>
                                 <div class="d-flex align-items-center gap-2 mb-1">
                                     <span class="badge" th:classappend="'bg-' + ${notice.priority.badgeColor}" th:text="${notice.priority.displayName}">Urgent</span>
-                                    <a th:href="@{/announcements/{id}(id=${notice.id})}" class="fw-bold text-dark text-decoration-none hover-primary" th:text="${notice.title}">Title</a>
+                                    <a th:href="@{/announcements/{id}(id=${notice.id})}" class="fw-bold text-dark text-decoration-none" th:text="${notice.title}">Title</a>
                                 </div>
                                 <small class="text-muted" th:text="${#temporals.format(notice.createdAt, 'dd MMM yyyy, hh:mm a')}">Date</small>
                             </div>
@@ -124,74 +160,80 @@
             </div>
         </div>
 
-        <!-- Academic Profile Summary -->
+        <!-- Academic Profile Summary Cards -->
         <div th:if="${profile != null}" class="row g-4 mb-4">
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
-                    <small class="text-muted text-uppercase fw-semibold">Current CGPA</small>
-                    <h3 class="fw-bold text-primary mt-2 mb-0" th:text="${profile.cgpa}">8.50</h3>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-label">Current CGPA</div>
+                    <div class="stat-value text-primary" th:text="${profile.cgpa}">8.50</div>
                     <small class="text-secondary">Scale: 10.0</small>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
-                    <small class="text-muted text-uppercase fw-semibold">Graduation Year</small>
-                    <h3 class="fw-bold text-dark mt-2 mb-0" th:text="${profile.graduationYear}">2026</h3>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-label">Graduation Year</div>
+                    <div class="stat-value text-dark" th:text="${profile.graduationYear}">2026</div>
                     <small class="text-secondary">Passing Batch</small>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
-                    <small class="text-muted text-uppercase fw-semibold">Active Backlogs</small>
-                    <h3 class="fw-bold text-danger mt-2 mb-0" th:text="${profile.activeBacklogs}">0</h3>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-label">Active Backlogs</div>
+                    <div class="stat-value" th:classappend="${profile.activeBacklogs == 0} ? 'text-success' : 'text-danger'" th:text="${profile.activeBacklogs}">0</div>
                     <small class="text-secondary">Current Standing</small>
                 </div>
             </div>
-            <div class="col-md-3">
-                <div class="card border-0 shadow-sm rounded-3 p-3 bg-white text-center">
-                    <small class="text-muted text-uppercase fw-semibold">Roll Number</small>
-                    <h4 class="fw-bold text-secondary mt-2 mb-0" th:text="${profile.rollNumber}">2022CS101</h4>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-label">Roll Number</div>
+                    <div class="stat-value text-dark fs-3" th:text="${profile.rollNumber}">2022CS101</div>
                     <small class="text-secondary">Registration ID</small>
                 </div>
             </div>
         </div>
 
-        <!-- Quick Access Features -->
+        <!-- Quick Access Feature Cards -->
         <div class="row g-4">
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
+                <div class="card card-interactive p-4 h-100">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <i class="bi bi-briefcase-fill text-primary fs-3"></i>
+                        <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                            <i class="bi bi-briefcase-fill"></i>
+                        </div>
                         <h5 class="fw-bold mb-0">Campus Drives</h5>
                     </div>
-                    <p class="text-muted small">Browse approved jobs, view eligibility criteria, and evaluate your compatibility.</p>
+                    <p class="text-muted small">Browse approved jobs, view eligibility criteria, and evaluate your compatibility in real time.</p>
                     <a th:href="@{/student/jobs}" class="btn btn-outline-primary btn-sm mt-auto">
-                        <i class="bi bi-briefcase me-1"></i> Explore Drives &rarr;
+                        Explore Drives <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
+                <div class="card card-interactive p-4 h-100">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <i class="bi bi-file-earmark-person-fill text-success fs-3"></i>
-                        <h5 class="fw-bold mb-0">Resume Management</h5>
+                        <div class="stat-icon bg-success bg-opacity-10 text-success">
+                            <i class="bi bi-file-earmark-person-fill"></i>
+                        </div>
+                        <h5 class="fw-bold mb-0">Resume &amp; Profile</h5>
                     </div>
-                    <p class="text-muted small">Upload or replace your placement resume (PDF/DOCX, max 5MB).</p>
+                    <p class="text-muted small">Update your academic records or upload an updated placement resume for recruiter reviews.</p>
                     <a th:href="@{/student/profile}" class="btn btn-outline-success btn-sm mt-auto">
-                        <i class="bi bi-file-earmark-person me-1"></i> Manage Resume &rarr;
+                        Manage Profile <i class="bi bi-arrow-right"></i>
                     </a>
                 </div>
             </div>
             <div class="col-md-4">
-                <div class="card border-0 shadow-sm rounded-3 p-4 bg-white h-100">
+                <div class="card card-interactive p-4 h-100">
                     <div class="d-flex align-items-center gap-3 mb-3">
-                        <i class="bi bi-calendar-event-fill text-info fs-3"></i>
-                        <h5 class="fw-bold mb-0">Applications & Interviews</h5>
+                        <div class="stat-icon bg-info bg-opacity-10 text-info">
+                            <i class="bi bi-calendar-check-fill"></i>
+                        </div>
+                        <h5 class="fw-bold mb-0">Applications &amp; Rounds</h5>
                     </div>
-                    <p class="text-muted small">Track your job applications, recruitment stages, and scheduled interviews.</p>
+                    <p class="text-muted small">Track your active applications, interview schedules, round statuses, and feedback.</p>
                     <div class="mt-auto d-flex flex-column gap-2">
                         <a th:href="@{/student/applications}" class="btn btn-outline-info btn-sm">
-                            <i class="bi bi-file-earmark-text me-1"></i> Track Applications &rarr;
+                            Track Applications <i class="bi bi-arrow-right"></i>
                         </a>
                         <a th:href="@{/student/interviews}" class="btn btn-link btn-sm text-decoration-none text-muted p-0 text-start">
                             View Interview Schedules &rarr;
@@ -204,7 +246,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-white border-top py-3 mt-auto">
+    <footer class="py-3 mt-auto">
         <div class="container text-center text-muted small">
             CampusConnect &copy; 2026 &bull; Placement Management Portal
         </div>
