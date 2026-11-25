@@ -5,7 +5,7 @@
 **Document status:** Baseline / Requirements Frozen\
 **Version:** 1.0\
 **Project type:** Enterprise Web Application\
-**Primary language:** Java 21\
+**Primary language:** Java 25\
 **Prepared for:** CampusConnect development team and AI coding
 assistants (Antigravity / OpenCode)
 
@@ -21,7 +21,7 @@ assistants (Antigravity / OpenCode)
   Status          Approved baseline
   Primary users   Students, Recruiters/Companies, Placement Officers
   Architecture    Layered monolithic web application
-  Backend         Java 21, Spring Boot 3.x, Spring MVC
+  Backend         Java 25, Spring Boot 3.x, Spring MVC
   Frontend        Thymeleaf, HTML, CSS, Bootstrap 5
   Database        MySQL 8
   Persistence     Spring Data JPA, Hibernate
@@ -553,7 +553,7 @@ application.
 
   Area                           Selected technology
   ------------------------------ ------------------------------------
-  Language                       Java 21
+  Language                       Java 25
   Backend framework              Spring Boot 3.x
   Web framework                  Spring MVC
   Server-side templates          Thymeleaf
@@ -906,7 +906,7 @@ Antigravity, OpenCode, or another coding assistant must:
 2.  Treat the requirements and scope in this document as the approved
     baseline.
 3.  Not add features outside the agreed scope.
-4.  Use Java 21, Spring Boot 3.x, Maven, Thymeleaf, Bootstrap 5, MySQL,
+4.  Use Java 25, Spring Boot 3.x, Maven, Thymeleaf, Bootstrap 5, MySQL,
     Spring Data JPA, Hibernate, and Spring Security unless the team
     explicitly changes the stack.
 5.  Follow layered architecture and keep business logic in services.

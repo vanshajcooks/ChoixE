@@ -8,7 +8,7 @@ For complete product specifications, architecture, and functional requirements, 
 
 ## Technology Stack
 
-- **Platform**: Java 21 (LTS)
+- **Platform**: Java 25 (LTS)
 - **Framework**: Spring Boot 3.4.2 (Spring MVC, Spring Data JPA, Spring Security)
 - **Frontend / Templating**: Thymeleaf, HTML5, CSS3, Bootstrap 5
 - **Database**: MySQL 8.0+
@@ -62,7 +62,7 @@ Future business modules (per TRD Section 15) will be added under `com.campusconn
 ### 1. Prerequisites
 
 Ensure you have the following installed on your development machine:
-- **Java 21 JDK**: Verify with `java -version`
+- **Java 25 JDK**: Verify with `java -version`
 - **MySQL 8.0 Server**: Verify with `systemctl status mysql` or `mysql --version`
 - **Git**
 
