@@ -21,7 +21,7 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     long countByStatus(JobStatus status);
 
-    @Query("SELECT j FROM Job j JOIN FETCH j.company c LEFT JOIN FETCH j.eligibilityCriteria ec WHERE j.id = :id")
+    @Query("SELECT j FROM Job j JOIN FETCH j.company c JOIN FETCH c.recruiter r LEFT JOIN FETCH j.eligibilityCriteria ec WHERE j.id = :id")
     Optional<Job> findByIdWithCompanyAndCriteria(@Param("id") Long id);
 
     @Query("SELECT j FROM Job j JOIN FETCH j.company c LEFT JOIN FETCH j.eligibilityCriteria ec WHERE " +

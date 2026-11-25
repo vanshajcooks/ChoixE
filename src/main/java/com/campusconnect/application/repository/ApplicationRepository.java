@@ -35,6 +35,7 @@ public interface ApplicationRepository extends JpaRepository<Application, Long> 
            "JOIN FETCH s.user u " +
            "JOIN FETCH a.job j " +
            "JOIN FETCH j.company c " +
+           "JOIN FETCH c.recruiter r " +
            "LEFT JOIN FETCH j.eligibilityCriteria ec " +
            "WHERE a.id = :id")
     Optional<Application> findByIdWithDetails(@Param("id") Long id);

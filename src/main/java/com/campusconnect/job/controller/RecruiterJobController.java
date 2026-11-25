@@ -111,7 +111,8 @@ public class RecruiterJobController {
                           @AuthenticationPrincipal UserDetails userDetails,
                           Model model) {
         Job job = jobService.getJobById(id);
-        if (!job.getCompany().getRecruiter().getEmail().equalsIgnoreCase(userDetails.getUsername())) {
+        if (job.getCompany() == null || job.getCompany().getRecruiter() == null
+                || !job.getCompany().getRecruiter().getEmail().equalsIgnoreCase(userDetails.getUsername())) {
             return "redirect:/recruiter/jobs";
         }
 
@@ -126,7 +127,8 @@ public class RecruiterJobController {
                               Model model,
                               RedirectAttributes redirectAttributes) {
         Job job = jobService.getJobById(id);
-        if (!job.getCompany().getRecruiter().getEmail().equalsIgnoreCase(userDetails.getUsername())) {
+        if (job.getCompany() == null || job.getCompany().getRecruiter() == null
+                || !job.getCompany().getRecruiter().getEmail().equalsIgnoreCase(userDetails.getUsername())) {
             return "redirect:/recruiter/jobs";
         }
 

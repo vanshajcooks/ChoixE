@@ -267,7 +267,9 @@ public class ApplicationService {
 
     @Transactional(readOnly = true)
     public Application getApplicationById(Long id) {
-        return applicationRepository.findByIdWithDetails(id)
+        Application application = applicationRepository.findByIdWithDetails(id)
                 .orElseThrow(() -> new IllegalArgumentException("Application not found with ID: " + id));
+        org.hibernate.Hibernate.initialize(application.getStatusHistory());
+        return application;
     }
 }
